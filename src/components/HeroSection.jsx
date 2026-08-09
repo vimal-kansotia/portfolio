@@ -73,4 +73,3 @@ export default function HeroSection({ hero, resumeUrl, heroImage }) {
     </section>
   );
 }
-```[cite: 2]
