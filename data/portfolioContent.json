@@ -103,8 +103,24 @@
         "label": "AWS Academy Graduate - Cloud Foundations"
       },
       {
+        "id": "cert-microsoft",
+        "label": "Microsoft Office 2019"
+      },
+      {
         "id": "cert-jpmorgan",
         "label": "J.P. Morgan - Quantitative Research Job Simulation (Forage)"
+      },
+      {
+        "id": "cert-bigdata",
+        "label": "Big Data Analytics Specialist Training & Dashboard Projects"
+      },
+      {
+        "id": "cert-sql",
+        "label": "Advanced SQL and Relational Database Management"
+      },
+      {
+        "id": "cert-python",
+        "label": "Python for Data Science and Machine Learning Essentials"
       }
     ]
   },
