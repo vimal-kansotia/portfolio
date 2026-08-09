@@ -1,4 +1,14 @@
-import { ExternalLink } from 'lucide-react';
+import { ExternalLink, Dna, Activity, HeartPulse, Mic, BarChart3, Cloud, FileText } from 'lucide-react';
+
+const PROJECT_ICON_MAP = {
+  dna: Dna,
+  activity: Activity,
+  'heart-pulse': HeartPulse,
+  mic: Mic,
+  'bar-chart': BarChart3,
+  cloud: Cloud,
+  'file-text': FileText,
+};
 
 function SectionHeading({ children, className = '' }) {
   return <h2 className={`section-heading ${className}`}>{children}</h2>;
@@ -26,7 +36,7 @@ export default function ProjectsSection({ projects }) {
 
       <div className="projects-template-grid">
         {projects.map((project, index) => {
-          const Icon = project.icon;
+          const Icon = PROJECT_ICON_MAP[project.iconKey] || FileText;
           const delayClass = index < 6 ? `delay-${index + 1}` : '';
 
           return (
@@ -47,9 +57,14 @@ export default function ProjectsSection({ projects }) {
                   <ExternalLink size={18} className="project-template-external" />
                 </div>
 
-                {project.image ? (
+                {project.image && project.image !== '/profile.png' ? (
                   <div className="project-template-media" aria-hidden="true">
-                    <img src={project.image} alt={`Screenshot of ${project.title}`} loading="lazy" />
+                    <img
+                      src={project.image}
+                      alt={project.title}
+                      loading="lazy"
+                      style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                    />
                   </div>
                 ) : null}
 
