@@ -28,7 +28,11 @@ export default function AboutSection({ about, skillBars, education, certificatio
         </article>
 
         <article className="about-tile about-tile-image">
-          <img src={heroImage} alt={`${about.profileName} portrait`} />
+          <img
+            src={heroImage}
+            alt={`${about.profileName} portrait`}
+            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+          />
         </article>
 
         <article className="about-tile about-tile-craft glass card-3d reveal-right">
@@ -85,7 +89,11 @@ export default function AboutSection({ about, skillBars, education, certificatio
         </article>
 
         <article className="about-tile about-tile-center">
-          <img src={heroImage} alt={about.profileName} />
+          <img
+            src={heroImage}
+            alt={about.profileName}
+            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+          />
         </article>
       </div>
     </section>
