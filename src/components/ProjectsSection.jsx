@@ -39,6 +39,11 @@ export default function ProjectsSection({ projects }) {
           const Icon = PROJECT_ICON_MAP[project.iconKey] || FileText;
           const delayClass = index < 6 ? `delay-${index + 1}` : '';
 
+          // Only render image container if project.image exists, is not empty, and is NOT your profile picture
+          const hasValidProjectImage = project.image &&
+            project.image.trim() !== '' &&
+            project.image !== '/profile.png';
+
           return (
             <a
               key={project.title}
@@ -57,7 +62,7 @@ export default function ProjectsSection({ projects }) {
                   <ExternalLink size={18} className="project-template-external" />
                 </div>
 
-                {project.image && project.image !== '/profile.png' ? (
+                {hasValidProjectImage ? (
                   <div className="project-template-media" aria-hidden="true">
                     <img
                       src={project.image}
