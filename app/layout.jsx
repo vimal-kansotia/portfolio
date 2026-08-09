@@ -1,7 +1,7 @@
-import type { Metadata } from 'next';
+import { Metadata } from 'next';
 import './globals.css';
 
-export const metadata: Metadata = {
+export const metadata = {
   title: 'Vimal Kansotia | Data Science & Big Data Analytics',
   description: 'Portfolio of Vimal Kansotia - Big Data Engineer, Machine Learning Enthusiast, Data Scientist based in Mumbai',
   keywords: ['Data Science', 'Big Data', 'Machine Learning', 'Analytics', 'Python', 'Streamlit'],
@@ -35,8 +35,6 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: {
-  children: React.ReactNode
 }) {
   return (
     <html lang="en">
