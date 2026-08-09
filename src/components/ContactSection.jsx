@@ -1,5 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
-import emailjs from '@emailjs/browser';
+import { useState, useRef } from 'react';
 import { Linkedin, Mail, Phone, MapPin, Github, ExternalLink } from 'lucide-react';
 
 function SectionHeading({ children, className = '' }) {
@@ -29,25 +28,33 @@ export default function ContactSection({ contact }) {
   const [status, setStatus] = useState({ kind: '', message: '' });
   const contactFormRef = useRef(null);
 
-  useEffect(() => {
-    if (contact?.emailjs?.publicKey) {
-      emailjs.init(contact.emailjs.publicKey);
-    }
-  }, [contact?.emailjs?.publicKey]);
-
   const handleSubmit = async (event) => {
     event.preventDefault();
     setIsSubmitting(true);
     setStatus({ kind: '', message: '' });
 
+    const formData = new FormData(contactFormRef.current);
+
     try {
-      await emailjs.sendForm(
-        contact.emailjs.serviceId,
-        contact.emailjs.templateId,
-        contactFormRef.current,
-      );
-      setStatus({ kind: 'success', message: "Thanks! I'll get back to you soon." });
-      contactFormRef.current?.reset();
+      const response = await fetch('https://formspree.io/f/xzepedjy', {
+        method: 'POST',
+        body: formData,
+        headers: {
+          'Accept': 'application/json'
+        }
+      });
+
+      if (response.ok) {
+        setStatus({ kind: 'success', message: "Thanks! I'll get back to you soon." });
+        contactFormRef.current?.reset();
+      } else {
+        const data = await response.json();
+        if (data && data.errors) {
+          setStatus({ kind: 'error', message: data.errors.map(error => error.message).join(', ') });
+        } else {
+          setStatus({ kind: 'error', message: 'Message failed to send. Please try email or LinkedIn directly.' });
+        }
+      }
     } catch (error) {
       setStatus({ kind: 'error', message: 'Message failed to send. Please try email or LinkedIn directly.' });
       console.error(error);
@@ -59,19 +66,19 @@ export default function ContactSection({ contact }) {
   return (
     <section id="contact" className="section contact-template">
       <div className="contact-template-header">
-        <span className="contact-template-eyebrow">{contact.eyebrow}</span>
+        <span className="contact-template-eyebrow">{contact?.eyebrow || 'Get in Touch'}</span>
         <SectionHeading>
-          {contact.title.split(' ').slice(0, -1).join(' ')}{' '}
-          <span className="text-gradient-shimmer">{contact.title.split(' ').slice(-1)[0]}</span>
+          {contact?.title ? contact.title.split(' ').slice(0, -1).join(' ') : 'Contact'}{' '}
+          <span className="text-gradient-shimmer">{contact?.title ? contact.title.split(' ').slice(-1)[0] : 'Me'}</span>
         </SectionHeading>
         <p className="contact-template-subtitle">
-          {contact.subtitle}
+          {contact?.subtitle || "Let's connect and build something amazing together."}
         </p>
       </div>
 
       <div className="contact-template-grid">
         <div className="contact-template-info reveal-left">
-          {contact.links.map((link) => {
+          {contact?.links?.map((link) => {
             const IconComp = CONTACT_ICON_MAP[link.iconKey] || Mail;
             const colorClass = ICON_COLOR_MAP[link.iconKey] || 'cyan';
             const isClickable = link.href && link.href !== '#contact';
