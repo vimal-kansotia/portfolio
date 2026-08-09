@@ -1,4 +1,3 @@
-import { Metadata } from 'next';
 import './globals.css';
 
 export const metadata = {
@@ -33,9 +32,7 @@ export const metadata = {
   canonical: 'https://vimalkansotia.vercel.app'
 };
 
-export default function RootLayout({
-  children,
-}) {
+export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <head>
@@ -45,7 +42,6 @@ export default function RootLayout({
         <link rel="icon" href="/favicon.ico" />
         <link rel="canonical" href="https://vimalkansotia.vercel.app" />
 
-        {/* JSON-LD Structured Data */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
@@ -80,5 +76,5 @@ export default function RootLayout({
         {children}
       </body>
     </html>
-  )
+  );
 }
