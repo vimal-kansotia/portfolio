@@ -1,62 +1,62 @@
 {
   "site": {
-    "brand": "JARVIS NEW",
-    "ownerName": "Ameya Ramteke",
-    "role": "AI · Data · Web"
+    "brand": "VIMAL KANSOTIA",
+    "ownerName": "Vimal Santosh Kansotia",
+    "role": "Data Science · Big Data · ML"
   },
   "hero": {
-    "eyebrow": "AI & Data Science",
-    "name": "Ameya Ramteke",
-    "title": "AI & DS Engineer",
-    "subtitle": "Building intelligent solutions with Python, Machine Learning, and Cloud Architecture.",
-    "image": "/Assets/image.webp",
+    "eyebrow": "Data Science & Big Data Analytics",
+    "name": "Vimal Santosh Kansotia",
+    "title": "Big Data & Machine Learning Enthusiast",
+    "subtitle": "I build data-driven solutions using machine learning, big data, cloud technologies, and bioinformatics to turn complex data into meaningful insights.",
+    "image": "/Assets/profile.jpg",
     "resumeUrl": "/Assets/Resume.pdf",
     "buttons": {
       "primaryLabel": "View Projects",
       "secondaryLabel": "Download Resume"
     },
     "highlights": [
-      "AI and data analysis focus",
-      "Cloud architecture and full-stack builds",
-      "Open to internships and collaborations"
+      "Turning Data into Actionable Insights",
+      "Machine Learning & Predictive Analytics",
+      "Big Data Analytics & Bioinformatics"
     ],
     "stats": [
       {
+        "id": "stat-cgpa",
+        "value": "8.3+",
+        "label": "Academic CGPA"
+      },
+      {
         "id": "stat-projects",
-        "value": "4+",
-        "label": "Major Projects"
+        "value": "6+",
+        "label": "Data Science Projects"
       },
       {
-        "id": "stat-certs",
-        "value": "5+",
-        "label": "Certifications"
+        "id": "stat-skills",
+        "value": "35+",
+        "label": "Technical Skills"
       },
       {
-        "id": "stat-lead",
-        "value": "Team",
-        "label": "Lead & Rep"
-      },
-      {
-        "id": "stat-specialty",
-        "value": "AI/DS",
-        "label": "Specialization"
+        "id": "stat-focus",
+        "value": "Data",
+        "label": "Core Focus"
       }
     ]
   },
   "about": {
-    "profileName": "Ameya Ramteke",
-    "profileTitle": "AI & Data Science Engineer",
-    "bio": "AI/DS engineer building ML pipelines, data products, and cloud-native apps that ship fast.",
-    "location": "Nagpur, India",
-    "availability": "Open to work",
-    "technicalFocus": "Focused on AI/ML, analytics, and production-ready full-stack builds with a cloud-first mindset.",
-    "locationCity": "Nagpur",
+    "profileName": "Vimal Santosh Kansotia",
+    "profileTitle": "Big Data & ML Engineer",
+    "bio": "Data scientist and big data engineer building ML pipelines, interactive dashboards, and cloud-native solutions that transform complex datasets into actionable insights.",
+    "location": "Mumbai, Maharashtra",
+    "availability": "Open to opportunities",
+    "technicalFocus": "Focused on Machine Learning, Data Analytics, Bioinformatics, and production-ready data applications with a cloud-first mindset.",
+    "locationCity": "Mumbai",
     "timezone": "GMT+5:30",
-    "mapUrl": "https://www.openstreetmap.org/export/embed.html?bbox=79.0506%2C21.1200%2C79.1106%2C21.1800&layer=mapnik&marker=21.150037219633752%2C79.08060139999999",
+    "mapUrl": "https://www.openstreetmap.org/export/embed.html?bbox=72.7928%2C19.0144%2C72.9270%2C19.1760&layer=mapnik&marker=19.0760%2C72.8777",
     "skillBars": [
       {
         "id": "skill-python",
-        "label": "Python & AI/ML",
+        "label": "Python & Machine Learning",
         "value": 90,
         "color": "cyan"
       },
@@ -67,187 +67,185 @@
         "color": "purple"
       },
       {
-        "id": "skill-web",
-        "label": "Web Dev (HTML/CSS/JS)",
-        "value": 80,
+        "id": "skill-viz",
+        "label": "Data Visualization (Power BI/Streamlit)",
+        "value": 85,
         "color": "pink"
       },
       {
         "id": "skill-cloud",
-        "label": "Cloud Architecture",
-        "value": 75,
+        "label": "Cloud & Big Data (AWS/DuckDB)",
+        "value": 80,
         "color": "yellow"
       }
     ],
     "education": [
       {
-        "id": "edu-degree",
-        "title": "B. Tech in AI & Data Science",
-        "place": "Anjuman College of Engineering & Technology",
-        "status": "Pursuing"
+        "id": "edu-msc",
+        "title": "M.Sc. Big Data Analytics",
+        "place": "St. Xavier's College, Mumbai",
+        "status": "Pursuing (CGPA: 8.9)"
       },
       {
-        "id": "edu-school",
-        "title": "HSC & SSC",
-        "place": "Sandipani School / Essence International School",
-        "status": ""
+        "id": "edu-bsc",
+        "title": "B.Sc. Mathematics",
+        "place": "B.K. Birla College, Kalyan",
+        "status": "Completed (CGPA: 8.35)"
       }
     ],
     "certifications": [
       {
-        "id": "cert-tata",
-        "label": "GenAI Powered Data Analytics (TATA)"
+        "id": "cert-aws-de",
+        "label": "AWS Academy Graduate - Data Engineering"
       },
       {
-        "id": "cert-deloitte",
-        "label": "Data Analytics Job Simulation (Deloitte)"
+        "id": "cert-aws-cf",
+        "label": "AWS Academy Graduate - Cloud Foundations"
       },
       {
-        "id": "cert-aws",
-        "label": "Solutions Architecture (AWS)"
-      },
-      {
-        "id": "cert-git",
-        "label": "Git & GitHub Workshop (ACET)"
-      },
-      {
-        "id": "cert-sql",
-        "label": "SQL and Relational Databases 101 (Cognitive Class)"
-      },
-      {
-        "id": "cert-prompt",
-        "label": "Prompt Engineering for Everyone (Cognitive Class)"
-      },
-      {
-        "id": "cert-claude",
-        "label": "Claude 101 (Anthropic)"
+        "id": "cert-jpmorgan",
+        "label": "J.P. Morgan - Quantitative Research Job Simulation (Forage)"
       }
     ]
   },
   "projects": [
     {
-      "id": "project-resume-checker",
-      "title": "Resume-Checker",
-      "description": "A system to parse, analyze, and score resumes, showing skills in data extraction and analysis.",
+      "id": "project-hpa",
+      "title": "Human Protein Atlas (HPA) Gene Expression Explorer",
+      "description": "Interactive bioinformatics application for transcriptomic profiling with Streamlit. Analyze gene expression patterns across tissues and cancer cell lines with dynamic filtering and trajectory charts.",
       "tags": [
-        "Python",
-        "NLP"
+        "Streamlit",
+        "Plotly",
+        "Bioinformatics",
+        "Python"
       ],
       "accent": "cyan",
-      "iconKey": "file-text",
-      "link": "https://github.com/ameya-jarvis-07/Resume-Checker",
-      "image": ""
+      "iconKey": "dna",
+      "link": "https://vimalbio.streamlit.app/",
+      "github": "https://github.com/vimal-kansotia/Bioinformatics-",
+      "image": "/Assets/hpa-explorer.jpg"
     },
     {
-      "id": "project-crime-analysis",
-      "title": "Crime-Analysis-Demo",
-      "description": "Crime dataset analysis to identify patterns and trends using Python and visualization techniques.",
+      "id": "project-hospital-los",
+      "title": "Hospital Length of Stay (LOS) Dashboard",
+      "description": "Comprehensive healthcare analytics dashboard for tracking and predicting patient hospitalization duration. Features interactive visualizations for operational insights and resource optimization.",
       "tags": [
-        "Data Viz",
-        "Pandas"
+        "Streamlit",
+        "Python",
+        "Power BI",
+        "Data Analytics"
       ],
       "accent": "purple",
-      "iconKey": "bar-chart",
-      "link": "https://github.com/ameya-jarvis-07/Crime-Analysis-Demo",
-      "image": ""
+      "iconKey": "activity",
+      "link": "https://hospital-los.streamlit.app/",
+      "github": "https://github.com/vimal-kansotia/hospital-los-dashboard",
+      "image": "/Assets/hospital-los.jpg"
     },
     {
-      "id": "project-account-management",
-      "title": "Account-Management",
-      "description": "Full-stack CRUD app for user account management, demonstrating database and UI skills.",
+      "id": "project-pneumo-ai",
+      "title": "Pneumo-AI: Advanced Pneumonia Detection",
+      "description": "AI-driven medical diagnostic system for Chest X-ray classification with 96% accuracy. Implements CNN feature compression and explainable AI for clinical decision support.",
       "tags": [
-        "Full Stack",
-        "SQL"
+        "Deep Learning",
+        "CNN",
+        "Streamlit",
+        "ML Explainability"
       ],
       "accent": "green",
-      "iconKey": "users",
-      "link": "https://github.com/ameya-jarvis-07/Account-Management-System",
-      "image": ""
+      "iconKey": "heart-pulse",
+      "link": "https://github.com/vimal-kansotia/Pneumo-AI",
+      "image": "/Assets/pneumo-ai.jpg"
     },
     {
-      "id": "project-hunger-bridge",
-      "title": "Hunger-Bridge",
-      "description": "A socially focused project that connects food donors with organizations to reduce food waste.",
+      "id": "project-jarvis",
+      "title": "Jarvis: Local AI Assistant",
+      "description": "Privacy-first voice-activated AI assistant running 100% locally on Linux. Integrates Llama 3.2 and OpenAI Whisper for end-to-end on-device intelligence.",
       "tags": [
-        "Social Good",
-        "Web App"
+        "LLMs",
+        "Ollama",
+        "Whisper",
+        "Linux"
       ],
       "accent": "yellow",
-      "iconKey": "heart",
-      "link": "https://github.com/ameya-jarvis-07/Hunger-Bridge",
-      "image": ""
+      "iconKey": "mic",
+      "link": "https://github.com/vimal-kansotia/Jarvis-AI",
+      "image": "/Assets/jarvis-ai.jpg"
     },
     {
-      "id": "project-solar-explorer",
-      "title": "Solar-Explorer",
-      "description": "Interactive solar system exploration tool with real-time planetary data and 3D rendering.",
+      "id": "project-amazon-sales",
+      "title": "Amazon End-to-End Sales Analytics",
+      "description": "Large-scale sales analysis managing 1.8 Lakh+ records. Complete ETL pipeline with Power BI dashboards tracking profit margins, YTD trends, and category performance.",
       "tags": [
-        "3D Graphics",
-        "Web Dev"
+        "Power BI",
+        "SQL",
+        "ETL",
+        "Data Engineering"
       ],
       "accent": "orange",
-      "iconKey": "sun",
-      "link": "https://ameya-jarvis-07.github.io/Solar-Explorer/",
-      "image": ""
+      "iconKey": "bar-chart",
+      "link": "https://github.com/vimal-kansotia/Amazon-Sales-Analytics",
+      "image": "/Assets/amazon-sales.jpg"
     },
     {
-      "id": "project-neuronet",
-      "title": "Neuro.Net",
-      "description": "Youth-driven workshops on psychology and artificial intelligence.",
+      "id": "project-aqi",
+      "title": "Real-time Air Quality Index (AQI) Dashboard",
+      "description": "Environmental monitoring platform with live API integration for pollution metrics. Interactive Power BI dashboard with location-based filtering and trend analysis.",
       "tags": [
-        "Education",
-        "Algorithms"
+        "Power BI",
+        "API Integration",
+        "Data Visualization",
+        "SQL"
       ],
       "accent": "blue",
-      "iconKey": "book-open",
-      "link": "https://neuronet.co.in",
-      "image": ""
+      "iconKey": "cloud",
+      "link": "https://github.com/vimal-kansotia/AQI-Dashboard",
+      "image": "/Assets/aqi-dashboard.jpg"
     }
   ],
   "contact": {
-    "eyebrow": "Let’s talk",
+    "eyebrow": "Let's Collaborate",
     "title": "Get In Touch",
-    "subtitle": "Have a project in mind or looking for a collaborator? Send a message and I’ll reply soon.",
+    "subtitle": "Looking for data science, big data, or ML opportunities? Let's connect and create something impactful together.",
     "links": [
       {
         "id": "contact-linkedin",
         "iconKey": "linkedin",
         "title": "LinkedIn",
-        "text": "ameya-ramteke",
-        "href": "https://www.linkedin.com/in/ameya-ramteke"
+        "text": "vimal-kansotia",
+        "href": "https://www.linkedin.com/in/vimal-kansotia-586665231/"
       },
       {
         "id": "contact-email",
         "iconKey": "mail",
         "title": "Email Me",
-        "text": "ameyaramteke07.work@gmail.com",
-        "href": "mailto:ameyaramteke07.work@gmail.com"
+        "text": "kansotiavimal4@gmail.com",
+        "href": "mailto:kansotiavimal4@gmail.com"
       },
       {
-        "id": "contact-phone",
-        "iconKey": "phone",
-        "title": "Call Me",
-        "text": "+91 9422651580",
-        "href": "tel:+919422651580"
+        "id": "contact-github",
+        "iconKey": "github",
+        "title": "GitHub",
+        "text": "vimal-kansotia",
+        "href": "https://github.com/vimal-kansotia"
       },
       {
         "id": "contact-location",
         "iconKey": "map-pin",
         "title": "Location",
-        "text": "Nagpur, India (440023)",
+        "text": "Mumbai, Maharashtra, India",
         "href": "#contact"
       }
     ],
     "emailjs": {
-      "serviceId": "service_tbdm0d2",
-      "templateId": "template_pch5iiw",
-      "publicKey": "CtQwEFyX5Kq-7gqmJ"
+      "serviceId": "service_xxxxxxxxx",
+      "templateId": "template_xxxxxxxxx",
+      "publicKey": "xxxxxxxxxxxxxxxxxxxxxx"
     }
   },
   "footer": {
-    "brand": "JARVIS",
-    "name": "Ameya Ramteke",
-    "tagline": "AI · Data · Web",
+    "brand": "VIMAL",
+    "name": "Vimal Kansotia",
+    "tagline": "Data · Analytics · ML",
     "quickLinks": [
       {
         "id": "footer-home",
@@ -268,11 +266,6 @@
         "id": "footer-contact",
         "label": "Contact",
         "href": "#contact"
-      },
-      {
-        "id": "footer-resume",
-        "label": "Resume",
-        "href": "/Assets/Resume.pdf"
       }
     ],
     "socialLinks": [
@@ -280,25 +273,25 @@
         "id": "social-email",
         "iconKey": "mail",
         "label": "Email",
-        "href": "mailto:ameyaramteke07.work@gmail.com"
+        "href": "mailto:kansotiavimal4@gmail.com"
       },
       {
         "id": "social-github",
         "iconKey": "github",
         "label": "GitHub",
-        "href": "https://github.com/ameya-jarvis-07"
+        "href": "https://github.com/vimal-kansotia"
       },
       {
         "id": "social-linkedin",
         "iconKey": "linkedin",
         "label": "LinkedIn",
-        "href": "https://www.linkedin.com/in/ameya-jarvis-07/"
+        "href": "https://www.linkedin.com/in/vimal-kansotia-586665231/"
       },
       {
-        "id": "social-linktree",
+        "id": "social-portfolio",
         "iconKey": "external-link",
-        "label": "LinkTree",
-        "href": "https://linktr.ee/ameya_jarvis"
+        "label": "Portfolio",
+        "href": "https://vimalkansotia.netlify.app/"
       }
     ]
   }
