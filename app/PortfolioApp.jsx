@@ -40,7 +40,7 @@ const ICON_MAP = {
 };
 
 /* ─── Static Asset URLs ─── */
-const heroImage = '/Assets/image.webp';
+const heroImage = '/Assets/profile.jpg';
 const resumeUrl = '/Assets/Resume.pdf';
 
 /* ─── Enrich projects with icon components ─── */
@@ -61,13 +61,13 @@ export default function PortfolioApp({ initialContent }) {
   // Merge loaded database content with default structure to prevent crashes on missing sections
   const mergedContent = initialContent && typeof initialContent === 'object' && initialContent.site && initialContent.hero
     ? {
-        site: { ...defaults.site, ...initialContent.site },
-        hero: { ...defaults.hero, ...initialContent.hero },
-        about: { ...defaults.about, ...initialContent.about },
-        projects: initialContent.projects || defaults.projects,
-        contact: { ...defaults.contact, ...initialContent.contact },
-        footer: { ...defaults.footer, ...initialContent.footer }
-      }
+      site: { ...defaults.site, ...initialContent.site },
+      hero: { ...defaults.hero, ...initialContent.hero },
+      about: { ...defaults.about, ...initialContent.about },
+      projects: initialContent.projects || defaults.projects,
+      contact: { ...defaults.contact, ...initialContent.contact },
+      footer: { ...defaults.footer, ...initialContent.footer }
+    }
     : defaults;
 
   const [content, setContent] = useState(mergedContent);
@@ -135,9 +135,9 @@ export default function PortfolioApp({ initialContent }) {
     .map((c) => c.label);
 
   const activeProjects = enrichProjects((content.projects || []).filter(p => !p.deleted));
-  
+
   const activeContactLinks = (content.contact.links || []).filter(l => !l.deleted);
-  
+
   const activeQuickLinks = (content.footer.quickLinks || []).filter(l => !l.deleted);
   const activeSocialLinks = (content.footer.socialLinks || []).filter(l => !l.deleted);
 
@@ -184,19 +184,19 @@ export default function PortfolioApp({ initialContent }) {
             heroImage={content.hero.image || heroImage}
           />
           <ProjectsSection projects={activeProjects} />
-          <ContactSection 
+          <ContactSection
             contact={{
               ...content.contact,
               links: activeContactLinks
-            }} 
+            }}
           />
-          <Footer 
+          <Footer
             footer={{
               ...content.footer,
               quickLinks: activeQuickLinks,
               socialLinks: activeSocialLinks
-            }} 
-            resumeUrl={content.hero.resumeUrl || resumeUrl} 
+            }}
+            resumeUrl={content.hero.resumeUrl || resumeUrl}
           />
         </main>
       </div>
