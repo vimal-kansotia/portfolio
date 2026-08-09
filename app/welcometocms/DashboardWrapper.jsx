@@ -13,7 +13,7 @@ const CmsDashboard = dynamic(() => import('../../src/components/CmsDashboard'), 
   )
 });
 
-const heroImage = '/Assets/image.webp';
+const heroImage = '/Assets/profile.jpg';
 const resumeUrl = '/Assets/Resume.pdf';
 
 export default function DashboardWrapper({ initialContent }) {
@@ -22,23 +22,23 @@ export default function DashboardWrapper({ initialContent }) {
   // Merge loaded database content with default structure to prevent form fields crashing on missing sections
   const mergedContent = initialContent && typeof initialContent === 'object' && initialContent.site && initialContent.hero
     ? {
-        site: { ...defaults.site, ...initialContent.site },
-        hero: { ...defaults.hero, ...initialContent.hero },
-        about: { ...defaults.about, ...initialContent.about },
-        projects: initialContent.projects || defaults.projects,
-        contact: { ...defaults.contact, ...initialContent.contact },
-        footer: { ...defaults.footer, ...initialContent.footer }
-      }
+      site: { ...defaults.site, ...initialContent.site },
+      hero: { ...defaults.hero, ...initialContent.hero },
+      about: { ...defaults.about, ...initialContent.about },
+      projects: initialContent.projects || defaults.projects,
+      contact: { ...defaults.contact, ...initialContent.contact },
+      footer: { ...defaults.footer, ...initialContent.footer }
+    }
     : defaults;
 
   const [content, setContent] = useState(mergedContent);
   const lastSavedContentRef = useRef(JSON.stringify(initialContent));
- 
+
   // Preview states
   const [showPreview, setShowPreview] = useState(true);
   const [previewDevice, setPreviewDevice] = useState('landscape');
   const iframeRef = useRef(null);
- 
+
   // Helper to send messages to the preview iframe
   const sendPreviewUpdate = useCallback((currentContent) => {
     if (iframeRef.current && iframeRef.current.contentWindow) {
@@ -48,7 +48,7 @@ export default function DashboardWrapper({ initialContent }) {
       }, window.location.origin);
     }
   }, []);
- 
+
   // Sync draft content to preview iframe instantly on typing
   useEffect(() => {
     sendPreviewUpdate(content);
@@ -81,11 +81,11 @@ export default function DashboardWrapper({ initialContent }) {
       setErrorMessage(err.message || 'Network error.');
     }
   }, [content]);
- 
+
   const handleIframeLoad = useCallback(() => {
     sendPreviewUpdate(content);
   }, [content, sendPreviewUpdate]);
- 
+
   const handleLogout = useCallback(async () => {
     try {
       const res = await fetch('/api/auth', {
@@ -100,20 +100,20 @@ export default function DashboardWrapper({ initialContent }) {
       console.error('Failed to log out:', error);
     }
   }, []);
- 
+
   const handleResetToDefaults = useCallback(() => {
     if (window.confirm('Reset all content to factory defaults on the server? This cannot be undone.')) {
       setContent(defaults);
     }
   }, [defaults]);
- 
+
   const handleContentChange = useCallback((updater) => {
     setContent((prev) => {
       const next = typeof updater === 'function' ? updater(prev) : updater;
       return next;
     });
   }, []);
- 
+
   return (
     <div className="fullscreen-cms-container">
       <CmsDashboard
@@ -122,7 +122,7 @@ export default function DashboardWrapper({ initialContent }) {
         credentialsConfigured={true}
         content={content}
         onContentChange={handleContentChange}
-        onAuthenticate={() => {}}
+        onAuthenticate={() => { }}
         onLogout={handleLogout}
         onClose={() => { window.location.href = '/'; }}
         onResetToDefaults={handleResetToDefaults}
