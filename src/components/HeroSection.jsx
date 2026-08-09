@@ -41,9 +41,10 @@ export default function HeroSection({ hero, resumeUrl, heroImage }) {
               src="/profile.jpg"
               alt={hero.name}
               style={{
-                width: '180px',
-                height: '180px',
-                borderRadius: '50%',
+                width: '100%',
+                maxWidth: '200px',
+                height: '240px',
+                borderRadius: '14px',
                 objectFit: 'cover',
                 position: 'relative',
                 zIndex: 2
