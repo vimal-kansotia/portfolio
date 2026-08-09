@@ -1,7 +1,7 @@
 {
   "name": "vimal-portfolio",
   "version": "1.0.0",
-  "description": "Vimal's Data Analytics & Product Engineering Portfolio",
+  "description": "Vimal Santosh Kansotia's Data Analytics & Product Engineering Portfolio",
   "private": true,
   "scripts": {
     "dev": "next dev",
