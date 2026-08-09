@@ -38,7 +38,7 @@ export default function HeroSection({ hero, resumeUrl, heroImage }) {
           <div className="hero-profile">
             <div className="hero-profile-glow" />
             <img
-              src="/profile.jpg"
+              src="/Assets/profile.jpg"
               alt={hero.name}
               style={{
                 width: '180px',
