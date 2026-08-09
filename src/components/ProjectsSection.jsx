@@ -5,7 +5,7 @@ function SectionHeading({ children, className = '' }) {
 }
 
 export default function ProjectsSection({ projects }) {
-  const githubUrl = 'https://github.com/ameya-jarvis-07?tab=repositories';
+  const githubUrl = 'https://github.com/vimal-kansotia?tab=repositories';
 
   return (
     <section id="projects" className="section projects-template">
