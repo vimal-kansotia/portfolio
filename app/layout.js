@@ -1,13 +1,13 @@
 import './globals.css'
 
 export const metadata = {
-  title: "Vimal's Portfolio - Data Analytics & Product Engineer",
-  description: "Master's in Big Data Analytics | ERP Product Engineer at Atomnik | AWS Certified",
+  title: "Vimal Santosh Kansotia | Big Data & AI Portfolio",
+  description: "Master's in Big Data Analytics | Data Analytics Engineer & Product Architect",
   icons: {
     icon: '📊',
   },
   openGraph: {
-    title: "Vimal's Portfolio",
+    title: "Vimal Santosh Kansotia's Portfolio",
     description: "Data Analytics Engineer | Product Architect",
     type: 'website',
   },
