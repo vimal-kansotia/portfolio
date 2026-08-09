@@ -123,7 +123,7 @@
       "iconKey": "dna",
       "link": "https://vimalbio.streamlit.app/",
       "github": "https://github.com/vimal-kansotia/Bioinformatics-",
-      "image": "/Assets/hpa-explorer.jpg"
+      "image": "/profile.png"
     },
     {
       "id": "project-hospital-los",
@@ -139,7 +139,7 @@
       "iconKey": "activity",
       "link": "https://hospital-los.streamlit.app/",
       "github": "https://github.com/vimal-kansotia/hospital-los-dashboard",
-      "image": "/Assets/hospital-los.jpg"
+      "image": "/profile.png"
     },
     {
       "id": "project-pneumo-ai",
@@ -154,7 +154,7 @@
       "accent": "green",
       "iconKey": "heart-pulse",
       "link": "https://github.com/vimal-kansotia/Pneumo-AI",
-      "image": "/Assets/pneumo-ai.jpg"
+      "image": "/profile.png"
     },
     {
       "id": "project-jarvis",
@@ -169,7 +169,7 @@
       "accent": "yellow",
       "iconKey": "mic",
       "link": "https://github.com/vimal-kansotia/Jarvis-AI",
-      "image": "/Assets/jarvis-ai.jpg"
+      "image": "/profile.png"
     },
     {
       "id": "project-amazon-sales",
@@ -184,7 +184,7 @@
       "accent": "orange",
       "iconKey": "bar-chart",
       "link": "https://github.com/vimal-kansotia/Amazon-Sales-Analytics",
-      "image": "/Assets/amazon-sales.jpg"
+      "image": "/profile.png"
     },
     {
       "id": "project-aqi",
@@ -199,7 +199,7 @@
       "accent": "blue",
       "iconKey": "cloud",
       "link": "https://github.com/vimal-kansotia/AQI-Dashboard",
-      "image": "/Assets/aqi-dashboard.jpg"
+      "image": "/profile.png"
     }
   ],
   "contact": {
