@@ -712,7 +712,9 @@ textarea {
 .hero-profile {
   position: relative;
   width: 180px;
+  /* Keep as perfect square */
   height: 180px;
+  /* Keep as perfect square */
   margin-bottom: 2.5rem;
 }
 
@@ -726,10 +728,16 @@ textarea {
 
 .hero-profile img {
   width: 180px;
+  /* Keep as perfect square */
   height: 180px;
+  /* Keep as perfect square */
   border-radius: 50%;
+  /* Force perfect circle */
   object-fit: cover;
+  /* --- THE FIX IS HERE --- */
   object-position: top center;
+  /* Tells the crop to focus on the top of the photo where your face is */
+  /* ----------------------- */
   border: 3px solid var(--olive-mid);
   box-shadow:
     var(--shadow-md),
