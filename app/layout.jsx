@@ -8,64 +8,63 @@ export const viewport = {
 };
 
 export const metadata = {
-  title: 'Ameya Ramteke | AI & Data Science Engineer – Portfolio',
-  description: 'Ameya Ramteke - AI & Data Science Engineer specializing in machine learning, deep learning, and innovative data-driven solutions. Explore my portfolio of projects and expertise.',
-  keywords: 'Ameya Ramteke, AI Engineer, Data Science, Machine Learning, Deep Learning, Python, Portfolio, Artificial Intelligence, Data Analysis',
-  authors: [{ name: 'Ameya Ramteke' }],
+  title: 'Vimal Santosh Kansotia | Big Data & AI Portfolio',
+  description: 'Vimal Santosh Kansotia - Master\'s in Big Data Analytics | Data Analytics Engineer & Product Architect specializing in machine learning, big data, and cloud-native solutions.',
+  keywords: 'Vimal Santosh Kansotia, Big Data Analytics, Data Analytics Engineer, Machine Learning, Python, Portfolio, Artificial Intelligence, Bioinformatics',
+  authors: [{ name: 'Vimal Santosh Kansotia' }],
   robots: 'index, follow',
   alternates: {
-    canonical: 'https://ameyajarvis.qzz.io',
+    canonical: 'https://vimalkansotia.netlify.app',
   },
   openGraph: {
     type: 'website',
-    url: 'https://ameyajarvis.qzz.io',
-    title: 'Ameya Ramteke | AI & DS Engineer',
-    description: 'AI & Data Science Engineer specializing in machine learning, deep learning, and innovative data-driven solutions.',
-    siteName: 'Ameya Ramteke Portfolio',
+    url: 'https://vimalkansotia.netlify.app',
+    title: 'Vimal Santosh Kansotia | Big Data & AI Portfolio',
+    description: 'Master\'s in Big Data Analytics | Data Analytics Engineer & Product Architect.',
+    siteName: 'Vimal Santosh Kansotia Portfolio',
     locale: 'en_US',
     images: [
       {
-        url: 'https://ameyajarvis.qzz.io/Assets/image.webp',
+        url: 'https://vimalkansotia.netlify.app/profile.png',
         width: 1200,
         height: 630,
-        alt: 'Ameya Ramteke - AI & Data Science Engineer',
+        alt: 'Vimal Santosh Kansotia - Big Data & AI Portfolio',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    url: 'https://ameyajarvis.qzz.io',
-    title: 'Ameya Ramteke | AI & DS Engineer',
-    description: 'AI & Data Science Engineer specializing in machine learning, deep learning, and innovative data-driven solutions.',
-    images: ['https://ameyajarvis.qzz.io/Assets/image.webp'],
-    creator: '@ameyaramteke',
-    site: '@ameyaramteke',
+    url: 'https://vimalkansotia.netlify.app',
+    title: 'Vimal Santosh Kansotia | Big Data & AI Portfolio',
+    description: 'Master\'s in Big Data Analytics | Data Analytics Engineer & Product Architect.',
+    images: ['https://vimalkansotia.netlify.app/profile.png'],
+    creator: '@vimalkansotia',
+    site: '@vimalkansotia',
   },
 };
 
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "Person",
-  "name": "Ameya Ramteke",
-  "jobTitle": "AI & Data Science Engineer",
-  "url": "https://ameyajarvis.qzz.io",
+  "name": "Vimal Santosh Kansotia",
+  "jobTitle": "Data Analytics Engineer & Product Architect",
+  "url": "https://vimalkansotia.netlify.app",
   "sameAs": [
-    "https://github.com/ameya-jarvis-07",
-    "https://linkedin.com/in/ameya-ramteke"
+    "https://github.com/vimal-kansotia",
+    "https://www.linkedin.com/in/vimal-kansotia-586665231/"
   ],
   "knowsAbout": [
     "Artificial Intelligence",
     "Machine Learning",
-    "Deep Learning",
+    "Big Data Analytics",
     "Data Science",
     "Python Programming",
-    "Neural Networks",
-    "Natural Language Processing",
-    "Computer Vision",
+    "Bioinformatics",
+    "Cloud Computing",
     "Data Analysis"
   ],
-  "description": "AI & Data Science Engineer specializing in machine learning, deep learning, and innovative data-driven solutions.",
-  "image": "https://ameyajarvis.qzz.io/Assets/image.webp"
+  "description": "Master's in Big Data Analytics | Data Analytics Engineer & Product Architect.",
+  "image": "https://vimalkansotia.netlify.app/profile.png"
 };
 
 export default function RootLayout({ children }) {
@@ -109,8 +108,8 @@ export default function RootLayout({ children }) {
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
-        <link rel="icon" href="/Assets/header.png" />
-        
+        <link rel="icon" href="/profile.png" />
+
         {/* Structured Data */}
         <script
           type="application/ld+json"
