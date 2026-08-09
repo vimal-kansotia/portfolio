@@ -19,7 +19,7 @@ async function ensureDataDir() {
 
 export async function getPortfolioData() {
   const defaults = createDefaultPortfolioContent({
-    heroImage: '/Assets/image.webp',
+    heroImage: '/Assets/profile.jpg',
     resumeUrl: '/Assets/Resume.pdf'
   });
 
