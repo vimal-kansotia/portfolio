@@ -105,7 +105,7 @@ export default function Navbar({
 
         <div className="mobile-menu-footer">
           <p style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)', textAlign: 'center' }}>
-            © {new Date().getFullYear()} Ameya Ramteke
+            © {new Date().getFullYear()} Vimal Santosh Kansotia
           </p>
         </div>
       </div>
