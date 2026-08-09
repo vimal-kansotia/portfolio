@@ -37,7 +37,18 @@ export default function HeroSection({ hero, resumeUrl, heroImage }) {
         <div className="hero-panel glass-strong card-3d reveal-scale">
           <div className="hero-profile">
             <div className="hero-profile-glow" />
-            <img src={heroImage} alt={hero.name} />
+            <img
+              src="/profile.jpg"
+              alt={hero.name}
+              style={{
+                width: '180px',
+                height: '180px',
+                borderRadius: '50%',
+                objectFit: 'cover',
+                position: 'relative',
+                zIndex: 2
+              }}
+            />
           </div>
 
           <div>
