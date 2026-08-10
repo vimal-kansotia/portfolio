@@ -7,10 +7,10 @@ function StatCard({ value, label }) {
   );
 }
 
-export default function HeroSection({ hero, resumeUrl, heroImage }) {
+export default function HeroSection({ hero, resumeUrl }) {
   return (
     <section id="home" className="section section-hero">
-      <div className="hero-grid">
+      <div className="hero-grid hero-centered">
         <div className="hero-copy">
           <p className="hero-eyebrow reveal-up">{hero.eyebrow}</p>
 
@@ -31,48 +31,6 @@ export default function HeroSection({ hero, resumeUrl, heroImage }) {
             <a href={resumeUrl} target="_blank" rel="noreferrer" className="btn btn-outline">
               {hero.buttons.secondaryLabel}
             </a>
-          </div>
-        </div>
-
-        <div className="hero-panel glass-strong card-3d reveal-scale">
-          <div className="hero-profile" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', margin: '0 auto' }}>
-            <div className="hero-profile-glow" />
-            <img
-              src="/Assets/hero-avatar.jpg"
-              alt={hero.name}
-              style={{
-                width: '180px',
-                height: '180px',
-                minWidth: '180px',
-                minHeight: '180px',
-                maxWidth: '180px',
-                maxHeight: '180px',
-                aspectRatio: '1 / 1',
-                flexShrink: 0,
-                borderRadius: '50%',
-                objectFit: 'cover',
-                objectPosition: 'top center',
-                position: 'relative',
-                zIndex: 2
-              }}
-            />
-          </div>
-
-          <div>
-            <p className="hero-panel-title">Quick highlights</p>
-            <ul className="hero-panel-list">
-              {hero.highlights.map((item, i) => (
-                <li key={i}>{item}</li>
-              ))}
-            </ul>
-          </div>
-
-          <div className="hero-panel-stats">
-            <div className="stats-grid">
-              {hero.stats.map((stat) => (
-                <StatCard key={stat.id} value={stat.value} label={stat.label} />
-              ))}
-            </div>
           </div>
         </div>
       </div>
