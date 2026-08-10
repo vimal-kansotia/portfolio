@@ -35,14 +35,6 @@ export default function AboutSection({ about, skillBars, education, certificatio
           </div>
         </article>
 
-        <article className="about-tile about-tile-image">
-          <img
-            src="/Assets/profile-outdoors.png"
-            alt={`${about.profileName} portrait`}
-            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-          />
-        </article>
-
         <article className="about-tile about-tile-craft glass card-3d">
           <h3 className="about-tile-heading">Technical Focus</h3>
           <p className="about-tile-text">
