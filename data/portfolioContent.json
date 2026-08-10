@@ -84,55 +84,115 @@
         "id": "edu-msc",
         "title": "M.Sc. Big Data Analytics",
         "place": "St. Xavier's College, Mumbai",
-        "status": "Pursuing (CGPA: 8.9)"
+        "status": "Pursuing"
       },
       {
         "id": "edu-bsc",
         "title": "B.Sc. Mathematics",
         "place": "B.K. Birla College, Kalyan",
-        "status": "Completed (CGPA: 8.35)"
+        "status": "Completed (CGPA: 8.3+)"
       }
     ],
     "certifications": [
+      { "id": "cert-aws-de", "label": "AWS Academy Graduate - Data Engineering - Training Badge" },
+      { "id": "cert-subagents", "label": "Certificate of completion: Introduction to subagents" },
+      { "id": "cert-mcp", "label": "Introduction to Model Context Protocol" },
+      { "id": "cert-claude", "label": "Claude Code in Action" },
+      { "id": "cert-jpmorgan", "label": "J.P. Morgan - Quantitative Research Job Simulation" },
+      { "id": "cert-deloitte", "label": "Deloitte Australia - Data Analytics Job Simulation" },
+      { "id": "cert-bcg", "label": "BCG - Data Science Job Simulation" },
+      { "id": "cert-msoffice", "label": "MS-Office 2019 (with Specialization in Excel, Access, and Outlook)" },
+      { "id": "cert-sap-sac", "label": "Designing Stories in SAP Analytics Cloud - Course Completion" },
+      { "id": "cert-sap-bw", "label": "Getting Started Building an On-Premise Data Warehouse using SAP BW/4HANA - Course Completion" }
+    ]
+  },
+  "skills": {
+    "eyebrow": "Technical Expertise",
+    "title": "Skills & Interactive Tech Stack",
+    "subtitle": "Interactive breakdown of technologies, frameworks, cloud services, and tools I use to build data-driven solutions.",
+    "categories": [
       {
-        "id": "cert-aws-de",
-        "label": "AWS Academy Graduate - Data Engineering"
+        "id": "programming",
+        "title": "Programming",
+        "icon": "code",
+        "skills": ["Python", "SQL", "R", "Java", "C++", "HTML/CSS", "JavaScript"]
       },
       {
-        "id": "cert-aws-cf",
-        "label": "AWS Academy Graduate - Cloud Foundations"
+        "id": "cloud",
+        "title": "Cloud",
+        "icon": "cloud",
+        "skills": ["AWS S3", "AWS Glue", "AWS Glue Studio", "Athena", "Lambda", "Redshift", "IAM", "CloudWatch"]
       },
       {
-        "id": "cert-microsoft",
-        "label": "Microsoft Office 2019"
+        "id": "data-engineering",
+        "title": "Data Engineering",
+        "icon": "database",
+        "skills": ["ETL / ELT", "Data Pipelines", "Batch Processing", "Data Ingestion", "Apache Parquet", "Schema Evolution", "Data Lake Architecture"]
       },
       {
-        "id": "cert-jpmorgan",
-        "label": "J.P. Morgan - Quantitative Research Job Simulation (Forage)"
+        "id": "databases",
+        "title": "Databases",
+        "icon": "hard-drive",
+        "skills": ["MySQL", "MongoDB", "Amazon RDS", "PostgreSQL", "DuckDB"]
       },
       {
-        "id": "cert-bigdata",
-        "label": "Big Data Analytics Specialist Training & Dashboard Projects"
+        "id": "analytics",
+        "title": "Analytics",
+        "icon": "bar-chart",
+        "skills": ["Power BI", "Excel", "Minitab", "Streamlit", "Plotly", "Pandas", "Scikit-learn"]
       },
       {
-        "id": "cert-sql",
-        "label": "Advanced SQL and Relational Database Management"
-      },
-      {
-        "id": "cert-python",
-        "label": "Python for Data Science and Machine Learning Essentials"
+        "id": "devops",
+        "title": "DevOps",
+        "icon": "terminal",
+        "skills": ["Git", "Linux", "CI/CD Fundamentals", "Docker", "VS Code"]
       }
+    ],
+    "techStack": [
+      { "id": "t1", "name": "Python", "category": "Programming" },
+      { "id": "t2", "name": "SQL", "category": "Programming" },
+      { "id": "t3", "name": "AWS", "category": "Cloud" },
+      { "id": "t4", "name": "S3", "category": "Cloud" },
+      { "id": "t5", "name": "Glue", "category": "Cloud" },
+      { "id": "t6", "name": "Athena", "category": "Cloud" },
+      { "id": "t7", "name": "Redshift", "category": "Cloud" },
+      { "id": "t8", "name": "Lambda", "category": "Cloud" },
+      { "id": "t9", "name": "MySQL", "category": "Databases" },
+      { "id": "t10", "name": "MongoDB", "category": "Databases" },
+      { "id": "t11", "name": "Git", "category": "DevOps" },
+      { "id": "t12", "name": "Linux", "category": "DevOps" },
+      { "id": "t13", "name": "Power BI", "category": "Analytics" },
+      { "id": "t14", "name": "Streamlit", "category": "Analytics" },
+      { "id": "t15", "name": "DuckDB", "category": "Data Engineering" },
+      { "id": "t16", "name": "Apache Parquet", "category": "Data Engineering" },
+      { "id": "t17", "name": "ETL / ELT", "category": "Data Engineering" },
+      { "id": "t18", "name": "Data Pipelines", "category": "Data Engineering" },
+      { "id": "t19", "name": "R", "category": "Programming" },
+      { "id": "t20", "name": "PostgreSQL", "category": "Databases" },
+      { "id": "t21", "name": "Docker", "category": "DevOps" },
+      { "id": "t22", "name": "Plotly", "category": "Analytics" },
+      { "id": "t23", "name": "Excel", "category": "Analytics" },
+      { "id": "t24", "name": "Scikit-learn", "category": "Analytics" }
     ]
   },
   "projects": [
     {
       "id": "project-hpa",
       "title": "Human Protein Atlas (HPA) Gene Expression Explorer",
-      "description": "Interactive bioinformatics application for transcriptomic profiling with Streamlit. Analyze gene expression patterns across tissues and cancer cell lines with dynamic filtering and trajectory charts.",
+      "description": "End-to-end interactive web application built with Streamlit and Python for transcriptomic profiling and multi-omics data analysis across normal tissues and cancer cell lines.",
+      "techStack": ["Streamlit", "Plotly", "Pandas", "NumPy", "Openpyxl", "Python"],
+      "highlights": [
+        "Dynamic Global Filtering by gene selections & expression thresholds",
+        "Statistical Summary Hub for real-time metrics & frequency distribution",
+        "Target Gene Profiling with bar charts & key statistical indicators",
+        "Cross-Gene Comparative Analysis with multi-line trajectory charts",
+        "Full Data Browser with custom sorting & direct CSV export"
+      ],
       "tags": [
         "Streamlit",
         "Plotly",
-        "Bioinformatics",
+        "Pandas",
+        "NumPy",
         "Python"
       ],
       "accent": "cyan",
@@ -142,45 +202,23 @@
       "image": ""
     },
     {
-      "id": "project-hospital-los",
-      "title": "Hospital Length of Stay (LOS) Dashboard",
-      "description": "Comprehensive healthcare analytics dashboard for tracking and predicting patient hospitalization duration. Features interactive visualizations for operational insights and resource optimization.",
-      "tags": [
-        "Streamlit",
-        "Python",
-        "Power BI",
-        "Data Analytics"
-      ],
-      "accent": "purple",
-      "iconKey": "activity",
-      "link": "https://hospital-los.streamlit.app/",
-      "github": "https://github.com/vimal-kansotia/hospital-los-dashboard",
-      "image": ""
-    },
-    {
-      "id": "project-pneumo-ai",
-      "title": "Pneumo-AI: Advanced Pneumonia Detection",
-      "description": "AI-driven medical diagnostic system for Chest X-ray classification with 96% accuracy. Implements CNN feature compression and explainable AI for clinical decision support.",
-      "tags": [
-        "Deep Learning",
-        "CNN",
-        "Streamlit",
-        "ML Explainability"
-      ],
-      "accent": "green",
-      "iconKey": "heart-pulse",
-      "link": "https://github.com/vimal-kansotia/Pneumo-AI",
-      "image": ""
-    },
-    {
       "id": "project-jarvis",
-      "title": "Jarvis: Local AI Assistant",
-      "description": "Privacy-first voice-activated AI assistant running 100% locally on Linux. Integrates Llama 3.2 and OpenAI Whisper for end-to-end on-device intelligence.",
+      "title": "Personalized Local AI Assistant (Jarvis)",
+      "description": "Voice-activated AI assistant running 100% locally on CachyOS (Linux) for total data privacy. Integrates Llama 3.2 via Ollama for local reasoning and OpenAI Whisper for real-time speech-to-text.",
+      "techStack": ["Llama 3.2", "Ollama", "Whisper", "Linux (CachyOS)", "Python"],
+      "highlights": [
+        "100% On-Device Privacy Architecture (Zero cloud API dependency)",
+        "Local Inference Engine executing Llama 3.2 1B via Ollama",
+        "Real-time Voice Transcription with OpenAI Whisper STT",
+        "Linux CachyOS System Optimization for Intel Ultra 5 CPU",
+        "Custom Python Logic for time-based greetings & TTS logic"
+      ],
       "tags": [
         "LLMs",
         "Ollama",
         "Whisper",
-        "Linux"
+        "Linux",
+        "Python"
       ],
       "accent": "yellow",
       "iconKey": "mic",
@@ -188,14 +226,47 @@
       "image": ""
     },
     {
+      "id": "project-pneumo-ai",
+      "title": "Pneumo-AI: Advanced Pneumonia Detection",
+      "description": "AI-driven medical diagnostic interface to classify Chest X-rays into Normal vs. Pneumonia with 96% accuracy using Random Projection (Johnson-Lindenstrauss lemma) and Deep Learning.",
+      "techStack": ["CNN", "SVM", "Random Projection", "Streamlit", "Linux (CachyOS)"],
+      "highlights": [
+        "96% Diagnostic Accuracy on Chest X-ray Classification",
+        "Random Projection Feature Compression (Johnson-Lindenstrauss lemma)",
+        "Explainable AI with Grad-CAM Heatmaps & K-Means Cluster Mapping",
+        "Streamlit Web UI for real-time X-ray analysis & report generation",
+        "High-performance ML execution environment on CachyOS Linux"
+      ],
+      "tags": [
+        "Deep Learning",
+        "CNN",
+        "Streamlit",
+        "Machine Learning",
+        "Linux"
+      ],
+      "accent": "green",
+      "iconKey": "heart-pulse",
+      "link": "https://github.com/vimal-kansotia/Pneumo-AI",
+      "image": ""
+    },
+    {
       "id": "project-amazon-sales",
-      "title": "Amazon End-to-End Sales Analytics",
-      "description": "Large-scale sales analysis managing 1.8 Lakh+ records. Complete ETL pipeline with Power BI dashboards tracking profit margins, YTD trends, and category performance.",
+      "title": "Amazon End-to-End Sales Analytics Dashboard",
+      "description": "End-to-end sales dashboard analyzing 1.8 Lakh+ records. Processed raw data via SQL/Python for 100% integrity, tracking $2.18M YTD sales, profit margins, and regional category performance.",
+      "techStack": ["SQL", "Power BI", "Python", "Excel", "ETL"],
+      "highlights": [
+        "Processed 180,000+ Raw Records with 100% Data Integrity",
+        "Automated Data Cleaning & ETL via SQL and Python",
+        "Tracks $2.18M YTD Sales, Profit Margins & Category Trends",
+        "Interactive Power BI Dashboard with Regional Drill-down Metrics",
+        "Actionable Insights for Inventory Management & Seasonal Demand"
+      ],
       "tags": [
         "Power BI",
         "SQL",
+        "Python",
         "ETL",
-        "Data Engineering"
+        "Excel"
       ],
       "accent": "orange",
       "iconKey": "bar-chart",
@@ -205,16 +276,48 @@
     {
       "id": "project-aqi",
       "title": "Real-time Air Quality Index (AQI) Dashboard",
-      "description": "Environmental monitoring platform with live API integration for pollution metrics. Interactive Power BI dashboard with location-based filtering and trend analysis.",
+      "description": "Environmental monitoring platform connecting live REST APIs to fetch real-time pollution metrics (PM2.5, PM10, NO2). Visualizes time-series trends with dynamic location filtering in Power BI.",
+      "techStack": ["Power BI", "API Integration", "SQL", "Excel", "Python"],
+      "highlights": [
+        "Live External API Data Ingestion for PM2.5, PM10 & NO2",
+        "Hourly & Daily Time-Series Pollution Trend Analysis",
+        "Interactive Power BI UI with Location-based Hazard Filtering",
+        "Real-time Data Stream Monitoring Architecture",
+        "Automated Data Refresh & Environmental Assessment Insights"
+      ],
       "tags": [
         "Power BI",
         "API Integration",
-        "Data Visualization",
-        "SQL"
+        "SQL",
+        "Python"
       ],
       "accent": "blue",
       "iconKey": "cloud",
       "link": "https://github.com/vimal-kansotia/AQI-Dashboard",
+      "image": ""
+    },
+    {
+      "id": "project-hospital-los",
+      "title": "Hospital Length of Stay (LOS) Dashboard",
+      "description": "Comprehensive healthcare analytics platform for tracking patient hospitalization duration. Features interactive visualizations for bed capacity tracking, clinical workflow insights, and resource optimization.",
+      "techStack": ["Streamlit", "Python", "Power BI", "Healthcare Analytics", "Pandas"],
+      "highlights": [
+        "Healthcare LOS prediction & operational metrics",
+        "Bed capacity tracking & hospital resource optimization",
+        "Interactive Streamlit & Power BI Analytics UI",
+        "Patient duration predictors & trend analytics",
+        "Clinical workflow & data-driven healthcare insights"
+      ],
+      "tags": [
+        "Streamlit",
+        "Python",
+        "Power BI",
+        "Healthcare Analytics"
+      ],
+      "accent": "purple",
+      "iconKey": "activity",
+      "link": "https://hospital-los.streamlit.app/",
+      "github": "https://github.com/vimal-kansotia/hospital-los-dashboard",
       "image": ""
     }
   ],

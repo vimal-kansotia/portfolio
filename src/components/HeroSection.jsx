@@ -35,14 +35,20 @@ export default function HeroSection({ hero, resumeUrl, heroImage }) {
         </div>
 
         <div className="hero-panel glass-strong card-3d reveal-scale">
-          <div className="hero-profile">
+          <div className="hero-profile" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', margin: '0 auto' }}>
             <div className="hero-profile-glow" />
             <img
-              src="/Assets/profile.jpg"
+              src="/Assets/hero-avatar.jpg"
               alt={hero.name}
               style={{
                 width: '180px',
                 height: '180px',
+                minWidth: '180px',
+                minHeight: '180px',
+                maxWidth: '180px',
+                maxHeight: '180px',
+                aspectRatio: '1 / 1',
+                flexShrink: 0,
                 borderRadius: '50%',
                 objectFit: 'cover',
                 objectPosition: 'top center',

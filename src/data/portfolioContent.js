@@ -129,6 +129,75 @@ export function createDefaultPortfolioContent({ heroImage, resumeUrl }) {
         createCertification('cert-claude', 'Claude 101 (Anthropic)'),
       ],
     },
+    skills: {
+      eyebrow: 'Technical Expertise',
+      title: 'Skills & Interactive Tech Stack',
+      subtitle: 'Interactive breakdown of technologies, frameworks, cloud services, and tools I use to build data-driven solutions.',
+      categories: [
+        {
+          id: 'programming',
+          title: 'Programming',
+          icon: 'code',
+          skills: ['Python', 'SQL', 'R', 'Java', 'C++', 'HTML/CSS', 'JavaScript']
+        },
+        {
+          id: 'cloud',
+          title: 'Cloud',
+          icon: 'cloud',
+          skills: ['AWS S3', 'AWS Glue', 'AWS Glue Studio', 'Athena', 'Lambda', 'Redshift', 'IAM', 'CloudWatch']
+        },
+        {
+          id: 'data-engineering',
+          title: 'Data Engineering',
+          icon: 'database',
+          skills: ['ETL / ELT', 'Data Pipelines', 'Batch Processing', 'Data Ingestion', 'Apache Parquet', 'Schema Evolution', 'Data Lake Architecture']
+        },
+        {
+          id: 'databases',
+          title: 'Databases',
+          icon: 'hard-drive',
+          skills: ['MySQL', 'MongoDB', 'Amazon RDS', 'PostgreSQL', 'DuckDB']
+        },
+        {
+          id: 'analytics',
+          title: 'Analytics',
+          icon: 'bar-chart',
+          skills: ['Power BI', 'Excel', 'Minitab', 'Streamlit', 'Plotly', 'Pandas', 'Scikit-learn']
+        },
+        {
+          id: 'devops',
+          title: 'DevOps',
+          icon: 'terminal',
+          skills: ['Git', 'Linux', 'CI/CD Fundamentals', 'Docker', 'VS Code']
+        }
+      ],
+      techStack: [
+        { id: 't1', name: 'Python', category: 'Programming' },
+        { id: 't2', name: 'SQL', category: 'Programming' },
+        { id: 't3', name: 'AWS', category: 'Cloud' },
+        { id: 't4', name: 'S3', category: 'Cloud' },
+        { id: 't5', name: 'Glue', category: 'Cloud' },
+        { id: 't6', name: 'Athena', category: 'Cloud' },
+        { id: 't7', name: 'Redshift', category: 'Cloud' },
+        { id: 't8', name: 'Lambda', category: 'Cloud' },
+        { id: 't9', name: 'MySQL', category: 'Databases' },
+        { id: 't10', name: 'MongoDB', category: 'Databases' },
+        { id: 't11', name: 'Git', category: 'DevOps' },
+        { id: 't12', name: 'Linux', category: 'DevOps' },
+        { id: 't13', name: 'Power BI', category: 'Analytics' },
+        { id: 't14', name: 'Streamlit', category: 'Analytics' },
+        { id: 't15', name: 'DuckDB', category: 'Data Engineering' },
+        { id: 't16', name: 'Apache Parquet', category: 'Data Engineering' },
+        { id: 't17', name: 'ETL / ELT', category: 'Data Engineering' },
+        { id: 't18', name: 'Data Pipelines', category: 'Data Engineering' },
+        { id: 't19', name: 'R', category: 'Programming' },
+        { id: 't20', name: 'PostgreSQL', category: 'Databases' },
+        { id: 't21', name: 'Docker', category: 'DevOps' },
+        { id: 't22', name: 'Plotly', category: 'Analytics' },
+        { id: 't23', name: 'Excel', category: 'Analytics' },
+        { id: 't24', name: 'Scikit-learn', category: 'Analytics' }
+      ]
+    },
     projects: [
       createProject(
         'project-resume-checker',
