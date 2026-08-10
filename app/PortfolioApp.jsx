@@ -14,7 +14,9 @@ import dynamic from 'next/dynamic';
 import Navbar from '../src/components/Navbar';
 import HeroSection from '../src/components/HeroSection';
 import AboutSection from '../src/components/AboutSection';
+import SkillsSection from '../src/components/SkillsSection';
 import ProjectsSection from '../src/components/ProjectsSection';
+import LeadershipSection from '../src/components/LeadershipSection';
 import ContactSection from '../src/components/ContactSection';
 import Footer from '../src/components/Footer';
 import useScrollAnimations from '../src/hooks/useScrollAnimations';
@@ -64,6 +66,7 @@ export default function PortfolioApp({ initialContent }) {
       site: { ...defaults.site, ...initialContent.site },
       hero: { ...defaults.hero, ...initialContent.hero },
       about: { ...defaults.about, ...initialContent.about },
+      skills: initialContent.skills || defaults.skills,
       projects: initialContent.projects || defaults.projects,
       contact: { ...defaults.contact, ...initialContent.contact },
       footer: { ...defaults.footer, ...initialContent.footer }
@@ -87,7 +90,7 @@ export default function PortfolioApp({ initialContent }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('home');
   const [scrollY, setScrollY] = useState(0);
-  const [theme, setTheme] = useState('light');
+  const [theme, setTheme] = useState('dark');
 
   const mainRef = useRef(null);
 
@@ -183,7 +186,9 @@ export default function PortfolioApp({ initialContent }) {
             certifications={activeCertifications}
             heroImage={content.hero.image || heroImage}
           />
+          <SkillsSection skillsData={content.skills} />
           <ProjectsSection projects={activeProjects} />
+          <LeadershipSection />
           <ContactSection
             contact={{
               ...content.contact,

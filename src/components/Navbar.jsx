@@ -1,9 +1,11 @@
-import { FileText, Home, Mail, Menu, User, Code2, X, Sun, Moon } from 'lucide-react';
+import { FileText, Home, Mail, Menu, User, Code2, X, Sun, Moon, Sparkles, Award } from 'lucide-react';
 
 const navItems = [
   { id: 'home', label: 'Home', icon: Home },
   { id: 'about', label: 'About', icon: User },
+  { id: 'skills', label: 'Skills', icon: Sparkles },
   { id: 'projects', label: 'Projects', icon: Code2 },
+  { id: 'leadership', label: 'Leadership', icon: Award },
   { id: 'contact', label: 'Contact', icon: Mail },
 ];
 

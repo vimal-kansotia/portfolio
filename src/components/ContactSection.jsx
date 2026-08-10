@@ -23,10 +23,21 @@ const ICON_COLOR_MAP = {
   'external-link': 'purple',
 };
 
+const DEFAULT_CONTACT_LINKS = [
+  { id: 'link-linkedin', title: 'LinkedIn', text: 'vimal-kansotia', href: 'https://www.linkedin.com/in/vimal-kansotia/', iconKey: 'linkedin' },
+  { id: 'link-email', title: 'Email Me', text: 'kansotiavimal4@gmail.com', href: 'mailto:kansotiavimal4@gmail.com', iconKey: 'mail' },
+  { id: 'link-github', title: 'GitHub', text: 'vimal-kansotia', href: 'https://github.com/vimal-kansotia', iconKey: 'github' },
+  { id: 'link-location', title: 'Location', text: 'Mumbai, Maharashtra, India', href: '', iconKey: 'map-pin' }
+];
+
 export default function ContactSection({ contact }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [status, setStatus] = useState({ kind: '', message: '' });
   const contactFormRef = useRef(null);
+
+  const contactLinks = (contact && Array.isArray(contact.links) && contact.links.length > 0)
+    ? contact.links
+    : DEFAULT_CONTACT_LINKS;
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -77,8 +88,8 @@ export default function ContactSection({ contact }) {
       </div>
 
       <div className="contact-template-grid">
-        <div className="contact-template-info reveal-left">
-          {contact?.links?.map((link) => {
+        <div className="contact-template-info">
+          {contactLinks.map((link) => {
             const IconComp = CONTACT_ICON_MAP[link.iconKey] || Mail;
             const colorClass = ICON_COLOR_MAP[link.iconKey] || 'cyan';
             const isClickable = link.href && link.href !== '#contact';
