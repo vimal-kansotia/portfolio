@@ -792,6 +792,25 @@ textarea {
   margin-bottom: 1rem;
 }
 
+.hero-centered {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  max-width: 850px;
+  margin: 0 auto;
+  padding: 4rem 1.5rem;
+}
+
+.hero-centered .hero-subtitle {
+  margin: 0 auto 2.5rem auto;
+}
+
+.hero-centered .hero-buttons {
+  justify-content: center;
+}
+
 /* ============================================================
    BUTTONS
    ============================================================ */
