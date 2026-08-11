@@ -2,13 +2,15 @@ import { useRef, useMemo } from 'react';
 import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 
-export default function StarField({ count = 2500 }) {
+export default function StarField({ count = 4000 }) {
   const meshRef = useRef();
 
   const positions = useMemo(() => {
     const arr = new Float32Array(count * 3);
-    for (let i = 0; i < count * 3; i++) {
-      arr[i] = (Math.random() - 0.5) * 30;
+    for (let i = 0; i < count; i++) {
+      arr[i * 3] = (Math.random() - 0.5) * 45;     // X spread
+      arr[i * 3 + 1] = (Math.random() - 0.5) * 70; // Y height spread
+      arr[i * 3 + 2] = (Math.random() - 0.5) * 45; // Z depth spread
     }
     return arr;
   }, [count]);
@@ -16,7 +18,7 @@ export default function StarField({ count = 2500 }) {
   const sizes = useMemo(() => {
     const arr = new Float32Array(count);
     for (let i = 0; i < count; i++) {
-      arr[i] = Math.random() * 1.5 + 0.5;
+      arr[i] = Math.random() * 2.2 + 0.6;
     }
     return arr;
   }, [count]);
@@ -24,6 +26,11 @@ export default function StarField({ count = 2500 }) {
   useFrame((state) => {
     if (!meshRef.current) return;
     const time = state.clock.elapsedTime;
+    const cameraY = state.camera.position.y;
+
+    // Continuously align starfield mesh Y with Camera Y position
+    // so space theme stars follow all the way down to the bottom footer!
+    meshRef.current.position.y = cameraY;
 
     // Gentle rotation
     meshRef.current.rotation.y = time * 0.012;
@@ -52,10 +59,10 @@ export default function StarField({ count = 2500 }) {
         />
       </bufferGeometry>
       <pointsMaterial
-        size={0.03}
+        size={0.035}
         color="#C9B49A"
         transparent
-        opacity={0.3}
+        opacity={0.45}
         blending={THREE.AdditiveBlending}
         sizeAttenuation
         depthWrite={false}

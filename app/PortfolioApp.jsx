@@ -29,6 +29,9 @@ const Scene3D = dynamic(() => import('../src/components/Scene3D'), {
     </div>
   )
 });
+import CustomCursor from '../src/components/CustomCursor';
+import BigBangIntro from '../src/components/BigBangIntro';
+import AIChatbot from '../src/components/AIChatbot';
 import { createDefaultPortfolioContent } from '../src/data/portfolioContent';
 
 /* ─── Icon registry ─── */
@@ -147,6 +150,12 @@ export default function PortfolioApp({ initialContent }) {
   /* ── Render ── */
   return (
     <>
+      {/* Big Bang Neutron Fusion Opening Intro Transition */}
+      <BigBangIntro />
+
+      {/* Interactive Custom Cursor */}
+      <CustomCursor theme={theme} />
+
       {/* 3D background */}
       <Scene3D scrollY={scrollY} />
 
@@ -205,6 +214,9 @@ export default function PortfolioApp({ initialContent }) {
           />
         </main>
       </div>
+
+      {/* Interactive AI Portfolio Chatbot & Mind Reading Logo Game */}
+      <AIChatbot ownerName={content.hero.name || 'Vimal Kansotia'} theme={theme} />
     </>
   );
 }

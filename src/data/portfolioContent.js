@@ -259,10 +259,10 @@ export function createDefaultPortfolioContent({ heroImage, resumeUrl }) {
       title: 'Get In Touch',
       subtitle: 'Have a project in mind or looking for a collaborator? Send a message and I’ll reply soon.',
       links: [
-        createContactLink('contact-linkedin', 'linkedin', 'LinkedIn', 'ameya-ramteke', 'https://www.linkedin.com/in/ameya-ramteke'),
-        createContactLink('contact-email', 'mail', 'Email Me', 'ameyaramteke07.work@gmail.com', 'mailto:ameyaramteke07.work@gmail.com'),
-        createContactLink('contact-phone', 'phone', 'Call Me', '+91 9422651580', 'tel:+919422651580'),
-        createContactLink('contact-location', 'map-pin', 'Location', 'Nagpur, India (440023)', '#contact'),
+        createContactLink('contact-linkedin', 'linkedin', 'LinkedIn', 'vimal-kansotia-586665231', 'https://www.linkedin.com/in/vimal-kansotia-586665231/'),
+        createContactLink('contact-email', 'mail', 'Email Me', 'kansotiavimal4@gmail.com', 'mailto:kansotiavimal4@gmail.com'),
+        createContactLink('contact-phone', 'phone', 'Call Me', '+91 9876543210', 'tel:+919876543210'),
+        createContactLink('contact-location', 'map-pin', 'Location', 'Mumbai, Maharashtra, India', '#contact'),
       ],
       emailjs: {
         serviceId: 'service_tbdm0d2',
@@ -271,8 +271,8 @@ export function createDefaultPortfolioContent({ heroImage, resumeUrl }) {
       },
     },
     footer: {
-      brand: 'JARVIS',
-      name: 'Ameya Ramteke',
+      brand: 'VIMAL',
+      name: 'Vimal Kansotia',
       tagline: 'AI · Data · Web',
       quickLinks: [
         createFooterLink('footer-home', 'Home', '#home'),
@@ -282,10 +282,10 @@ export function createDefaultPortfolioContent({ heroImage, resumeUrl }) {
         createFooterLink('footer-resume', 'Resume', resumeUrl),
       ],
       socialLinks: [
-        createSocialLink('social-email', 'mail', 'Email', 'mailto:ameyaramteke07.work@gmail.com'),
-        createSocialLink('social-github', 'github', 'GitHub', 'https://github.com/ameya-jarvis-07'),
-        createSocialLink('social-linkedin', 'linkedin', 'LinkedIn', 'https://www.linkedin.com/in/ameya-jarvis-07/'),
-        createSocialLink('social-linktree', 'external-link', 'LinkTree', 'https://linktr.ee/ameya_jarvis'),
+        createSocialLink('social-email', 'mail', 'Email', 'mailto:kansotiavimal4@gmail.com'),
+        createSocialLink('social-github', 'github', 'GitHub', 'https://github.com/vimal-kansotia'),
+        createSocialLink('social-linkedin', 'linkedin', 'LinkedIn', 'https://www.linkedin.com/in/vimal-kansotia-586665231/'),
+        createSocialLink('social-portfolio', 'external-link', 'Portfolio', 'https://vimal-kansotia.vercel.app/'),
       ],
     },
   };
