@@ -1,8 +1,51 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { Linkedin, Mail, Phone, MapPin, Github, ExternalLink } from 'lucide-react';
 
 function SectionHeading({ children, className = '' }) {
   return <h2 className={`section-heading ${className}`}>{children}</h2>;
+}
+
+const INSPIRATIONAL_QUOTES = [
+  "Data engineering is the bridge that connects broad business goals with detailed technical implementation.",
+  "Data engineering does not have an end state, but it's a continual process of collecting, storing, processing, and analyzing data.",
+  "Data that is loved tends to survive.",
+  "Data engineering is about questioning existing data practices and innovating better solutions.",
+  "In the world of data, the engineer is the architect of the future."
+];
+
+function QuoteCard() {
+  const [index, setIndex] = useState(0);
+  const [isTransitioning, setIsTransitioning] = useState(false);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setIsTransitioning(true);
+      setTimeout(() => {
+        setIndex((prev) => (prev + 1) % INSPIRATIONAL_QUOTES.length);
+        setIsTransitioning(false);
+      }, 500); // 500ms quantum shimmer morph transition
+    }, 7000); // 7 Seconds per quote
+    return () => clearInterval(timer);
+  }, []);
+
+  return (
+    <div className={`glass contact-quote-card card-3d ${isTransitioning ? 'quantum-morphing' : ''}`}>
+      <div className="quote-particle p1" />
+      <div className="quote-particle p2" />
+      <div className="quote-particle p3" />
+      <div className="quote-particle p4" />
+      
+      <div className="quote-icon-box">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor" className="text-[#E2FF6F]">
+          <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" />
+        </svg>
+      </div>
+
+      <p className={`quote-text ${isTransitioning ? 'quantum-out' : 'quantum-in'}`}>
+        "{INSPIRATIONAL_QUOTES[index]}"
+      </p>
+    </div>
+  );
 }
 
 const CONTACT_ICON_MAP = {
@@ -24,7 +67,7 @@ const ICON_COLOR_MAP = {
 };
 
 const DEFAULT_CONTACT_LINKS = [
-  { id: 'link-linkedin', title: 'LinkedIn', text: 'vimal-kansotia', href: 'https://www.linkedin.com/in/vimal-kansotia/', iconKey: 'linkedin' },
+  { id: 'link-linkedin', title: 'LinkedIn', text: 'vimal-kansotia-586665231', href: 'https://www.linkedin.com/in/vimal-kansotia-586665231/', iconKey: 'linkedin' },
   { id: 'link-email', title: 'Email Me', text: 'kansotiavimal4@gmail.com', href: 'mailto:kansotiavimal4@gmail.com', iconKey: 'mail' },
   { id: 'link-github', title: 'GitHub', text: 'vimal-kansotia', href: 'https://github.com/vimal-kansotia', iconKey: 'github' },
   { id: 'link-location', title: 'Location', text: 'Mumbai, Maharashtra, India', href: '', iconKey: 'map-pin' }
@@ -126,6 +169,9 @@ export default function ContactSection({ contact }) {
               </div>
             );
           })}
+
+          {/* Dynamic Inspirational Tech Quote Card */}
+          <QuoteCard />
         </div>
 
         <form

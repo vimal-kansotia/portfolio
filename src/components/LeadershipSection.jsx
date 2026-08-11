@@ -35,10 +35,10 @@ export default function LeadershipSection() {
             </div>
             <div>
               <h3 className="leadership-role-title">
-                AWS Student Builder Group Vice Chairman
+                AWS Student Builder Group Core Team
               </h3>
               <p className="leadership-role-subtitle">
-                Vice Chairman & Mentor • AWS Student Community
+                Core Team & Mentor • AWS Student Community
               </p>
             </div>
           </div>

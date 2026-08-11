@@ -14,18 +14,18 @@ export const metadata = {
   authors: [{ name: 'Vimal Santosh Kansotia' }],
   robots: 'index, follow',
   alternates: {
-    canonical: 'https://vimalkansotia.vercel.app',
+    canonical: 'https://vimal-kansotia.vercel.app',
   },
   openGraph: {
     type: 'website',
-    url: 'https://vimalkansotia.vercel.app',
+    url: 'https://vimal-kansotia.vercel.app',
     title: 'Vimal Santosh Kansotia | Big Data Analytics Portfolio',
     description: 'Big Data Analytics student & developer specializing in data pipelines, analytics dashboards, and modern software applications.',
     siteName: 'Vimal Santosh Kansotia Portfolio',
     locale: 'en_US',
     images: [
       {
-        url: 'https://vimalkansotia.vercel.app/profile.jpg',
+        url: 'https://vimal-kansotia.vercel.app/profile.jpg',
         width: 1200,
         height: 630,
         alt: 'Vimal Santosh Kansotia - Portfolio',
@@ -34,10 +34,10 @@ export const metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    url: 'https://vimalkansotia.vercel.app',
+    url: 'https://vimal-kansotia.vercel.app',
     title: 'Vimal Santosh Kansotia | Big Data Analytics Portfolio',
     description: 'Big Data Analytics student & developer specializing in data pipelines, analytics dashboards, and modern software applications.',
-    images: ['https://vimalkansotia.vercel.app/profile.jpg'],
+    images: ['https://vimal-kansotia.vercel.app/profile.jpg'],
     creator: '@vimalkansotia',
     site: '@vimalkansotia',
   },
@@ -48,7 +48,7 @@ const jsonLd = {
   "@type": "Person",
   "name": "Vimal Santosh Kansotia",
   "jobTitle": "Big Data Analytics Developer & Student",
-  "url": "https://vimalkansotia.vercel.app",
+  "url": "https://vimal-kansotia.vercel.app",
   "sameAs": [
     "https://github.com/",
     "https://linkedin.com/"
@@ -65,7 +65,7 @@ const jsonLd = {
     "Software Development"
   ],
   "description": "Big Data Analytics graduate student and software developer building interactive analytics dashboards and data-driven solutions.",
-  "image": "https://vimalkansotia.vercel.app/profile.jpg"
+  "image": "https://vimal-kansotia.vercel.app/profile.jpg"
 };
 
 export default function RootLayout({ children }) {
