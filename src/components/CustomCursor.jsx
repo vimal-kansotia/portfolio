@@ -35,23 +35,24 @@ export default function CustomCursor({ theme = 'dark' }) {
   const clawSpriteRef = useRef(null);
   const spritesReadyRef = useRef(false);
 
-  // Dragon Spine (65 nodes for long serpentine movement)
-  const NUM_POINTS = 65;
-  const SEGMENT_DIST = 14;
+  // Dynamic Dragon Spine (32 nodes on mobile touch for 60fps, 60 nodes on desktop)
+  const isMobileRef = useRef(false);
   const dragonSpineRef = useRef(null);
   const particlesRef = useRef([]);
 
-  if (!dragonSpineRef.current) {
-    const spine = [];
-    for (let i = 0; i < NUM_POINTS; i++) {
-      spine.push({
-        x: -100,
-        y: -100,
-        angle: 0,
-      });
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const isMobile = window.matchMedia('(max-width: 768px)').matches || ('ontouchstart' in window);
+      isMobileRef.current = isMobile;
+      const numPoints = isMobile ? 32 : 60;
+
+      const spine = [];
+      for (let i = 0; i < numPoints; i++) {
+        spine.push({ x: -100, y: -100, angle: 0 });
+      }
+      dragonSpineRef.current = spine;
     }
-    dragonSpineRef.current = spine;
-  }
+  }, []);
 
   // In-Memory Chroma-Keyer: Removes black background pixels safely
   const createTransparentSprite = (src) => {
@@ -256,6 +257,8 @@ export default function CustomCursor({ theme = 'dark' }) {
           head.angle = Math.atan2(dyHead, dxHead);
         }
 
+        const SEGMENT_DIST = isMobileRef.current ? 12 : 14;
+
         for (let i = 1; i < spine.length; i++) {
           const prev = spine[i - 1];
           const curr = spine[i];
@@ -269,11 +272,11 @@ export default function CustomCursor({ theme = 'dark' }) {
         }
 
         const getRadius = (index) => {
-          const t = index / (NUM_POINTS - 1);
-          let baseR = 18;
-          if (t < 0.1) baseR = 18 + t * 40;
-          else if (t < 0.7) baseR = 22 - (t - 0.1) * 10;
-          else baseR = Math.max(2, 16 * (1 - (t - 0.7) / 0.3));
+          const t = index / (spine.length - 1);
+          let baseR = isMobileRef.current ? 14 : 18;
+          if (t < 0.1) baseR = (isMobileRef.current ? 14 : 18) + t * 30;
+          else if (t < 0.7) baseR = (isMobileRef.current ? 16 : 22) - (t - 0.1) * 8;
+          else baseR = Math.max(2, (isMobileRef.current ? 12 : 16) * (1 - (t - 0.7) / 0.3));
           return baseR * (isHoveredRef.current ? 1.2 : 1.0);
         };
 
@@ -293,9 +296,11 @@ export default function CustomCursor({ theme = 'dark' }) {
           ctx.quadraticCurveTo(spine[i].x, spine[i].y, xc, yc);
         }
         ctx.strokeStyle = isDark ? '#E2FF6F' : '#415B06';
-        ctx.lineWidth = 4;
-        ctx.shadowColor = jadeNeon;
-        ctx.shadowBlur = isDark ? 16 : 8;
+        ctx.lineWidth = isMobileRef.current ? 2.8 : 4;
+        if (!isMobileRef.current) {
+          ctx.shadowColor = jadeNeon;
+          ctx.shadowBlur = isDark ? 16 : 8;
+        }
         ctx.stroke();
         ctx.restore();
 
@@ -311,10 +316,8 @@ export default function CustomCursor({ theme = 'dark' }) {
 
           ctx.beginPath();
           ctx.ellipse(0, 0, r * 0.4, r, 0, 0, Math.PI * 2);
-          ctx.strokeStyle = `rgba(${isDark ? '163, 230, 53' : '65, 91, 6'}, ${(1 - i / NUM_POINTS) * 0.85})`;
-          ctx.lineWidth = 1.6;
-          ctx.shadowColor = jadeNeon;
-          ctx.shadowBlur = 4;
+          ctx.strokeStyle = `rgba(${isDark ? '163, 230, 53' : '65, 91, 6'}, ${(1 - i / spine.length) * 0.85})`;
+          ctx.lineWidth = 1.4;
           ctx.stroke();
 
           if (i % 2 === 0) {
@@ -322,7 +325,7 @@ export default function CustomCursor({ theme = 'dark' }) {
             ctx.moveTo(-r * 0.5, -r * 0.8);
             ctx.lineTo(r * 0.2, 0);
             ctx.lineTo(-r * 0.5, r * 0.8);
-            ctx.strokeStyle = `rgba(${isDark ? '226, 255, 111' : '106, 140, 26'}, ${(1 - i / NUM_POINTS) * 0.7})`;
+            ctx.strokeStyle = `rgba(${isDark ? '226, 255, 111' : '106, 140, 26'}, ${(1 - i / spine.length) * 0.7})`;
             ctx.lineWidth = 1.4;
             ctx.stroke();
           }
