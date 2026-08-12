@@ -33,7 +33,15 @@ export default function ShootingStars() {
     return arr;
   }, []);
 
-  const stardustPositions = useMemo(() => new Float32Array(STARDUST_COUNT * 3), []);
+  const stardustPositions = useMemo(() => {
+    const arr = new Float32Array(STARDUST_COUNT * 3);
+    for (let i = 0; i < STARDUST_COUNT * 3; i += 3) {
+      arr[i] = 0;
+      arr[i + 1] = 0;
+      arr[i + 2] = -999;
+    }
+    return arr;
+  }, []);
   const stardustSizes = useMemo(() => new Float32Array(STARDUST_COUNT), []);
 
   // Meteor physics state
@@ -167,7 +175,7 @@ export default function ShootingStars() {
   return (
     <>
       {/* Hyper-Bright Plasma Head Core */}
-      <mesh ref={headRef}>
+      <mesh ref={headRef} position={[0, 0, -999]}>
         <sphereGeometry args={[0.08, 16, 16]} />
         <meshBasicMaterial
           color="#FFFFFF"
@@ -178,7 +186,7 @@ export default function ShootingStars() {
       </mesh>
 
       {/* Sleek Gradient Light Streak */}
-      <mesh ref={trailRef}>
+      <mesh ref={trailRef} position={[0, 0, -999]}>
         <cylinderGeometry args={[0.005, 0.09, 1, 8]} />
         <meshBasicMaterial
           color="#FAF6F0"

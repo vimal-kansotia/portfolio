@@ -443,10 +443,10 @@ export default function CustomCursor({ theme = 'dark' }) {
         const isDark = theme === 'dark';
         const particleColor = isDark
           ? `rgba(226, 255, 111, ${p.life * 0.9})`
-          : `rgba(65, 91, 6, ${p.life * 0.8})`;
+          : `rgba(160, 150, 135, ${p.life * 0.4})`;
 
         ctx.fillStyle = particleColor;
-        ctx.shadowColor = isDark ? '#a3e635' : '#415B06';
+        ctx.shadowColor = isDark ? '#a3e635' : '#B9AB95';
         ctx.shadowBlur = 4;
         ctx.fill();
         ctx.restore();

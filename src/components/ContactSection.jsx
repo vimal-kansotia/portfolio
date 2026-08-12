@@ -30,13 +30,8 @@ function QuoteCard() {
 
   return (
     <div className={`glass contact-quote-card card-3d ${isTransitioning ? 'quantum-morphing' : ''}`}>
-      <div className="quote-particle p1" />
-      <div className="quote-particle p2" />
-      <div className="quote-particle p3" />
-      <div className="quote-particle p4" />
-      
       <div className="quote-icon-box">
-        <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor" className="text-[#E2FF6F]">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor" className="quote-svg-icon">
           <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" />
         </svg>
       </div>
@@ -179,18 +174,40 @@ export default function ContactSection({ contact }) {
           onSubmit={handleSubmit}
           className="glass-strong contact-form contact-template-form reveal-right"
         >
-          <h3 className="form-title">Send a Message</h3>
+          <h4 className="github-linkout-style">🤝 SAY HELLO</h4>
           <div className="form-group">
             <label className="form-label" htmlFor="from_name">Your Name</label>
-            <input id="from_name" type="text" name="from_name" required className="form-input" />
+            <input
+              id="from_name"
+              type="text"
+              name="from_name"
+              required
+              placeholder="Your name"
+              className="form-input"
+            />
           </div>
           <div className="form-group">
             <label className="form-label" htmlFor="from_email">Your Email</label>
-            <input id="from_email" type="email" name="from_email" required className="form-input" />
+            <input
+              id="from_email"
+              type="email"
+              name="from_email"
+              required
+              placeholder="your@email.com"
+              className="form-input"
+            />
           </div>
           <div className="form-group">
             <label className="form-label" htmlFor="message">Message</label>
-            <textarea id="message" name="message" rows="4" required className="form-input" style={{ resize: 'vertical' }} />
+            <textarea
+              id="message"
+              name="message"
+              rows="4"
+              required
+              placeholder="What's on your mind?"
+              className="form-input"
+              style={{ resize: 'none' }}
+            />
           </div>
 
           {status.message && (

@@ -15,13 +15,13 @@ export default function Footer({ footer, resumeUrl }) {
       <div className="footer-inner">
         <div className="footer-grid">
           <div className="footer-brand">
-            <div className="brand-logo">{footer.brand}</div>
-            <div className="brand-title">{footer.name}</div>
-            <div className="brand-sub">{footer.tagline}</div>
+            <h4 className="footer-brand-shimmer">{footer.name || 'Vimal Kansotia'}</h4>
+            <div className="brand-sub">Data - Engineer - Scientist</div>
+            <small className="footer-copyright-sub">© {year} Vimal Kansotia. All rights reserved.</small>
           </div>
 
           <div className="footer-links-col">
-            <h4 className="footer-heading">Quick Links</h4>
+            <h4 className="github-linkout-style">Quick Links</h4>
             <ul className="footer-list">
               {footer.quickLinks.map((link) => (
                 <li key={link.id}>
@@ -38,7 +38,7 @@ export default function Footer({ footer, resumeUrl }) {
           </div>
 
           <div className="footer-contact-col">
-            <h4 className="footer-heading">Contact</h4>
+            <h4 className="github-linkout-style">Contact</h4>
             <ul className="contact-list">
               {footer.socialLinks.map((link) => {
                 const IconComp = FOOTER_ICON_MAP[link.iconKey] || ExternalLink;
@@ -52,10 +52,6 @@ export default function Footer({ footer, resumeUrl }) {
               })}
             </ul>
           </div>
-        </div>
-
-        <div className="footer-meta">
-          <small>© {year} {footer.name}. All rights reserved.</small>
         </div>
       </div>
     </footer>

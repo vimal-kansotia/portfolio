@@ -189,7 +189,7 @@ export default function BigBangIntro({ onComplete }) {
 
               ctx.beginPath();
               if (node.isAldebaran) {
-                // Aldebaran: Hyper-Bright Red/Gold Eye of Taurus
+                // Aldebaran: Radiant Gold Eye of Taurus
                 ctx.arc(nx, ny, 7.5 * nodeGlow, 0, Math.PI * 2);
                 ctx.fillStyle = '#F59E0B';
                 ctx.shadowColor = '#F59E0B';
