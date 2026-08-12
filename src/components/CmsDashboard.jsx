@@ -89,6 +89,22 @@ function createBlankEducation() {
   return { id: makeId('education'), title: 'New Education Item', place: 'Institution', status: '', deleted: false };
 }
 
+function createBlankExperience() {
+  return {
+    id: makeId('exp'),
+    title: 'New Role Title',
+    company: 'Company Name',
+    type: 'Full-time',
+    period: 'Jan 2026 - Present',
+    duration: '6 mos',
+    location: 'City, Country',
+    workplaceType: 'On-site',
+    description: ['Key achievement or responsibility 1'],
+    skills: ['Skill 1', 'Skill 2'],
+    deleted: false
+  };
+}
+
 function createBlankCertification() {
   return { id: makeId('cert'), label: 'New Certification', deleted: false };
 }
@@ -208,6 +224,7 @@ export default function CmsDashboard({
       { id: 'overview', label: 'Overview' },
       { id: 'hero', label: 'Hero' },
       { id: 'about', label: 'About' },
+      { id: 'experiences', label: 'Experience' },
       { id: 'projects', label: 'Projects' },
       { id: 'contact', label: 'Contact' },
       { id: 'footer', label: 'Footer' },
@@ -833,6 +850,66 @@ export default function CmsDashboard({
                   <button type="button" className="btn btn-outline cms-add-button" onClick={() => addArrayItem(['about', 'certifications'], createBlankCertification)}>
                     <Plus size={16} />
                     Add certification
+                  </button>
+                </div>
+              </SectionCard>
+            </div>
+          ) : null}
+
+          {activeTab === 'experiences' ? (
+            <div className="cms-grid">
+              <SectionCard title="Work Experiences" subtitle="Manage your professional experience timeline.">
+                <div className="cms-array-editor">
+                  {(content.experiences || []).filter(item => !item.deleted).map((item, index) => (
+                    <div key={item.id || index} className="cms-array-item">
+                      <div className="cms-array-fields cms-array-fields--stacked">
+                        <div className="cms-form-grid">
+                          <Field label="Job Title">
+                            <TextInput value={item.title} onChange={(event) => updateArrayItem(['experiences'], content.experiences.indexOf(item), { ...item, title: event.target.value })} />
+                          </Field>
+                          <Field label="Company">
+                            <TextInput value={item.company} onChange={(event) => updateArrayItem(['experiences'], content.experiences.indexOf(item), { ...item, company: event.target.value })} />
+                          </Field>
+                          <Field label="Job Type">
+                            <TextInput value={item.type} onChange={(event) => updateArrayItem(['experiences'], content.experiences.indexOf(item), { ...item, type: event.target.value })} />
+                          </Field>
+                          <Field label="Period (e.g. Apr 20, 2026 - Jun 19, 2026)">
+                            <TextInput value={item.period} onChange={(event) => updateArrayItem(['experiences'], content.experiences.indexOf(item), { ...item, period: event.target.value })} />
+                          </Field>
+                          <Field label="Duration (e.g. 2 mos)">
+                            <TextInput value={item.duration} onChange={(event) => updateArrayItem(['experiences'], content.experiences.indexOf(item), { ...item, duration: event.target.value })} />
+                          </Field>
+                          <Field label="Location">
+                            <TextInput value={item.location} onChange={(event) => updateArrayItem(['experiences'], content.experiences.indexOf(item), { ...item, location: event.target.value })} />
+                          </Field>
+                          <Field label="Workplace Type">
+                            <TextInput value={item.workplaceType} onChange={(event) => updateArrayItem(['experiences'], content.experiences.indexOf(item), { ...item, workplaceType: event.target.value })} />
+                          </Field>
+                        </div>
+
+                        <Field label="Responsibilities (comma separated)">
+                          <TextArea
+                            rows={3}
+                            value={Array.isArray(item.description) ? item.description.join(', ') : item.description || ''}
+                            onChange={(event) => updateArrayItem(['experiences'], content.experiences.indexOf(item), { ...item, description: event.target.value.split(',').map(s => s.trim()).filter(Boolean) })}
+                          />
+                        </Field>
+
+                        <Field label="Skills (comma separated)">
+                          <TextInput
+                            value={Array.isArray(item.skills) ? item.skills.join(', ') : item.skills || ''}
+                            onChange={(event) => updateArrayItem(['experiences'], content.experiences.indexOf(item), { ...item, skills: event.target.value.split(',').map(s => s.trim()).filter(Boolean) })}
+                          />
+                        </Field>
+                      </div>
+                      <button type="button" className="cms-icon-button" onClick={() => setItemDeletedStatus(['experiences'], item.id, true)} aria-label="Remove experience item">
+                        <Trash2 size={16} />
+                      </button>
+                    </div>
+                  ))}
+                  <button type="button" className="btn btn-outline cms-add-button" onClick={() => addArrayItem(['experiences'], createBlankExperience)}>
+                    <Plus size={16} />
+                    Add Experience
                   </button>
                 </div>
               </SectionCard>

@@ -179,6 +179,30 @@
       { "id": "t24", "name": "Scikit-learn", "category": "Analytics" }
     ]
   },
+  "experiences": [
+    {
+      "id": "exp-atomnik-1",
+      "title": "ERP Implementation and Customisation Engineer",
+      "company": "Atomnik",
+      "type": "Internship",
+      "period": "Apr 20, 2026 - Jun 19, 2026",
+      "duration": "2 mos",
+      "location": "Mumbai, Maharashtra, India",
+      "workplaceType": "On-site",
+      "description": [
+        "Assisting in the end-to-end implementation and customization of CRP solutions to align with specific business requirements.",
+        "Configuring system modules and developing custom workflows to optimize resource allocation and operational efficiency.",
+        "Collaborating with cross-functional teams to troubleshoot technical issues and ensure seamless data integration across cloud platforms."
+      ],
+      "skills": [
+        "CRP",
+        "Cloud Computing",
+        "Business Analysis",
+        "Project Management",
+        "Troubleshooting"
+      ]
+    }
+  ],
   "projects": [
     {
       "id": "project-hpa",
