@@ -15,6 +15,7 @@ import Navbar from '../src/components/Navbar';
 import HeroSection from '../src/components/HeroSection';
 import AboutSection from '../src/components/AboutSection';
 import SkillsSection from '../src/components/SkillsSection';
+import ExperienceSection from '../src/components/ExperienceSection';
 import ProjectsSection from '../src/components/ProjectsSection';
 import LeadershipSection from '../src/components/LeadershipSection';
 import ContactSection from '../src/components/ContactSection';
@@ -69,6 +70,9 @@ export default function PortfolioApp({ initialContent }) {
       site: { ...defaults.site, ...initialContent.site },
       hero: { ...defaults.hero, ...initialContent.hero },
       about: { ...defaults.about, ...initialContent.about },
+      experiences: (initialContent.experiences && initialContent.experiences.length > 0)
+        ? initialContent.experiences
+        : defaults.experiences,
       skills: initialContent.skills || defaults.skills,
       projects: initialContent.projects || defaults.projects,
       contact: { ...defaults.contact, ...initialContent.contact },
@@ -195,6 +199,7 @@ export default function PortfolioApp({ initialContent }) {
             certifications={activeCertifications}
             heroImage={content.hero.image || heroImage}
           />
+          <ExperienceSection experiences={(content.experiences || []).filter(e => !e.deleted)} />
           <SkillsSection skillsData={content.skills} />
           <ProjectsSection projects={activeProjects} />
           <LeadershipSection />

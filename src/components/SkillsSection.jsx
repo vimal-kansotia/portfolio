@@ -208,20 +208,22 @@ export default function SkillsSection({ skillsData }) {
         </div>
 
         {/* Tech Stack Cards Grid */}
-        <div className="tech-cards-grid">
-          {filteredTechStack.map((tech) => (
-            <div key={tech.id || tech.name} className="tech-card">
-              {/* Top Center Green Dot */}
-              <div className="tech-dot" />
+        <div className="tech-cards-grid" key={selectedCategory}>
+          {filteredTechStack.map((tech, idx) => (
+            <div
+              key={tech.id || tech.name}
+              className="tech-card"
+              style={{ animationDelay: `${Math.min(idx * 0.015, 0.18)}s` }}
+            >
+              {/* Animated Radar Pulse Ping Dot */}
+              <div className="tech-dot-radar">
+                <span className="radar-ping" />
+                <span className="radar-core" />
+              </div>
 
               {/* Tech Name */}
               <span className="tech-title">
                 {tech.name}
-              </span>
-
-              {/* Category Subtitle */}
-              <span className="tech-subtitle">
-                {tech.category}
               </span>
             </div>
           ))}

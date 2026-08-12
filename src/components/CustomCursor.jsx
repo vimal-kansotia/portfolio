@@ -108,9 +108,8 @@ export default function CustomCursor({ theme = 'dark' }) {
   // Main Render Effect
   useEffect(() => {
     if (typeof window === 'undefined') return;
-    const isTouchDevice = window.matchMedia('(pointer: coarse)').matches;
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (isTouchDevice || prefersReducedMotion) return;
+    if (prefersReducedMotion) return;
 
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -123,8 +122,7 @@ export default function CustomCursor({ theme = 'dark' }) {
     handleResize();
     window.addEventListener('resize', handleResize);
 
-    const handleMouseMove = (e) => {
-      const { clientX: x, clientY: y } = e;
+    const updatePointerPos = (x, y) => {
       posRef.current = { x, y };
 
       if (!isVisibleRef.current) {
@@ -151,6 +149,22 @@ export default function CustomCursor({ theme = 'dark' }) {
           life: 1,
           decay: Math.random() * 0.04 + 0.02,
         });
+      }
+    };
+
+    const handleMouseMove = (e) => {
+      updatePointerPos(e.clientX, e.clientY);
+    };
+
+    const handleTouchMove = (e) => {
+      if (e.touches && e.touches[0]) {
+        updatePointerPos(e.touches[0].clientX, e.touches[0].clientY);
+      }
+    };
+
+    const handleTouchStart = (e) => {
+      if (e.touches && e.touches[0]) {
+        updatePointerPos(e.touches[0].clientX, e.touches[0].clientY);
       }
     };
 
@@ -192,6 +206,8 @@ export default function CustomCursor({ theme = 'dark' }) {
     };
 
     window.addEventListener('mousemove', handleMouseMove, { passive: true });
+    window.addEventListener('touchmove', handleTouchMove, { passive: true });
+    window.addEventListener('touchstart', handleTouchStart, { passive: true });
     window.addEventListener('mouseover', handleMouseOver, { passive: true });
     window.addEventListener('mousedown', handleMouseDown);
     window.addEventListener('mouseup', handleMouseUp);
@@ -234,9 +250,9 @@ export default function CustomCursor({ theme = 'dark' }) {
         const dyHead = targetY - head.y;
         const distHead = Math.hypot(dxHead, dyHead);
 
-        if (distHead > 1) {
-          head.x += dxHead * 0.65;
-          head.y += dyHead * 0.65;
+        if (distHead > 0.5) {
+          head.x += dxHead * 0.92;
+          head.y += dyHead * 0.92;
           head.angle = Math.atan2(dyHead, dxHead);
         }
 
@@ -334,8 +350,6 @@ export default function CustomCursor({ theme = 'dark' }) {
             pt.y - Math.sin(pt.angle) * 10
           );
           ctx.fillStyle = jadeNeon;
-          ctx.shadowColor = jadeNeon;
-          ctx.shadowBlur = 6;
           ctx.fill();
         }
         ctx.restore();
@@ -352,11 +366,11 @@ export default function CustomCursor({ theme = 'dark' }) {
           ctx.quadraticCurveTo(
             pt.x - Math.cos(pt.angle) * 20 + Math.sin(pt.angle) * (r + 15),
             pt.y - Math.sin(pt.angle) * 20 - Math.cos(pt.angle) * (r + 15),
-            pt.x - Math.cos(pt.angle) * 40 + wave,
-            pt.y - Math.sin(pt.angle) * 40 - wave
+            pt.x - Math.cos(pt.angle) * 35 + Math.sin(pt.angle) * (r + 25 + wave),
+            pt.y - Math.sin(pt.angle) * 35 - Math.cos(pt.angle) * (r + 25 + wave)
           );
-          ctx.strokeStyle = `rgba(${isDark ? '163, 230, 53' : '65, 91, 6'}, 0.5)`;
-          ctx.lineWidth = 1.8;
+          ctx.strokeStyle = `rgba(${isDark ? '226, 255, 111' : '106, 140, 26'}, 0.6)`;
+          ctx.lineWidth = 1.6;
           ctx.stroke();
         }
         ctx.restore();
@@ -446,8 +460,6 @@ export default function CustomCursor({ theme = 'dark' }) {
           : `rgba(160, 150, 135, ${p.life * 0.4})`;
 
         ctx.fillStyle = particleColor;
-        ctx.shadowColor = isDark ? '#a3e635' : '#B9AB95';
-        ctx.shadowBlur = 4;
         ctx.fill();
         ctx.restore();
       }
@@ -460,6 +472,8 @@ export default function CustomCursor({ theme = 'dark' }) {
     return () => {
       window.removeEventListener('resize', handleResize);
       window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('touchmove', handleTouchMove);
+      window.removeEventListener('touchstart', handleTouchStart);
       window.removeEventListener('mouseover', handleMouseOver);
       window.removeEventListener('mousedown', handleMouseDown);
       window.removeEventListener('mouseup', handleMouseUp);

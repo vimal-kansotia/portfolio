@@ -17,6 +17,7 @@ export default function SpaceTravellers() {
   const attackerShipRef = useRef();
   const lasersGroupRef = useRef();
   const sparksGroupRef = useRef();
+  const laserMeshesRef = useRef([]);
 
   const MAX_LASERS = 18;
   const MAX_SPARKS = 36;
@@ -31,16 +32,6 @@ export default function SpaceTravellers() {
         active: false,
         life: 0,
       });
-    }
-    return arr;
-  }, []);
-
-  const redLaserPositions = useMemo(() => {
-    const arr = new Float32Array(MAX_LASERS * 6);
-    for (let i = 0; i < MAX_LASERS * 6; i += 3) {
-      arr[i] = 0;
-      arr[i + 1] = 0;
-      arr[i + 2] = -999;
     }
     return arr;
   }, []);
@@ -71,8 +62,8 @@ export default function SpaceTravellers() {
   // Battle Physics State
   const battleState = useRef({
     active: false,
-    timer: 2.0,       // Triggers spaceships right after loading screen!
-    cooldown: 2.0,    // Quick initial spawn
+    timer: 1.0,       // Fast initial spawn right after page loads
+    cooldown: 1.0,    // Quick initial spawn
     startPos: new THREE.Vector3(),
     endPos: new THREE.Vector3(),
     evaderPos: new THREE.Vector3(),
@@ -87,17 +78,13 @@ export default function SpaceTravellers() {
   });
 
   const clearParticles = () => {
-    if (lasersGroupRef.current) {
-      const posAttr = lasersGroupRef.current.geometry.attributes.position;
-      for (let i = 0; i < MAX_LASERS * 2; i++) {
-        posAttr.setXYZ(i, 0, 0, -999);
-      }
-      posAttr.needsUpdate = true;
-    }
+    laserMeshesRef.current.forEach((mesh) => {
+      if (mesh) mesh.position.set(0, 0, -999);
+    });
     if (sparksGroupRef.current) {
       const spAttr = sparksGroupRef.current.geometry.attributes.position;
-      for (let i = 0; i < MAX_SPARKS; i++) {
-        spAttr.setXYZ(i, 0, 0, -999);
+      for (let i = 0; i < MAX_SPARKS * 3; i++) {
+        sparkPositions[i] = (i % 3 === 2) ? -999 : 0;
       }
       spAttr.needsUpdate = true;
     }
@@ -117,7 +104,7 @@ export default function SpaceTravellers() {
         b.active = true;
         b.timer = 0;
         b.progress = 0;
-        b.cooldown = 11.0 + Math.random() * 5.0; // 11 - 16s gap
+        b.cooldown = 5.0 + Math.random() * 3.0; // 5 - 8s gap
 
         // Dynamic Viewport Bounds for Mobile Portrait vs Desktop
         const viewW = state.viewport.width ? state.viewport.width / 2 + 3 : 14;
@@ -189,21 +176,25 @@ export default function SpaceTravellers() {
 
     // --- REAR SPACESHIP FIRES PURE RED LASER CANNON BOLTS AT FRONT SPACESHIP ---
     b.fireTimer += delta;
-    if (b.fireTimer >= 0.11) {
+    if (b.fireTimer >= 0.1) {
       b.fireTimer = 0;
       const idx = b.laserIdx % MAX_LASERS;
       b.laserIdx++;
 
       const l = lasersData[idx];
-      l.x = b.attackerPos.x;
-      l.y = b.attackerPos.y;
+      // Alternate firing from left cannon (-0.51) and right cannon (+0.51)
+      const cannonOffset = (b.laserIdx % 2 === 0 ? 0.51 : -0.51);
+      const rightVec = new THREE.Vector3(Math.cos(baseRotAngle), Math.sin(baseRotAngle), 0).multiplyScalar(cannonOffset);
+
+      l.x = b.attackerPos.x + rightVec.x;
+      l.y = b.attackerPos.y + rightVec.y;
       l.z = b.attackerPos.z;
 
       const aimDir = new THREE.Vector3().subVectors(b.evaderPos, b.attackerPos).normalize();
-      aimDir.x += (Math.random() - 0.5) * 0.14;
-      aimDir.y += (Math.random() - 0.5) * 0.14;
+      aimDir.x += (Math.random() - 0.5) * 0.12;
+      aimDir.y += (Math.random() - 0.5) * 0.12;
 
-      const laserSpeed = 34.0;
+      const laserSpeed = 32.0;
       l.vx = aimDir.x * laserSpeed;
       l.vy = aimDir.y * laserSpeed;
       l.vz = aimDir.z * laserSpeed;
@@ -225,42 +216,34 @@ export default function SpaceTravellers() {
       }
     }
 
-    // Update Red Laser Cannon Line Segments
-    if (lasersGroupRef.current) {
-      const geom = lasersGroupRef.current.geometry;
-      const posAttr = geom.attributes.position;
+    // Update Red 3D Laser Cylinder Meshes
+    for (let i = 0; i < MAX_LASERS; i++) {
+      const l = lasersData[i];
+      const mesh = laserMeshesRef.current[i];
+      if (!mesh) continue;
 
-      for (let i = 0; i < MAX_LASERS; i++) {
-        const l = lasersData[i];
-        if (l.active) {
-          l.life -= delta * 2.5;
-          if (l.life <= 0) {
-            l.active = false;
-            posAttr.setXYZ(i * 2, 0, 0, -999);
-            posAttr.setXYZ(i * 2 + 1, 0, 0, -999);
-            continue;
-          }
-
-          l.x += l.vx * delta;
-          l.y += l.vy * delta;
-          l.z += l.vz * delta;
-
-          // Head point of Red Laser
-          posAttr.setXYZ(i * 2, l.x, l.y, l.z);
-          // Tail point of Red Laser (sharp stream line)
-          const tailLen = 0.95;
-          posAttr.setXYZ(
-            i * 2 + 1,
-            l.x - (l.vx / 34.0) * tailLen,
-            l.y - (l.vy / 34.0) * tailLen,
-            l.z - (l.vz / 34.0) * tailLen
-          );
-        } else {
-          posAttr.setXYZ(i * 2, 0, 0, -999);
-          posAttr.setXYZ(i * 2 + 1, 0, 0, -999);
+      if (l.active) {
+        l.life -= delta * 2.2;
+        if (l.life <= 0) {
+          l.active = false;
+          mesh.position.set(0, 0, -999);
+          continue;
         }
+
+        l.x += l.vx * delta;
+        l.y += l.vy * delta;
+        l.z += l.vz * delta;
+
+        mesh.position.set(l.x, l.y, l.z);
+
+        // Align cylinder (default along Y-axis) along 3D velocity vector
+        const dirVec = new THREE.Vector3(l.vx, l.vy, l.vz).normalize();
+        const quat = new THREE.Quaternion();
+        quat.setFromUnitVectors(new THREE.Vector3(0, 1, 0), dirVec);
+        mesh.quaternion.copy(quat);
+      } else {
+        mesh.position.set(0, 0, -999);
       }
-      posAttr.needsUpdate = true;
     }
 
     // Update Evasive Sparks
@@ -273,19 +256,22 @@ export default function SpaceTravellers() {
           sp.x += sp.vx * delta;
           sp.y += sp.vy * delta;
           sp.z += sp.vz * delta;
-          spAttr.setXYZ(i, sp.x, sp.y, sp.z);
+          sparkPositions[i * 3] = sp.x;
+          sparkPositions[i * 3 + 1] = sp.y;
+          sparkPositions[i * 3 + 2] = sp.z;
         } else {
-          spAttr.setXYZ(i, 0, 0, -999);
+          sparkPositions[i * 3] = 0;
+          sparkPositions[i * 3 + 1] = 0;
+          sparkPositions[i * 3 + 2] = -999;
         }
       }
-      spAttr.needsUpdate = true;
     }
   });
 
   return (
     <group ref={groupRef}>
-      {/* 🚀 DETAILED FRONT EVADER SPACESHIP (Dodging & Saving Itself) */}
-      <group ref={evaderShipRef} scale={[0.7, 0.7, 0.7]} position={[0, 0, -999]}>
+      {/* 🚀 COMPACT BLUE DEFENDER SPACESHIP (Dodging & Weaving) */}
+      <group ref={evaderShipRef} scale={[0.38, 0.38, 0.38]} position={[0, 0, -999]}>
         {/* Main Nose Fuselage */}
         <mesh position={[0, 0.25, 0]} rotation={[Math.PI / 2, 0, 0]}>
           <coneGeometry args={[0.2, 0.7, 6]} />
@@ -329,8 +315,8 @@ export default function SpaceTravellers() {
         </mesh>
       </group>
 
-      {/* 🚀 DETAILED REAR ATTACKER SPACESHIP (Firing Red Laser Stream) */}
-      <group ref={attackerShipRef} scale={[0.75, 0.75, 0.75]} position={[0, 0, -999]}>
+      {/* 🚀 COMPACT RED ATTACKER SPACESHIP (Firing Red Laser Stream) */}
+      <group ref={attackerShipRef} scale={[0.4, 0.4, 0.4]} position={[0, 0, -999]}>
         {/* Main Aggressive Fuselage */}
         <mesh position={[0, 0.28, 0]} rotation={[Math.PI / 2, 0, 0]}>
           <coneGeometry args={[0.22, 0.75, 6]} />
@@ -352,11 +338,11 @@ export default function SpaceTravellers() {
         {/* Wingtip Laser Cannons (Firing Red Laser Emitters) */}
         <mesh position={[-0.68, 0.1, 0]} rotation={[Math.PI / 2, 0, 0]}>
           <cylinderGeometry args={[0.03, 0.03, 0.35, 6]} />
-          <meshBasicMaterial color="#FF2233" />
+          <meshBasicMaterial color="#FF0044" />
         </mesh>
         <mesh position={[0.68, 0.1, 0]} rotation={[Math.PI / 2, 0, 0]}>
           <cylinderGeometry args={[0.03, 0.03, 0.35, 6]} />
-          <meshBasicMaterial color="#FF2233" />
+          <meshBasicMaterial color="#FF0044" />
         </mesh>
 
         {/* Dual Heavy Thrusters */}
@@ -374,27 +360,21 @@ export default function SpaceTravellers() {
         </mesh>
       </group>
 
-      {/* ⚡ PURE BRIGHT RED PLASMA LASER CANNON BOLTS (#FF2233) */}
-      <lineSegments ref={lasersGroupRef}>
-        <bufferGeometry>
-          <bufferAttribute
-            attach="attributes-position"
-            count={MAX_LASERS * 2}
-            array={redLaserPositions}
-            itemSize={3}
-          />
-        </bufferGeometry>
-        <lineBasicMaterial
-          color="#FF2233"
-          transparent
-          opacity={0.98}
-          blending={THREE.AdditiveBlending}
-          linewidth={2}
-          depthWrite={false}
-        />
-      </lineSegments>
+      {/* ⚡ SHORT & THIN 3D MESH CYLINDER RED LASER BOLTS */}
+      <group ref={lasersGroupRef}>
+        {lasersData.map((_, i) => (
+          <mesh
+            key={i}
+            ref={(el) => (laserMeshesRef.current[i] = el)}
+            position={[0, 0, -999]}
+          >
+            <cylinderGeometry args={[0.018, 0.018, 0.35, 6]} />
+            <meshBasicMaterial color="#FF0022" toneMapped={false} />
+          </mesh>
+        ))}
+      </group>
 
-      {/* 💥 Evasive Near-Miss Deflection Sparks */}
+      {/* 💥 Evasive Deflection Sparks */}
       <points ref={sparksGroupRef}>
         <bufferGeometry>
           <bufferAttribute
@@ -405,10 +385,10 @@ export default function SpaceTravellers() {
           />
         </bufferGeometry>
         <pointsMaterial
-          size={0.12}
-          color="#FAF6F0"
+          size={0.15}
+          color="#00E5FF"
           transparent
-          opacity={0.85}
+          opacity={0.9}
           blending={THREE.AdditiveBlending}
           depthWrite={false}
         />

@@ -32,18 +32,18 @@ export default function Scene3D({ scrollY }) {
     <div className="canvas-container">
       <Canvas
         camera={{ position: [0, 0, 5], fov: 75 }}
-        gl={{ alpha: true, antialias: true }}
-        dpr={[1, 2]}
+        gl={{ alpha: true, antialias: true, powerPreference: 'high-performance', stencil: false, depth: true }}
+        dpr={[1, 1.5]}
+        performance={{ min: 0.5 }}
       >
         <ambientLight intensity={1.6} />
         <ScrollCamera scrollY={scrollY} />
-        <StarField count={4000} />
+        <StarField count={2500} />
         <ShootingStars />
         <SpaceTravellers />
         
-        <EffectComposer disableNormalPass>
-          <Bloom luminanceThreshold={0.35} luminanceSmoothing={0.9} intensity={0.3} />
-          <Noise opacity={0.012} />
+        <EffectComposer disableNormalPass multisampling={0}>
+          <Bloom luminanceThreshold={0.4} luminanceSmoothing={0.9} intensity={0.25} />
         </EffectComposer>
       </Canvas>
     </div>
