@@ -109,6 +109,9 @@ export default function CustomCursor({ theme = 'dark' }) {
   // Main Render Effect
   useEffect(() => {
     if (typeof window === 'undefined') return;
+    const isTouchOrMobile = window.matchMedia('(max-width: 768px)').matches || ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
+    if (isTouchOrMobile) return; // Completely disable canvas dragon cursor on mobile phones
+
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (prefersReducedMotion) return;
 
