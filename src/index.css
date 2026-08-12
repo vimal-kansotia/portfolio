@@ -3874,7 +3874,9 @@ textarea.form-input {
   align-items: center;
   gap: 0.6rem;
   overflow-x: auto;
-  padding: 0.4rem 0.2rem;
+  overflow-y: visible;
+  padding: 0.8rem 1rem;
+  margin: -0.4rem -0.5rem;
 }
 
 .filter-btn {

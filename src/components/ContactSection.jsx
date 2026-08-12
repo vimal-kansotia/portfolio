@@ -193,7 +193,7 @@ export default function ContactSection({ contact }) {
               type="email"
               name="from_email"
               required
-              placeholder="your@email.com"
+              placeholder="your@gmail.com"
               className="form-input"
             />
           </div>
