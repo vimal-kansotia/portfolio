@@ -150,7 +150,7 @@ export default function PortfolioApp({ initialContent }) {
   /* ── Render ── */
   return (
     <>
-      {/* Big Bang Neutron Fusion Opening Intro Transition */}
+      {/* Big Bang Opening Intro Transition Screen */}
       <BigBangIntro />
 
       {/* Interactive Custom Cursor */}

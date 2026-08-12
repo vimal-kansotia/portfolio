@@ -35,7 +35,15 @@ export default function SpaceTravellers() {
     return arr;
   }, []);
 
-  const redLaserPositions = useMemo(() => new Float32Array(MAX_LASERS * 6), []);
+  const redLaserPositions = useMemo(() => {
+    const arr = new Float32Array(MAX_LASERS * 6);
+    for (let i = 0; i < MAX_LASERS * 6; i += 3) {
+      arr[i] = 0;
+      arr[i + 1] = 0;
+      arr[i + 2] = -999;
+    }
+    return arr;
+  }, []);
 
   // Evasive Spark Deflections Pool
   const sparksData = useMemo(() => {
@@ -50,13 +58,21 @@ export default function SpaceTravellers() {
     return arr;
   }, []);
 
-  const sparkPositions = useMemo(() => new Float32Array(MAX_SPARKS * 3), []);
+  const sparkPositions = useMemo(() => {
+    const arr = new Float32Array(MAX_SPARKS * 3);
+    for (let i = 0; i < MAX_SPARKS * 3; i += 3) {
+      arr[i] = 0;
+      arr[i + 1] = 0;
+      arr[i + 2] = -999;
+    }
+    return arr;
+  }, []);
 
   // Battle Physics State
   const battleState = useRef({
     active: false,
-    timer: 1.0,      // Quick initial spawn so user sees red laser dogfight right away!
-    cooldown: 12.0,   // 12-second calm gap
+    timer: 2.0,       // Triggers spaceships right after loading screen!
+    cooldown: 2.0,    // Quick initial spawn
     startPos: new THREE.Vector3(),
     endPos: new THREE.Vector3(),
     evaderPos: new THREE.Vector3(),
@@ -69,6 +85,23 @@ export default function SpaceTravellers() {
     sparkIdx: 0,
     rollAngle: 0,
   });
+
+  const clearParticles = () => {
+    if (lasersGroupRef.current) {
+      const posAttr = lasersGroupRef.current.geometry.attributes.position;
+      for (let i = 0; i < MAX_LASERS * 2; i++) {
+        posAttr.setXYZ(i, 0, 0, -999);
+      }
+      posAttr.needsUpdate = true;
+    }
+    if (sparksGroupRef.current) {
+      const spAttr = sparksGroupRef.current.geometry.attributes.position;
+      for (let i = 0; i < MAX_SPARKS; i++) {
+        spAttr.setXYZ(i, 0, 0, -999);
+      }
+      spAttr.needsUpdate = true;
+    }
+  };
 
   useFrame((state, delta) => {
     if (!groupRef.current || !evaderShipRef.current || !attackerShipRef.current) return;
@@ -109,9 +142,10 @@ export default function SpaceTravellers() {
         b.dir.subVectors(b.endPos, b.startPos).normalize();
         b.speed = Math.random() * 0.08 + 0.35;
       } else {
-        // Hide ships during cooldown
+        // Hide ships and particles during cooldown
         evaderShipRef.current.position.set(0, 0, -999);
         attackerShipRef.current.position.set(0, 0, -999);
+        clearParticles();
         return;
       }
     }
@@ -124,6 +158,7 @@ export default function SpaceTravellers() {
       b.timer = 0;
       evaderShipRef.current.position.set(0, 0, -999);
       attackerShipRef.current.position.set(0, 0, -999);
+      clearParticles();
       return;
     }
 
@@ -250,7 +285,7 @@ export default function SpaceTravellers() {
   return (
     <group ref={groupRef}>
       {/* 🚀 DETAILED FRONT EVADER SPACESHIP (Dodging & Saving Itself) */}
-      <group ref={evaderShipRef} scale={[0.7, 0.7, 0.7]}>
+      <group ref={evaderShipRef} scale={[0.7, 0.7, 0.7]} position={[0, 0, -999]}>
         {/* Main Nose Fuselage */}
         <mesh position={[0, 0.25, 0]} rotation={[Math.PI / 2, 0, 0]}>
           <coneGeometry args={[0.2, 0.7, 6]} />
@@ -272,11 +307,11 @@ export default function SpaceTravellers() {
         {/* Wingtip Stabilizers */}
         <mesh position={[-0.6, -0.1, 0.08]}>
           <boxGeometry args={[0.04, 0.2, 0.2]} />
-          <meshBasicMaterial color="#a3e635" />
+          <meshBasicMaterial color="#00CCFF" />
         </mesh>
         <mesh position={[0.6, -0.1, 0.08]}>
           <boxGeometry args={[0.04, 0.2, 0.2]} />
-          <meshBasicMaterial color="#a3e635" />
+          <meshBasicMaterial color="#00CCFF" />
         </mesh>
 
         {/* Dual Ion Thrusters (Glowing Engine Exhaust) */}
@@ -295,23 +330,23 @@ export default function SpaceTravellers() {
       </group>
 
       {/* 🚀 DETAILED REAR ATTACKER SPACESHIP (Firing Red Laser Stream) */}
-      <group ref={attackerShipRef} scale={[0.75, 0.75, 0.75]}>
+      <group ref={attackerShipRef} scale={[0.75, 0.75, 0.75]} position={[0, 0, -999]}>
         {/* Main Aggressive Fuselage */}
         <mesh position={[0, 0.28, 0]} rotation={[Math.PI / 2, 0, 0]}>
           <coneGeometry args={[0.22, 0.75, 6]} />
-          <meshBasicMaterial color="#E2FF6F" />
+          <meshBasicMaterial color="#FF3344" />
         </mesh>
 
-        {/* Cockpit Dome (Emerald Glass) */}
+        {/* Cockpit Dome (Crimson Glass) */}
         <mesh position={[0, 0.18, 0.12]}>
           <sphereGeometry args={[0.15, 12, 12]} />
-          <meshBasicMaterial color="#a3e635" transparent opacity={0.9} />
+          <meshBasicMaterial color="#FF6600" transparent opacity={0.9} />
         </mesh>
 
         {/* Heavy Swept Wings */}
         <mesh position={[0, -0.1, 0]} rotation={[0, 0, Math.PI / 2]}>
           <boxGeometry args={[1.35, 0.07, 0.32]} />
-          <meshBasicMaterial color="#6A8C1A" />
+          <meshBasicMaterial color="#333344" />
         </mesh>
 
         {/* Wingtip Laser Cannons (Firing Red Laser Emitters) */}
@@ -370,10 +405,10 @@ export default function SpaceTravellers() {
           />
         </bufferGeometry>
         <pointsMaterial
-          size={0.16}
-          color="#E2FF6F"
+          size={0.12}
+          color="#FAF6F0"
           transparent
-          opacity={0.9}
+          opacity={0.85}
           blending={THREE.AdditiveBlending}
           depthWrite={false}
         />

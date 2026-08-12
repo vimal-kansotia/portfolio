@@ -94,6 +94,10 @@
       }
     ],
     "certifications": [
+      { "id": "lead-placement", "label": "Training & Development Coordinator — Placement Cell (B.K. Birla College)" },
+      { "id": "lead-mpower", "label": "MPower Core Team Member - 3 Years (B.K. Birla College)" },
+      { "id": "lead-cr-astro", "label": "Class Representative (3 Years) & Head of Astronomical Club (B.K. Birla College)" },
+      { "id": "lead-aws", "label": "AWS Student Builder Group Core Team & Mentor (AWS Community)" },
       { "id": "cert-aws-de", "label": "AWS Academy Graduate - Data Engineering - Training Badge" },
       { "id": "cert-subagents", "label": "Certificate of completion: Introduction to subagents" },
       { "id": "cert-mcp", "label": "Introduction to Model Context Protocol" },
@@ -364,7 +368,7 @@
   "footer": {
     "brand": "VIMAL",
     "name": "Vimal Kansotia",
-    "tagline": "Data · Analytics · ML",
+    "tagline": "Data - Engineer - Scientist",
     "quickLinks": [
       {
         "id": "footer-home",

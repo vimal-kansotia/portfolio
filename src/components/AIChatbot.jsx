@@ -307,8 +307,38 @@ Check out the Projects section below for live links and code repos!`;
 • Analytics & Dev: Power BI, Pandas, Scikit-learn, Docker, Git, Linux.`;
     }
 
-    if (lower.includes('leadership') || lower.includes('aws') || lower.includes('community')) {
-      return `I am a Core Team Member & Mentor for the AWS Student Builder Group! 🚀 I lead cloud learning initiatives across campus, organize hands-on data workshops, and mentor a growing community of 100+ aspiring developers.`;
+    // Specific Leadership Queries
+    if (lower.includes('placement') || lower.includes('training') || lower.includes('t&p')) {
+      return `🎓 Training & Development Coordinator — Placement Cell, B.K. Birla College:
+I coordinated campus recruitment drives, organized technical skill enhancement workshops, conducted resume building & mock interview sessions, and bridged student talents with industry recruiters to boost college placements.`;
+    }
+
+    if (lower.includes('mpower') || lower.includes('mental health') || lower.includes('wellness')) {
+      return `💚 MPower Core Team Member (3 Years) — B.K. Birla College:
+Served 3 years on the core leadership team of MPower, advocating youth mental health awareness, spearheading campus wellness initiatives, organizing peer support sessions, and hosting college-wide awareness campaigns.`;
+    }
+
+    if (lower.includes('astronomical') || lower.includes('astronomy') || lower.includes('stargazing') || lower.includes('class representative') || lower.includes('cr')) {
+      return `🌟 Class Representative (3 Years) & Head of Astronomical Club — B.K. Birla College:
+• Served as Class Representative (CR) for 3 consecutive years, representing student interests to college faculty.
+• Headed the Astronomical Club, organizing stargazing camps, astrophysics seminars, and hosting major intercollegiate and intracollegiate events.`;
+    }
+
+    if (lower.includes('aws student') || lower.includes('aws builder') || lower.includes('cloud builder')) {
+      return `☁️ AWS Student Builder Group — Core Team Lead:
+Led a 100+ member cloud student community, organized hands-on AWS workshops (S3, Glue, Lambda, Redshift), mentored peers on cloud data architectures, and hosted tech hackathons.`;
+    }
+
+    // General Leadership Query (lists ALL 4 leadership roles)
+    if (lower.includes('leadership') || lower.includes('leader') || lower.includes('role') || lower.includes('position') || lower.includes('community') || lower.includes('birla')) {
+      return `🏆 Here are all my 4 key leadership & coordinator roles at B.K. Birla College:
+
+1. ☁️ AWS Student Builder Group — Core Team Lead (100+ members, mentoring & cloud workshops)
+2. 🎓 Training & Development Coordinator — Placement Cell (Campus recruitment drives & interview prep)
+3. 💚 MPower Core Team Member (3 Years driving youth mental health & wellness campaigns)
+4. 🌟 Class Representative (3 Years) & Head of Astronomical Club (Stargazing camps & intercollegiate events)
+
+Feel free to ask me specifically about any of these roles!`;
     }
 
     if (lower.includes('hire') || lower.includes('why')) {
