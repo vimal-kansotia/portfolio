@@ -103,14 +103,10 @@ export default function AboutSection({ about, skillBars, education, certificatio
         <article className="about-tile about-tile-mindset glass card-3d">
           <div className="about-header-row">
             <Award size={22} className="text-[#82A626]" />
-            <h3 className="about-tile-heading" style={{ margin: 0 }}>Leadership & Certifications</h3>
+            <h3 className="about-tile-heading" style={{ margin: 0 }}>Certifications</h3>
           </div>
           <div className="cert-cards-list">
             {[
-              { title: 'Training & Development Coordinator — Placement Cell', issuer: 'Placement Cell • B.K. Birla College' },
-              { title: 'MPower Core Team Member (3 Years)', issuer: 'Youth Mental Health Initiative • B.K. Birla College' },
-              { title: 'Class Representative (CR 3 Years) & Head of Astronomical Club', issuer: 'Student Leadership • B.K. Birla College' },
-              { title: 'AWS Student Builder Group Core Team & Mentor', issuer: 'AWS Student Community' },
               { title: 'AWS Academy Graduate — Data Engineering (Training Badge)', issuer: 'AWS Certified' },
               { title: 'Certificate of Completion: Introduction to Subagents', issuer: 'AI & Agents Certified' },
               { title: 'Introduction to Model Context Protocol', issuer: 'MCP & LLM Certified' },
