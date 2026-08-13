@@ -3565,6 +3565,16 @@ textarea.form-input {
   color: #D6CAB8;
 }
 
+.skills-filter-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
 .skills-top-grid {
   display: grid;
   grid-template-columns: repeat(1, minmax(0, 1fr));
@@ -3584,32 +3594,320 @@ textarea.form-input {
   }
 }
 
-.skills-category-card {
-  background-color: #ECE4D8;
-  border: 1px solid #DCD0C0;
-  border-radius: 1.25rem;
-  padding: 1.25rem;
+/* Expanded Showcase Box for Single Selected Category */
+.skills-expanded-card {
+  width: 100%;
+  background: rgba(236, 228, 216, 0.75);
+  border: 1px solid rgba(220, 208, 192, 0.9);
+  border-radius: 1.5rem;
+  padding: 2rem 2.25rem;
   position: relative;
   overflow: hidden;
-  transition: transform 0.4s var(--ease-spring), box-shadow 0.4s ease, border-color 0.3s ease;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  transition: all 0.4s var(--ease-spring);
+  box-shadow: 0 12px 32px rgba(41, 56, 3, 0.08);
+  animation: fadeInExpand 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  margin-bottom: 2.5rem;
+}
+
+:root[data-theme='dark'] .skills-expanded-card {
+  background: rgba(22, 18, 14, 0.75);
+  border-color: rgba(255, 255, 255, 0.12);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.4);
+}
+
+/* Category-specific border highlights & subtle ambient box glows on HOVER ONLY */
+.skills-expanded-card[data-category="programming"]:hover {
+  border-color: rgba(56, 189, 248, 0.6) !important;
+  box-shadow: 0 20px 45px -10px rgba(56, 189, 248, 0.22), 0 0 30px rgba(56, 189, 248, 0.15) !important;
+}
+.skills-expanded-card[data-category="cloud"]:hover {
+  border-color: rgba(251, 191, 36, 0.6) !important;
+  box-shadow: 0 20px 45px -10px rgba(251, 191, 36, 0.22), 0 0 30px rgba(251, 191, 36, 0.15) !important;
+}
+.skills-expanded-card[data-category="data-engineering"]:hover {
+  border-color: rgba(192, 132, 252, 0.6) !important;
+  box-shadow: 0 20px 45px -10px rgba(192, 132, 252, 0.22), 0 0 30px rgba(192, 132, 252, 0.15) !important;
+}
+.skills-expanded-card[data-category="databases"]:hover {
+  border-color: rgba(129, 140, 248, 0.6) !important;
+  box-shadow: 0 20px 45px -10px rgba(129, 140, 248, 0.22), 0 0 30px rgba(129, 140, 248, 0.15) !important;
+}
+.skills-expanded-card[data-category="analytics"]:hover {
+  border-color: rgba(52, 211, 153, 0.6) !important;
+  box-shadow: 0 20px 45px -10px rgba(52, 211, 153, 0.22), 0 0 30px rgba(52, 211, 153, 0.15) !important;
+}
+.skills-expanded-card[data-category="devops"]:hover {
+  border-color: rgba(251, 113, 133, 0.6) !important;
+  box-shadow: 0 20px 45px -10px rgba(251, 113, 133, 0.22), 0 0 30px rgba(251, 113, 133, 0.15) !important;
+}
+
+@keyframes fadeInExpand {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.skills-expanded-header {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 1.75rem;
+  padding-bottom: 1.25rem;
+  border-bottom: 1px solid rgba(220, 208, 192, 0.6);
+}
+
+:root[data-theme='dark'] .skills-expanded-header {
+  border-bottom-color: rgba(255, 255, 255, 0.08);
+}
+
+@media (min-width: 640px) {
+  .skills-expanded-header {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+
+.expanded-title-group {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.expanded-card-title {
+  font-size: 1.45rem;
+  font-weight: 800;
+  color: #1E1A14;
+  letter-spacing: -0.02em;
+  margin: 0;
+}
+
+:root[data-theme='dark'] .expanded-card-title {
+  color: #FAF6F0;
+}
+
+.expanded-reset-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 0.45rem 1rem;
+  border-radius: 9999px;
+  background: rgba(130, 166, 38, 0.12);
+  color: #557210;
+  border: 1px solid rgba(130, 166, 38, 0.25);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+:root[data-theme='dark'] .expanded-reset-btn {
+  background: rgba(255, 255, 255, 0.06);
+  color: #D6CAB8;
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+.expanded-reset-btn:hover {
+  background: #82A626 !important;
+  color: #FFFFFF !important;
+  border-color: #82A626 !important;
+  box-shadow: 0 0 16px rgba(130, 166, 38, 0.35);
+  transform: translateY(-1px);
+}
+
+/* Futuristic Tech Terminal Tile Grid */
+.tech-tiles-grid {
+  display: grid;
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+@media (min-width: 640px) {
+  .tech-tiles-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1024px) {
+  .tech-tiles-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+.tech-tile-card {
+  background: rgba(245, 239, 230, 0.85);
+  border: 1px solid rgba(220, 208, 192, 0.85);
+  border-radius: 1rem;
+  padding: 0.95rem 1.1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 0.5rem;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  transition: all 0.3s var(--ease-spring);
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+:root[data-theme='dark'] .tech-tile-card {
+  background: rgba(255, 255, 255, 0.035);
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+.tech-tile-card:hover {
+  transform: translateY(-4px) scale(1.02);
+  border-color: #82A626 !important;
+  box-shadow: 0 12px 28px -6px rgba(130, 166, 38, 0.3), 0 0 20px rgba(130, 166, 38, 0.15) !important;
+}
+
+.skills-expanded-card[data-category="programming"] .tech-tile-card:hover {
+  border-color: #38BDF8 !important;
+  box-shadow: 0 12px 28px -6px rgba(56, 189, 248, 0.35), 0 0 20px rgba(56, 189, 248, 0.2) !important;
+}
+
+.skills-expanded-card[data-category="cloud"] .tech-tile-card:hover {
+  border-color: #FBBF24 !important;
+  box-shadow: 0 12px 28px -6px rgba(251, 191, 36, 0.35), 0 0 20px rgba(251, 191, 36, 0.2) !important;
+}
+
+.skills-expanded-card[data-category="data-engineering"] .tech-tile-card:hover {
+  border-color: #C084FC !important;
+  box-shadow: 0 12px 28px -6px rgba(192, 132, 252, 0.35), 0 0 20px rgba(192, 132, 252, 0.2) !important;
+}
+
+.skills-expanded-card[data-category="databases"] .tech-tile-card:hover {
+  border-color: #818CF8 !important;
+  box-shadow: 0 12px 28px -6px rgba(129, 140, 248, 0.35), 0 0 20px rgba(129, 140, 248, 0.2) !important;
+}
+
+.skills-expanded-card[data-category="analytics"] .tech-tile-card:hover {
+  border-color: #34D399 !important;
+  box-shadow: 0 12px 28px -6px rgba(52, 211, 153, 0.35), 0 0 20px rgba(52, 211, 153, 0.2) !important;
+}
+
+.skills-expanded-card[data-category="devops"] .tech-tile-card:hover {
+  border-color: #FB7185 !important;
+  box-shadow: 0 12px 28px -6px rgba(251, 113, 133, 0.35), 0 0 20px rgba(251, 113, 133, 0.2) !important;
+}
+
+.tech-tile-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.tech-tile-name {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #1E1A14;
+  letter-spacing: -0.01em;
+}
+
+:root[data-theme='dark'] .tech-tile-name {
+  color: #FAF6F0;
+}
+
+.tech-tile-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 9999px;
+  background-color: #82A626;
+  box-shadow: 0 0 8px #82A626;
+}
+
+.tech-tile-badge {
+  display: inline-flex;
+  align-items: center;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #557210;
+  opacity: 0.9;
+}
+
+:root[data-theme='dark'] .tech-tile-badge {
+  color: #B9AB95;
+}
+
+.expanded-footer-note {
+  margin-top: 1.75rem;
+  padding-top: 1rem;
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-top: 1px dashed rgba(220, 208, 192, 0.5);
+}
+
+:root[data-theme='dark'] .expanded-footer-note {
+  border-top-color: rgba(255, 255, 255, 0.06);
+}
+
+.skills-category-card {
+  background: rgba(236, 228, 216, 0.65);
+  border: 1px solid rgba(220, 208, 192, 0.8);
+  border-radius: 1.25rem;
+  padding: 1.35rem 1.25rem 1.25rem 1.25rem;
+  position: relative;
+  overflow: hidden;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  transition: transform 0.4s var(--ease-spring), box-shadow 0.4s ease, border-color 0.3s ease, background 0.3s ease;
 }
 
 :root[data-theme='dark'] .skills-category-card {
-  background-color: #16130E;
-  border-color: #2A241C;
+  background: rgba(22, 18, 14, 0.65);
+  border-color: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
 }
 
 .skills-category-card:hover {
   transform: translateY(-6px) scale(1.015);
-  border-color: #82A626 !important;
-  box-shadow: 0 16px 36px rgba(130, 166, 38, 0.22), 0 0 20px rgba(130, 166, 38, 0.15) !important;
+  border-color: rgba(130, 166, 38, 0.6) !important;
+  box-shadow: 0 20px 40px -10px rgba(130, 166, 38, 0.22), 0 0 25px rgba(130, 166, 38, 0.15) !important;
+}
+
+/* Specific subtle theme glows on hover per category */
+.skills-category-card[data-category="programming"]:hover {
+  border-color: rgba(56, 189, 248, 0.6) !important;
+  box-shadow: 0 20px 40px -10px rgba(56, 189, 248, 0.2), 0 0 25px rgba(56, 189, 248, 0.12) !important;
+}
+.skills-category-card[data-category="cloud"]:hover {
+  border-color: rgba(251, 191, 36, 0.6) !important;
+  box-shadow: 0 20px 40px -10px rgba(251, 191, 36, 0.2), 0 0 25px rgba(251, 191, 36, 0.12) !important;
+}
+.skills-category-card[data-category="data-engineering"]:hover {
+  border-color: rgba(192, 132, 252, 0.6) !important;
+  box-shadow: 0 20px 40px -10px rgba(192, 132, 252, 0.2), 0 0 25px rgba(192, 132, 252, 0.12) !important;
+}
+.skills-category-card[data-category="databases"]:hover {
+  border-color: rgba(129, 140, 248, 0.6) !important;
+  box-shadow: 0 20px 40px -10px rgba(129, 140, 248, 0.2), 0 0 25px rgba(129, 140, 248, 0.12) !important;
+}
+.skills-category-card[data-category="analytics"]:hover {
+  border-color: rgba(52, 211, 153, 0.6) !important;
+  box-shadow: 0 20px 40px -10px rgba(52, 211, 153, 0.2), 0 0 25px rgba(52, 211, 153, 0.12) !important;
+}
+.skills-category-card[data-category="devops"]:hover {
+  border-color: rgba(251, 113, 133, 0.6) !important;
+  box-shadow: 0 20px 40px -10px rgba(251, 113, 133, 0.2), 0 0 25px rgba(251, 113, 133, 0.12) !important;
 }
 
 .category-card-title {
-  font-size: 1.1rem;
+  font-size: 1.05rem;
   font-weight: 700;
   color: #1E1A14;
   margin: 0;
+  letter-spacing: -0.01em;
 }
 
 :root[data-theme='dark'] .category-card-title {
@@ -3619,8 +3917,31 @@ textarea.form-input {
 .skills-category-header {
   display: flex;
   align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.1rem;
+}
+
+.skills-title-group {
+  display: flex;
+  align-items: center;
   gap: 0.75rem;
-  margin-bottom: 1rem;
+}
+
+.category-skill-count {
+  font-size: 0.68rem;
+  font-weight: 600;
+  font-family: var(--font-mono);
+  padding: 0.2rem 0.6rem;
+  border-radius: 9999px;
+  background: rgba(65, 91, 6, 0.08);
+  color: #557210;
+  border: 1px solid rgba(65, 91, 6, 0.15);
+}
+
+:root[data-theme='dark'] .category-skill-count {
+  background: rgba(255, 255, 255, 0.05);
+  color: #B9AB95;
+  border-color: rgba(255, 255, 255, 0.1);
 }
 
 .skills-pill-wrap {
@@ -3632,9 +3953,9 @@ textarea.form-input {
 .skill-pill {
   font-size: 0.75rem;
   font-weight: 600;
-  padding: 0.35rem 0.85rem;
+  padding: 0.38rem 0.85rem;
   border-radius: 9999px;
-  transition: all 0.2s ease;
+  transition: all 0.25s var(--ease-spring);
 }
 
 .skill-pill-primary {
@@ -3644,24 +3965,26 @@ textarea.form-input {
 }
 
 .skill-pill-normal {
-  background-color: #F5EFE6;
+  background: rgba(245, 239, 230, 0.75);
   color: #362F24;
-  border: 1px solid #DCD0C0;
+  border: 1px solid rgba(220, 208, 192, 0.8);
+  backdrop-filter: blur(4px);
   cursor: pointer;
 }
 
 :root[data-theme='dark'] .skill-pill-normal {
-  background-color: #231E18;
+  background: rgba(255, 255, 255, 0.04);
   color: #E6DDD0;
-  border-color: #362F25;
+  border-color: rgba(255, 255, 255, 0.09);
+  backdrop-filter: blur(8px);
 }
 
 .skill-pill-normal:hover {
   background-color: #82A626 !important;
   color: #FFFFFF !important;
   border-color: #82A626 !important;
-  box-shadow: 0 0 14px rgba(130, 166, 38, 0.45) !important;
-  transform: translateY(-2px);
+  box-shadow: 0 0 16px rgba(130, 166, 38, 0.45) !important;
+  transform: translateY(-2px) scale(1.04);
 }
 
 /* ============================================================

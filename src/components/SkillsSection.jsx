@@ -8,9 +8,10 @@ import {
   HardDrive,
   BarChart3,
   Terminal,
-  Sparkles,
   Cpu,
-  Database
+  Database,
+  ArrowLeft,
+  CheckCircle2
 } from 'lucide-react';
 
 const CATEGORY_ICONS = {
@@ -24,15 +25,63 @@ const CATEGORY_ICONS = {
   default: Database
 };
 
-// Category icon background colors
+// Metadata tags for individual tools & technologies
+const SKILL_META = {
+  'Python': { tag: 'Primary Language' },
+  'SQL': { tag: 'Data Querying' },
+  'R': { tag: 'Statistical Computing' },
+  'Java': { tag: 'OOP Systems' },
+  'C++': { tag: 'High Performance' },
+  'HTML/CSS': { tag: 'UI Styling' },
+  'JavaScript': { tag: 'Web Logic' },
+
+  'AWS S3': { tag: 'Object Storage' },
+  'AWS Glue': { tag: 'Serverless ETL' },
+  'AWS Glue Studio': { tag: 'Visual Pipelines' },
+  'Athena': { tag: 'Interactive Query' },
+  'Lambda': { tag: 'Serverless Compute' },
+  'Redshift': { tag: 'Cloud Warehouse' },
+  'IAM': { tag: 'Cloud Security' },
+  'CloudWatch': { tag: 'Monitoring & Metrics' },
+
+  'ETL / ELT': { tag: 'Pipeline Pattern' },
+  'Data Pipelines': { tag: 'Data Flow' },
+  'Batch Processing': { tag: 'Bulk Engine' },
+  'Data Ingestion': { tag: 'Stream & Batch' },
+  'Apache Parquet': { tag: 'Columnar Storage' },
+  'Schema Evolution': { tag: 'Data Modeling' },
+  'Data Lake Architecture': { tag: 'Lakehouse Design' },
+
+  'MySQL': { tag: 'Relational DB' },
+  'MongoDB': { tag: 'Document NoSQL' },
+  'Amazon RDS': { tag: 'Managed RDBMS' },
+  'PostgreSQL': { tag: 'Advanced RDBMS' },
+  'DuckDB': { tag: 'Analytical Engine' },
+
+  'Power BI': { tag: 'BI Dashboards' },
+  'Excel': { tag: 'Spreadsheet Analysis' },
+  'Minitab': { tag: 'Statistical Tool' },
+  'Streamlit': { tag: 'Data Apps' },
+  'Plotly': { tag: 'Interactive Charts' },
+  'Pandas': { tag: 'Data Wrangling' },
+  'Scikit-learn': { tag: 'Machine Learning' },
+
+  'Git': { tag: 'Version Control' },
+  'Linux': { tag: 'OS & Terminal' },
+  'CI/CD Fundamentals': { tag: 'Automation' },
+  'Docker': { tag: 'Containerization' },
+  'VS Code': { tag: 'Development IDE' }
+};
+
+// Category icon background colors with dual light/dark mode support and ambient glows
 const ICON_BG_COLORS = {
-  programming: 'bg-[#E1F0FA] text-[#0284C7]',
-  cloud: 'bg-[#FEF3C7] text-[#D97706]',
-  'data-engineering': 'bg-[#F3E8FF] text-[#9333EA]',
-  databases: 'bg-[#E0E7FF] text-[#4F46E5]',
-  analytics: 'bg-[#DCFCE7] text-[#16A34A]',
-  devops: 'bg-[#FCE7F3] text-[#DB2777]',
-  default: 'bg-[#ECE4D8] text-[#415B06]'
+  programming: 'bg-sky-100/90 text-sky-700 border border-sky-300/60 dark:bg-sky-950/60 dark:text-sky-400 dark:border-sky-500/30 dark:shadow-[0_0_15px_rgba(56,189,248,0.25)]',
+  cloud: 'bg-amber-100/90 text-amber-800 border border-amber-300/60 dark:bg-amber-950/60 dark:text-amber-400 dark:border-amber-500/30 dark:shadow-[0_0_15px_rgba(251,191,36,0.25)]',
+  'data-engineering': 'bg-purple-100/90 text-purple-800 border border-purple-300/60 dark:bg-purple-950/60 dark:text-purple-400 dark:border-purple-500/30 dark:shadow-[0_0_15px_rgba(192,132,252,0.25)]',
+  databases: 'bg-indigo-100/90 text-indigo-800 border border-indigo-300/60 dark:bg-indigo-950/60 dark:text-indigo-400 dark:border-indigo-500/30 dark:shadow-[0_0_15px_rgba(129,140,248,0.25)]',
+  analytics: 'bg-emerald-100/90 text-emerald-800 border border-emerald-300/60 dark:bg-emerald-950/60 dark:text-emerald-400 dark:border-emerald-500/30 dark:shadow-[0_0_15px_rgba(52,211,153,0.25)]',
+  devops: 'bg-rose-100/90 text-rose-800 border border-rose-300/60 dark:bg-rose-950/60 dark:text-rose-400 dark:border-rose-500/30 dark:shadow-[0_0_15px_rgba(251,113,133,0.25)]',
+  default: 'bg-lime-100/90 text-lime-800 border border-lime-300/60 dark:bg-lime-950/60 dark:text-lime-400 dark:border-lime-500/30 dark:shadow-[0_0_15px_rgba(163,230,53,0.25)]'
 };
 
 export default function SkillsSection({ skillsData }) {
@@ -44,7 +93,7 @@ export default function SkillsSection({ skillsData }) {
       id: 'programming',
       title: 'Programming',
       icon: 'code',
-      skills: ['Python', 'SQL', 'R', 'Java', 'C++']
+      skills: ['Python', 'SQL', 'R', 'Java', 'C++', 'HTML/CSS', 'JavaScript']
     },
     {
       id: 'cloud',
@@ -68,42 +117,14 @@ export default function SkillsSection({ skillsData }) {
       id: 'analytics',
       title: 'Analytics',
       icon: 'bar-chart',
-      skills: ['Power BI', 'Excel', 'Minitab', 'Streamlit', 'Plotly']
+      skills: ['Power BI', 'Excel', 'Minitab', 'Streamlit', 'Plotly', 'Pandas', 'Scikit-learn']
     },
     {
       id: 'devops',
       title: 'DevOps',
       icon: 'terminal',
-      skills: ['Git', 'Linux', 'CI/CD Fundamentals', 'Docker']
+      skills: ['Git', 'Linux', 'CI/CD Fundamentals', 'Docker', 'VS Code']
     }
-  ];
-
-  // Full Tech Stack for Vimal Kansotia
-  const techStack = skillsData?.techStack || [
-    { id: 't1', name: 'Python', category: 'Programming' },
-    { id: 't2', name: 'SQL', category: 'Programming' },
-    { id: 't3', name: 'AWS', category: 'Cloud' },
-    { id: 't4', name: 'S3', category: 'Cloud' },
-    { id: 't5', name: 'Glue', category: 'Cloud' },
-    { id: 't6', name: 'Athena', category: 'Cloud' },
-    { id: 't7', name: 'Redshift', category: 'Cloud' },
-    { id: 't8', name: 'Lambda', category: 'Cloud' },
-    { id: 't9', name: 'MySQL', category: 'Databases' },
-    { id: 't10', name: 'MongoDB', category: 'Databases' },
-    { id: 't11', name: 'Git', category: 'DevOps' },
-    { id: 't12', name: 'Linux', category: 'DevOps' },
-    { id: 't13', name: 'Power BI', category: 'Analytics' },
-    { id: 't14', name: 'Streamlit', category: 'Analytics' },
-    { id: 't15', name: 'DuckDB', category: 'Data Engineering' },
-    { id: 't16', name: 'Apache Parquet', category: 'Data Engineering' },
-    { id: 't17', name: 'ETL / ELT', category: 'Data Engineering' },
-    { id: 't18', name: 'Data Pipelines', category: 'Data Engineering' },
-    { id: 't19', name: 'R', category: 'Programming' },
-    { id: 't20', name: 'PostgreSQL', category: 'Databases' },
-    { id: 't21', name: 'Docker', category: 'DevOps' },
-    { id: 't22', name: 'Plotly', category: 'Analytics' },
-    { id: 't23', name: 'Excel', category: 'Analytics' },
-    { id: 't24', name: 'Scikit-learn', category: 'Analytics' }
   ];
 
   // List of filter categories for the pills
@@ -117,15 +138,11 @@ export default function SkillsSection({ skillsData }) {
     return cats;
   }, [categories]);
 
-  // Filtered tech stack items based on selected category pill
-  const filteredTechStack = useMemo(() => {
-    return techStack.filter(item => {
-      return (
-        selectedCategory === 'All' ||
-        item.category.toLowerCase() === selectedCategory.toLowerCase()
-      );
-    });
-  }, [techStack, selectedCategory]);
+  // Currently active single category if filtered
+  const activeCategoryObj = useMemo(() => {
+    if (selectedCategory === 'All') return null;
+    return categories.find(cat => cat.title.toLowerCase() === selectedCategory.toLowerCase());
+  }, [categories, selectedCategory]);
 
   return (
     <section id="skills" className="skills-container section">
@@ -143,92 +160,121 @@ export default function SkillsSection({ skillsData }) {
         <p className="skills-heading-subtitle">
           Technologies, Frameworks, Cloud Platforms & Data Tools I leverage to build scalable data applications.
         </p>
+
+        {/* Interactive Category Filter Tabs */}
+        <div className="skills-filter-row scrollbar-none">
+          {filterCategories.map((catName) => {
+            const isActive = selectedCategory === catName;
+            return (
+              <button
+                key={catName}
+                onClick={() => setSelectedCategory(catName)}
+                className={`filter-btn ${isActive ? 'filter-btn-active' : 'filter-btn-inactive'}`}
+              >
+                {catName}
+              </button>
+            );
+          })}
+        </div>
       </div>
 
-      {/* Top Grid: Categorized Skill Cards */}
-      <div className="skills-top-grid">
-        {categories.map((cat, idx) => {
-          const IconComp = CATEGORY_ICONS[cat.id] || CATEGORY_ICONS.default;
-          const iconBgClass = ICON_BG_COLORS[cat.id] || ICON_BG_COLORS.default;
+      {/* Render either 3-Column Grid (when 'All' is selected) OR Futuristic Expanded Box (when a specific category is selected) */}
+      {selectedCategory === 'All' ? (
+        <div className="skills-top-grid">
+          {categories.map((cat, idx) => {
+            const IconComp = CATEGORY_ICONS[cat.id] || CATEGORY_ICONS.default;
+            const iconBgClass = ICON_BG_COLORS[cat.id] || ICON_BG_COLORS.default;
 
-          return (
-            <div key={cat.id || idx} className="skills-category-card glass card-3d">
-              <div className="skills-category-header">
-                <div className={`p-2 rounded-xl flex items-center justify-center ${iconBgClass}`}>
-                  <IconComp className="w-5 h-5" />
+            return (
+              <div
+                key={cat.id || idx}
+                className="skills-category-card glass card-3d cursor-pointer"
+                data-category={cat.id}
+                onClick={() => setSelectedCategory(cat.title)}
+              >
+                <div className="skills-category-header">
+                  <div className="skills-title-group">
+                    <div className={`p-2 rounded-xl flex items-center justify-center transition-transform duration-300 group-hover:scale-110 ${iconBgClass}`}>
+                      <IconComp className="w-5 h-5" />
+                    </div>
+                    <h3 className="category-card-title">
+                      {cat.title}
+                    </h3>
+                  </div>
+                  <span className="category-skill-count">
+                    {cat.skills?.length || 0} skills
+                  </span>
                 </div>
-                <h3 className="category-card-title">
-                  {cat.title}
-                </h3>
-              </div>
 
-              <div className="skills-pill-wrap">
-                {cat.skills.map((skill, sIdx) => {
-                  return (
-                    <span
-                      key={sIdx}
-                      className="skill-pill skill-pill-normal"
-                    >
-                      {skill}
-                    </span>
-                  );
-                })}
+                <div className="skills-pill-wrap">
+                  {cat.skills.map((skill, sIdx) => {
+                    return (
+                      <span
+                        key={sIdx}
+                        className="skill-pill skill-pill-normal"
+                      >
+                        {skill}
+                      </span>
+                    );
+                  })}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      ) : activeCategoryObj ? (
+        /* Futuristic Tech Terminal Showcase Box for Single Selected Category */
+        <div className="skills-expanded-card glass" data-category={activeCategoryObj.id}>
+          <div className="skills-expanded-header">
+            <div className="expanded-title-group">
+              {(() => {
+                const IconComp = CATEGORY_ICONS[activeCategoryObj.id] || CATEGORY_ICONS.default;
+                const iconBgClass = ICON_BG_COLORS[activeCategoryObj.id] || ICON_BG_COLORS.default;
+                return (
+                  <div className={`p-3.5 rounded-2xl flex items-center justify-center ${iconBgClass}`}>
+                    <IconComp className="w-7 h-7" />
+                  </div>
+                );
+              })()}
+              <div>
+                <h3 className="expanded-card-title">{activeCategoryObj.title}</h3>
+                <p className="text-xs text-zinc-400 font-mono mt-0.5">
+                  SHOWCASE DASHBOARD • {activeCategoryObj.skills?.length || 0} CORE TOOLS & FRAMEWORKS
+                </p>
               </div>
             </div>
-          );
-        })}
-      </div>
 
-      {/* Bottom Container: Interactive Tech Stack */}
-      <div className="interactive-stack-box">
-        {/* Header Row: Title & Filter Pills */}
-        <div className="interactive-stack-header">
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
-            <Sparkles className="w-5 h-5" style={{ color: '#82A626' }} />
-            <h3 className="interactive-stack-title">
-              Interactive Tech Stack
-            </h3>
+            <button
+              onClick={() => setSelectedCategory('All')}
+              className="expanded-reset-btn"
+            >
+              <ArrowLeft className="w-4 h-4" />
+              View All Categories
+            </button>
           </div>
 
-          {/* Category Filter Pills */}
-          <div className="filter-pills-row scrollbar-none">
-            {filterCategories.map((catName) => {
-              const isActive = selectedCategory === catName;
+          {/* Interactive Tech Tiles Grid */}
+          <div className="tech-tiles-grid">
+            {activeCategoryObj.skills.map((skill, sIdx) => {
+              const meta = SKILL_META[skill] || { tag: 'Technology' };
               return (
-                <button
-                  key={catName}
-                  onClick={() => setSelectedCategory(catName)}
-                  className={`filter-btn ${isActive ? 'filter-btn-active' : 'filter-btn-inactive'}`}
-                >
-                  {catName}
-                </button>
+                <div key={sIdx} className="tech-tile-card">
+                  <div className="tech-tile-top">
+                    <div className="flex items-center gap-2">
+                      <CheckCircle2 className="w-4 h-4 text-[#82A626] shrink-0" />
+                      <span className="tech-tile-name">{skill}</span>
+                    </div>
+                    <span className="tech-tile-dot" />
+                  </div>
+                  <div className="tech-tile-badge">
+                    <span>{meta.tag}</span>
+                  </div>
+                </div>
               );
             })}
           </div>
         </div>
-
-        {/* Tech Stack Cards Grid */}
-        <div className="tech-cards-grid" key={selectedCategory}>
-          {filteredTechStack.map((tech, idx) => (
-            <div
-              key={tech.id || tech.name}
-              className="tech-card"
-              style={{ animationDelay: `${Math.min(idx * 0.015, 0.18)}s` }}
-            >
-              {/* Animated Radar Pulse Ping Dot */}
-              <div className="tech-dot-radar">
-                <span className="radar-ping" />
-                <span className="radar-core" />
-              </div>
-
-              {/* Tech Name */}
-              <span className="tech-title">
-                {tech.name}
-              </span>
-            </div>
-          ))}
-        </div>
-      </div>
+      ) : null}
     </section>
   );
 }
