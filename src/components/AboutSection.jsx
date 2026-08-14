@@ -1,4 +1,5 @@
 import { Award, GraduationCap, Shield } from 'lucide-react';
+import ExecutiveProfileCard from './ExecutiveProfileCard';
 
 function SectionHeading({ children, className = '' }) {
   return <h2 className={`section-heading ${className}`}>{children}</h2>;
@@ -11,7 +12,7 @@ export default function AboutSection({ about, skillBars, education, certificatio
     <section id="about" className="section about-template">
       <div className="about-template-header">
         <SectionHeading>
-          About <span className="text-gradient-shimmer">Me</span>
+          <span className="text-gradient-shimmer">About Me</span>
         </SectionHeading>
       </div>
 
@@ -25,11 +26,11 @@ export default function AboutSection({ about, skillBars, education, certificatio
           </p>
           <div className="about-pill-row">
             <span className="about-pill-glow">
-              <span className="w-2 h-2 rounded-full bg-[#82A626] animate-pulse shrink-0" />
+              <span className="w-2 h-2 rounded-full animate-pulse shrink-0" style={{ backgroundColor: 'var(--color-primary)' }} />
               {about.location}
             </span>
             <span className="about-pill-glow">
-              <span className="w-2 h-2 rounded-full bg-[#82A626] animate-pulse shrink-0" />
+              <span className="w-2 h-2 rounded-full animate-pulse shrink-0" style={{ backgroundColor: 'var(--color-primary)' }} />
               {about.availability}
             </span>
           </div>
@@ -51,7 +52,7 @@ export default function AboutSection({ about, skillBars, education, certificatio
 
         <article className="about-tile about-tile-education glass card-3d">
           <div className="about-header-row">
-            <GraduationCap size={22} className="text-[#82A626]" />
+            <GraduationCap size={22} style={{ color: 'var(--color-primary)' }} />
             <h3 className="about-tile-heading" style={{ margin: 0 }}>Education</h3>
           </div>
           <div className="education-cards-list">
@@ -77,32 +78,13 @@ export default function AboutSection({ about, skillBars, education, certificatio
           </div>
         </article>
 
-        <article className="about-tile about-tile-center">
-          <img
-            src="/Assets/profile-outdoors.png"
-            alt={`${about.profileName} portrait`}
-            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-          />
-        </article>
-
-        <article className="about-tile about-tile-location">
-          <iframe
-            className="about-location-map"
-            title={`${about.locationCity || 'Location'} map`}
-            loading="lazy"
-            referrerPolicy="no-referrer-when-downgrade"
-            src={about.mapUrl}
-          />
-          <div className="about-location-overlay" />
-          <div className="about-location-content">
-            <p className="about-location-city">{about.locationCity}</p>
-            <p className="about-location-subtitle">{about.timezone}</p>
-          </div>
+        <article className="about-tile about-tile-center glass card-3d">
+          <ExecutiveProfileCard profileName={about.profileName || 'Vimal Santosh Kansotia'} location={about.location || 'Mumbai, India'} />
         </article>
 
         <article className="about-tile about-tile-mindset glass card-3d">
           <div className="about-header-row">
-            <Award size={22} className="text-[#82A626]" />
+            <Award size={22} style={{ color: 'var(--color-primary)' }} />
             <h3 className="about-tile-heading" style={{ margin: 0 }}>Certifications</h3>
           </div>
           <div className="cert-cards-list">
@@ -120,7 +102,7 @@ export default function AboutSection({ about, skillBars, education, certificatio
             ].map((cert, idx) => (
               <div key={idx} className="cert-subcard">
                 <div className="cert-icon-box">
-                  <Shield size={16} className="text-[#82A626]" />
+                  <Shield size={16} style={{ color: 'var(--color-primary)' }} />
                 </div>
                 <div className="cert-info">
                   <h4 className="cert-title">{cert.title}</h4>

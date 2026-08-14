@@ -1,11 +1,24 @@
 import { useRef } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
-import { EffectComposer, Bloom, Noise } from '@react-three/postprocessing';
 import StarField from './StarField';
 import ShootingStars from './ShootingStars';
 import SpaceTravellers from './SpaceTravellers';
 
-function ScrollCamera({ scrollY }) {
+const THEME_COLOR_MAP = {
+  gold: '#F59E0B',
+  purple: '#A855F7',
+  cyan: '#06B6D4',
+  teal: '#10B981',
+  blue: '#3B82F6',
+  indigo: '#6366F1',
+  lime: '#84CC16',
+  olive: '#415B06',
+  orange: '#F97316',
+  pink: '#EC4899',
+  red: '#EF4444',
+};
+
+function ScrollCamera({ scrollY, colorHex = '#415B06' }) {
   const { camera } = useThree();
   const light1Ref = useRef();
   const light2Ref = useRef();
@@ -21,30 +34,30 @@ function ScrollCamera({ scrollY }) {
 
   return (
     <>
-      <pointLight ref={light1Ref} position={[5, 5, 5]} intensity={2.2} color="#415B06" />
-      <pointLight ref={light2Ref} position={[-5, -5, 5]} intensity={1.5} color="#6A8C1A" />
+      <pointLight ref={light1Ref} position={[5, 5, 5]} intensity={2.5} color={colorHex} />
+      <pointLight ref={light2Ref} position={[-5, -5, 5]} intensity={1.8} color={colorHex} />
     </>
   );
 }
 
-export default function Scene3D({ scrollY }) {
+export default function Scene3D({ scrollY, colorTheme = 'olive' }) {
+  const colorHex = THEME_COLOR_MAP[colorTheme] || '#415B06';
+  const containerRef = useRef(null);
+
   return (
-    <div className="canvas-container">
+    <div className="canvas-container" ref={containerRef}>
       <Canvas
+        events={null}
         camera={{ position: [0, 0, 5], fov: 75 }}
         gl={{ alpha: true, antialias: true, powerPreference: 'high-performance', stencil: false, depth: true }}
         dpr={[1, 1.5]}
         performance={{ min: 0.5 }}
       >
-        <ambientLight intensity={1.6} />
-        <ScrollCamera scrollY={scrollY} />
+        <ambientLight intensity={1.8} />
+        <ScrollCamera scrollY={scrollY} colorHex={colorHex} />
         <StarField count={2500} />
         <ShootingStars />
         <SpaceTravellers />
-        
-        <EffectComposer disableNormalPass multisampling={0}>
-          <Bloom luminanceThreshold={0.4} luminanceSmoothing={0.9} intensity={0.25} />
-        </EffectComposer>
       </Canvas>
     </div>
   );

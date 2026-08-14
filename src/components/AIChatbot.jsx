@@ -401,11 +401,11 @@ Feel free to ask me specifically about any of these roles!`;
         type="button"
         onClick={() => setIsOpen(true)}
         className="chatbot-launcher-btn"
-        aria-label="Open AI Assistant"
+        aria-label="Ask me anything"
       >
         <div className={`chatbot-launcher-inner ${theme}`}>
-          <Bot size={22} className={theme === 'light' ? 'text-[#415B06]' : 'text-[#E2FF6F]'} />
-          <span className={`chatbot-launcher-text ${theme}`}>Ask AI</span>
+          <Bot size={22} style={{ color: 'var(--color-primary)' }} />
+          <span className={`chatbot-launcher-text ${theme}`}>Ask me anything</span>
           <span className={`chatbot-pulse-dot ${theme}`} />
         </div>
       </button>
@@ -426,7 +426,7 @@ Feel free to ask me specifically about any of these roles!`;
                 </button>
                 <div className="chatbot-avatar-box">
                   <img
-                    src="/Assets/profile.jpg"
+                    src="/Assets/profile-formal.png"
                     alt={ownerName}
                     className="chatbot-avatar-img"
                     onError={(e) => {
@@ -453,7 +453,7 @@ Feel free to ask me specifically about any of these roles!`;
                 </button>
 
                 <span className="chatbot-model-badge">
-                  <svg width="18" height="18" viewBox="0 0 50 50" fill="none" className="mr-1.5 text-[#E2FF6F]">
+                  <svg width="18" height="18" viewBox="0 0 50 50" fill="none" className="mr-1.5 text-[var(--color-accent)]">
                     <path fillRule="evenodd" clipRule="evenodd" d="M42.27 21.05a10.96 10.96 0 00-.95-9.01 11.08 11.08 0 00-11.93-5.32 11.12 11.12 0 00-8.23-3.66A10.97 10.97 0 0013.82 8.4a11.08 11.08 0 00-7.33 5.32 10.96 10.96 0 001.36 13 10.96 10.96 0 00.95 9.01 11.08 11.08 0 0011.93 5.32 11.12 11.12 0 008.23 3.66 10.97 10.97 0 007.34-5.34 11.08 11.08 0 007.33-5.32 10.96 10.96 0 00-1.36-13zm-17.27 23.9a8.47 8.47 0 01-4.88-1.53l.26-.15 8.76-5.06a1.45 1.45 0 00.72-1.25v-12.36l3.7 2.14a.13.13 0 01.07.1v10.24a8.53 8.53 0 01-8.56 8.56l.33-.69zm-17.72-7.58a8.45 8.45 0 01-1.01-5.51l.26.15 8.76 5.06a1.45 1.45 0 001.46 0l10.7-6.18v4.28a.15.15 0 01-.06.11l-8.87 5.12a8.52 8.52 0 01-11.24-3.03zm-2.25-19.28a8.47 8.47 0 014.28-3.61l-.01.3v10.12a1.45 1.45 0 00.72 1.25l10.7 6.18-3.7 2.14a.14.14 0 01-.13.02l-8.87-5.12a8.52 8.52 0 01-3.0-11.28l.02-.01zm30.43 5.61l-10.7-6.18 3.7-2.14a.14.14 0 01.13-.02l8.87 5.12a8.52 8.52 0 011.29 14.85v-10.38a1.45 1.45 0 00-.71-1.25zm4.49-5.61a8.47 8.47 0 01-1.01 5.51l-.26-.15-8.76-5.06a1.45 1.45 0 00-1.46 0l-10.7 6.18v-4.28a.15.15 0 01.06-.11l8.87-5.12a8.52 8.52 0 0112.56 8.56l-.3.47zm-21.71-13.78a8.47 8.47 0 015.28 1.91l-.26.15-8.76 5.06a1.45 1.45 0 00-.72 1.25v12.36l-3.7-2.14a.13.13 0 01-.07-.1V12.92a8.53 8.53 0 018.23-8.52z" fill="currentColor"/>
                   </svg>
                   OpenAI

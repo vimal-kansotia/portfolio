@@ -152,7 +152,7 @@ export default function SkillsSection({ skillsData }) {
           <span className="skills-eyebrow-label">TECHNICAL MASTERY</span>
           <div className="skills-heading-wrapper">
             <h2 className="skills-section-title">
-              Skills & <span className="text-gradient-shimmer">Tech Stack</span>
+              <span className="text-gradient-shimmer">Skills & Tech Stack</span>
             </h2>
             <div className="skills-heading-line" />
           </div>
@@ -261,7 +261,7 @@ export default function SkillsSection({ skillsData }) {
                 <div key={sIdx} className="tech-tile-card">
                   <div className="tech-tile-top">
                     <div className="flex items-center gap-2">
-                      <CheckCircle2 className="w-4 h-4 text-[#82A626] shrink-0" />
+                      <CheckCircle2 size={16} style={{ color: 'var(--color-primary)' }} className="shrink-0" />
                       <span className="tech-tile-name">{skill}</span>
                     </div>
                     <span className="tech-tile-dot" />

@@ -1,4 +1,19 @@
-import { FileText, Home, Mail, Menu, User, Code2, X, Sun, Moon, Sparkles, Award, Briefcase } from 'lucide-react';
+import { useState, useEffect, useRef } from 'react';
+import { FileText, Home, Mail, Menu, User, Code2, X, Sun, Moon, Sparkles, Award, Briefcase, ChevronDown } from 'lucide-react';
+
+const COLOR_PALETTES = [
+  { id: 'gold', name: 'Gold / Amber', color: '#F59E0B' },
+  { id: 'purple', name: 'Royal Purple', color: '#A855F7' },
+  { id: 'cyan', name: 'Electric Cyan', color: '#06B6D4' },
+  { id: 'teal', name: 'Neon Jade Teal', color: '#10B981' },
+  { id: 'blue', name: 'Sapphire Blue', color: '#3B82F6' },
+  { id: 'indigo', name: 'Quantum Indigo', color: '#6366F1' },
+  { id: 'lime', name: 'Hyper Lime', color: '#84CC16' },
+  { id: 'olive', name: 'Emerald / Olive', color: '#82A626' },
+  { id: 'orange', name: 'Vibrant Orange', color: '#F97316' },
+  { id: 'pink', name: 'Rose Pink', color: '#EC4899' },
+  { id: 'red', name: 'Crimson Red', color: '#EF4444' },
+];
 
 const navItems = [
   { id: 'home', label: 'Home', icon: Home },
@@ -18,7 +33,30 @@ export default function Navbar({
   resumeUrl,
   theme,
   onToggleTheme,
+  colorTheme = 'olive',
+  onSelectColorTheme = () => {},
 }) {
+  const [colorDropdownOpen, setColorDropdownOpen] = useState(false);
+  const popoverRef = useRef(null);
+
+  // Close palette dropdown on click outside or ESC key
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (popoverRef.current && !popoverRef.current.contains(e.target)) {
+        setColorDropdownOpen(false);
+      }
+    };
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') setColorDropdownOpen(false);
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, []);
+
   return (
     <>
       <nav className="navbar" role="navigation" aria-label="Main navigation">
@@ -40,16 +78,61 @@ export default function Navbar({
           </div>
 
           <div className="navbar-actions">
-            <button
-              type="button"
-              className="theme-toggle"
-              aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
-              aria-pressed={theme === 'dark'}
-              onClick={onToggleTheme}
-              title={theme === 'dark' ? 'Light mode' : 'Dark mode'}
+            <div className="theme-toggle-group" ref={popoverRef}>
+              {/* Day/Night Theme Toggle */}
+              <button
+                type="button"
+                className="theme-toggle"
+                aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
+                aria-pressed={theme === 'dark'}
+                onClick={onToggleTheme}
+                title={theme === 'dark' ? 'Light mode' : 'Dark mode'}
+              >
+                {theme === 'dark' ? <Sun style={{ width: 20, height: 20 }} /> : <Moon style={{ width: 20, height: 20 }} />}
+              </button>
+
+              {/* Chevron Dropdown Arrow next to Day/Night Orb */}
+              <button
+                type="button"
+                className={`theme-dropdown-btn ${colorDropdownOpen ? 'active' : ''}`}
+                aria-label="Color theme options"
+                title="Select accent color theme"
+                onClick={() => setColorDropdownOpen((o) => !o)}
+              >
+                <ChevronDown style={{ width: 15, height: 15, transition: 'transform 0.3s ease', transform: colorDropdownOpen ? 'rotate(180deg)' : 'none' }} />
+              </button>
+
+              {/* Color Swatches Pop-over Menu (2-Level Pure Colors) */}
+              {colorDropdownOpen && (
+                <div className="color-palette-popover glass">
+                  <div className="color-palette-swatches-2level">
+                    {COLOR_PALETTES.map((palette) => (
+                      <button
+                        key={palette.id}
+                        type="button"
+                        className={`color-swatch-btn ${colorTheme === palette.id ? 'selected' : ''}`}
+                        style={{ backgroundColor: palette.color }}
+                        title={palette.name}
+                        onClick={() => {
+                          onSelectColorTheme(palette.id);
+                          setColorDropdownOpen(false);
+                        }}
+                      />
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Get in touch CTA button */}
+            <a
+              href="#contact"
+              className="nav-get-in-touch-btn"
+              title="Get in touch"
             >
-              {theme === 'dark' ? <Sun style={{ width: 20, height: 20 }} /> : <Moon style={{ width: 20, height: 20 }} />}
-            </button>
+              <User style={{ width: 18, height: 18 }} />
+              <span>Get in touch</span>
+            </a>
 
             {/* Hamburger */}
             <button

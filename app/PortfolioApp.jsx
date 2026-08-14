@@ -123,10 +123,26 @@ export default function PortfolioApp({ initialContent }) {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  /* ── Theme ── */
+  /* ── Color Theme (Default Initial Face of Portfolio: Electric Cyan) ── */
+  const [colorTheme, setColorTheme] = useState('cyan');
+
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem('portfolio_color_theme');
+      if (saved) setColorTheme(saved);
+    } catch (e) { }
+  }, []);
+
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme);
   }, [theme]);
+
+  useEffect(() => {
+    document.documentElement.setAttribute('data-color-theme', colorTheme);
+    try {
+      localStorage.setItem('portfolio_color_theme', colorTheme);
+    } catch (e) { }
+  }, [colorTheme]);
 
   const toggleTheme = useCallback(() => {
     setTheme((t) => (t === 'dark' ? 'light' : 'dark'));
@@ -155,13 +171,13 @@ export default function PortfolioApp({ initialContent }) {
   return (
     <>
       {/* Big Bang Opening Intro Transition Screen */}
-      <BigBangIntro />
+      <BigBangIntro colorTheme={colorTheme} />
 
       {/* Interactive Custom Cursor */}
-      <CustomCursor theme={theme} />
+      <CustomCursor theme={theme} colorTheme={colorTheme} />
 
       {/* 3D background */}
-      <Scene3D scrollY={scrollY} />
+      <Scene3D scrollY={scrollY} colorTheme={colorTheme} />
 
       {/* Portfolio */}
       <div className="app-container" ref={mainRef}>
@@ -173,6 +189,8 @@ export default function PortfolioApp({ initialContent }) {
           resumeUrl={content.hero.resumeUrl || resumeUrl}
           theme={theme}
           onToggleTheme={toggleTheme}
+          colorTheme={colorTheme}
+          onSelectColorTheme={setColorTheme}
           brand={content.site.brand}
         />
 
