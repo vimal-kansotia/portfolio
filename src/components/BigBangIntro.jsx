@@ -12,10 +12,25 @@ import React, { useEffect, useRef, useState } from 'react';
  * - Pleiades Star Cluster (The Seven Sisters).
  * - Smooth portfolio reveal transition.
  */
-export default function BigBangIntro({ onComplete }) {
+const INTRO_COLOR_PALETTES = {
+  gold: { primary: '#F59E0B', light: '#FBBF24', rgb: '245, 158, 11' },
+  purple: { primary: '#A855F7', light: '#C084FC', rgb: '168, 85, 247' },
+  cyan: { primary: '#06B6D4', light: '#22D3EE', rgb: '6, 182, 212' },
+  teal: { primary: '#10B981', light: '#34D399', rgb: '16, 185, 129' },
+  blue: { primary: '#3B82F6', light: '#60A5FA', rgb: '59, 130, 246' },
+  indigo: { primary: '#6366F1', light: '#818CF8', rgb: '99, 102, 241' },
+  lime: { primary: '#84CC16', light: '#A3E635', rgb: '132, 204, 22' },
+  olive: { primary: '#82A626', light: '#a3e635', rgb: '130, 166, 38' },
+  orange: { primary: '#F97316', light: '#FB923C', rgb: '249, 115, 22' },
+  pink: { primary: '#EC4899', light: '#F472B6', rgb: '236, 72, 153' },
+  red: { primary: '#EF4444', light: '#F87171', rgb: '239, 68, 68' },
+};
+
+export default function BigBangIntro({ onComplete, colorTheme = 'olive' }) {
   const canvasRef = useRef(null);
   const [isDone, setIsDone] = useState(false);
   const animFrameRef = useRef(null);
+  const activePalette = INTRO_COLOR_PALETTES[colorTheme] || INTRO_COLOR_PALETTES.olive;
 
   useEffect(() => {
     if (typeof window === 'undefined') return;
@@ -55,24 +70,15 @@ export default function BigBangIntro({ onComplete }) {
 
     // Exact Astronomical Node Coordinates of Taurus Constellation
     const taurusNodes = [
-      // Aldebaran (Alpha Tauri - Bright Red/Gold Eye of Taurus)
       { id: 'aldebaran', x: 10, y: 15, isAldebaran: true, delay: 0.1 },
-
-      // Hyades V-Shape Face Cluster
-      { id: 'ain', x: -15, y: -35, delay: 0.2 },        // Epsilon Tauri (Ain)
-      { id: 'gamma_tau', x: -75, y: -15, delay: 0.3 }, // Gamma Tauri (Prima Hyadum)
-      { id: 'delta_tau', x: -55, y: 20, delay: 0.4 },  // Delta Tauri
-      { id: 'theta_tau', x: -20, y: 35, delay: 0.5 },  // Theta Tauri
-
-      // Northern Horn (Extending to Elnath)
+      { id: 'ain', x: -15, y: -35, delay: 0.2 },
+      { id: 'gamma_tau', x: -75, y: -15, delay: 0.3 },
+      { id: 'delta_tau', x: -55, y: 20, delay: 0.4 },
+      { id: 'theta_tau', x: -20, y: 35, delay: 0.5 },
       { id: 'horn_north_mid', x: 75, y: -65, delay: 0.6 },
       { id: 'elnath', x: 155, y: -115, isHornTip: true, label: 'ELNATH', delay: 0.7 },
-
-      // Southern Horn (Extending to Tianguan)
       { id: 'horn_south_mid', x: 95, y: 55, delay: 0.8 },
       { id: 'tianguan', x: 175, y: 85, isHornTip: true, label: 'TIANGUAN', delay: 0.9 },
-
-      // Pleiades Star Cluster (The Seven Sisters - Top Left Group)
       { id: 'pleiades_main', x: -160, y: -85, isPleiades: true, delay: 1.0 },
       { id: 'pleiades_1', x: -180, y: -100, isPleiades: true, delay: 1.05 },
       { id: 'pleiades_2', x: -150, y: -110, isPleiades: true, delay: 1.1 },
@@ -83,24 +89,16 @@ export default function BigBangIntro({ onComplete }) {
     const taurusNodeMap = {};
     taurusNodes.forEach(node => { taurusNodeMap[node.id] = node; });
 
-    // Line Connections between Taurus Star Nodes
     const taurusLines = [
-      // Hyades V-Shape Face
       ['gamma_tau', 'delta_tau', 0.4],
       ['delta_tau', 'theta_tau', 0.5],
       ['theta_tau', 'aldebaran', 0.6],
       ['aldebaran', 'ain', 0.65],
       ['ain', 'gamma_tau', 0.35],
-
-      // Northern Horn Line
       ['ain', 'horn_north_mid', 0.65],
       ['horn_north_mid', 'elnath', 0.75],
-
-      // Southern Horn Line
       ['aldebaran', 'horn_south_mid', 0.85],
       ['horn_south_mid', 'tianguan', 0.95],
-
-      // Pleiades Cluster Lines
       ['gamma_tau', 'pleiades_main', 1.0],
       ['pleiades_main', 'pleiades_1', 1.05],
       ['pleiades_main', 'pleiades_2', 1.1],
@@ -108,7 +106,6 @@ export default function BigBangIntro({ onComplete }) {
       ['pleiades_main', 'pleiades_4', 1.2],
     ];
 
-    // Background Stars (70 stars)
     const bgStars = [];
     for (let i = 0; i < 70; i++) {
       bgStars.push({
@@ -119,7 +116,6 @@ export default function BigBangIntro({ onComplete }) {
       });
     }
 
-    // Render Animation Loop
     const render = (now) => {
       try {
         const elapsed = (now - startTime) / 1000;
@@ -152,7 +148,6 @@ export default function BigBangIntro({ onComplete }) {
           // --- STEP 1: TAURUS CONSTELLATION LINK IN DEEP SPACE (0.0s - 1.6s) ---
           ctx.save();
 
-          // Draw Taurus Constellation Lines
           for (let i = 0; i < taurusLines.length; i++) {
             const [id1, id2, delay] = taurusLines[i];
             const n1 = taurusNodeMap[id1];
@@ -171,15 +166,14 @@ export default function BigBangIntro({ onComplete }) {
               ctx.beginPath();
               ctx.moveTo(p1x, p1y);
               ctx.lineTo(currX, currY);
-              ctx.strokeStyle = 'rgba(163, 230, 53, 0.85)';
-              ctx.lineWidth = 1.8;
-              ctx.shadowColor = '#a3e635';
-              ctx.shadowBlur = 10;
+              ctx.strokeStyle = `rgba(${activePalette.rgb}, 0.85)`;
+              ctx.lineWidth = 2.0;
+              ctx.shadowColor = activePalette.light;
+              ctx.shadowBlur = 12;
               ctx.stroke();
             }
           }
 
-          // Draw Taurus Star Nodes
           for (let i = 0; i < taurusNodes.length; i++) {
             const node = taurusNodes[i];
             if (elapsed >= node.delay) {
@@ -189,23 +183,20 @@ export default function BigBangIntro({ onComplete }) {
 
               ctx.beginPath();
               if (node.isAldebaran) {
-                // Aldebaran: Radiant Gold Eye of Taurus
-                ctx.arc(nx, ny, 7.5 * nodeGlow, 0, Math.PI * 2);
-                ctx.fillStyle = '#F59E0B';
-                ctx.shadowColor = '#F59E0B';
-                ctx.shadowBlur = 24;
+                ctx.arc(nx, ny, 8.0 * nodeGlow, 0, Math.PI * 2);
+                ctx.fillStyle = activePalette.light;
+                ctx.shadowColor = activePalette.light;
+                ctx.shadowBlur = 28;
               } else if (node.isPleiades) {
-                // Pleiades: Sapphire White Cluster Node
-                ctx.arc(nx, ny, 3.2 * nodeGlow, 0, Math.PI * 2);
+                ctx.arc(nx, ny, 3.5 * nodeGlow, 0, Math.PI * 2);
                 ctx.fillStyle = '#FFFFFF';
-                ctx.shadowColor = '#a3e635';
-                ctx.shadowBlur = 12;
-              } else {
-                // Standard Hyades Node
-                ctx.arc(nx, ny, 4.5 * nodeGlow, 0, Math.PI * 2);
-                ctx.fillStyle = '#E2FF6F';
-                ctx.shadowColor = '#E2FF6F';
+                ctx.shadowColor = activePalette.light;
                 ctx.shadowBlur = 14;
+              } else {
+                ctx.arc(nx, ny, 5.0 * nodeGlow, 0, Math.PI * 2);
+                ctx.fillStyle = activePalette.light;
+                ctx.shadowColor = activePalette.light;
+                ctx.shadowBlur = 16;
               }
               ctx.fill();
             }
@@ -215,11 +206,10 @@ export default function BigBangIntro({ onComplete }) {
         } else if (elapsed < 2.6) {
           // --- STEP 2: TAURUS STAR GLOW & ALDEBARAN FLARE (1.6s - 2.6s) ---
           const glowT = (elapsed - 1.6) / 1.0;
-          const pulse = 1.0 + Math.sin(glowT * Math.PI) * 0.25;
+          const pulse = 1.0 + Math.sin(glowT * Math.PI) * 0.3;
 
           ctx.save();
 
-          // Draw Glowing Lines
           for (let i = 0; i < taurusLines.length; i++) {
             const [id1, id2] = taurusLines[i];
             const n1 = taurusNodeMap[id1];
@@ -228,15 +218,14 @@ export default function BigBangIntro({ onComplete }) {
               ctx.beginPath();
               ctx.moveTo(centerx + n1.x, centery + n1.y);
               ctx.lineTo(centerx + n2.x, centery + n2.y);
-              ctx.strokeStyle = `rgba(163, 230, 53, ${0.85 * pulse})`;
-              ctx.lineWidth = 2.0 * pulse;
-              ctx.shadowColor = '#a3e635';
-              ctx.shadowBlur = 14 * pulse;
+              ctx.strokeStyle = `rgba(${activePalette.rgb}, ${0.9 * pulse})`;
+              ctx.lineWidth = 2.4 * pulse;
+              ctx.shadowColor = activePalette.light;
+              ctx.shadowBlur = 16 * pulse;
               ctx.stroke();
             }
           }
 
-          // Draw Glowing Star Nodes
           for (let i = 0; i < taurusNodes.length; i++) {
             const node = taurusNodes[i];
             const nx = centerx + node.x;
@@ -244,20 +233,20 @@ export default function BigBangIntro({ onComplete }) {
 
             ctx.beginPath();
             if (node.isAldebaran) {
-              ctx.arc(nx, ny, 8.5 * pulse, 0, Math.PI * 2);
-              ctx.fillStyle = '#F59E0B';
-              ctx.shadowColor = '#F59E0B';
-              ctx.shadowBlur = 28 * pulse;
+              ctx.arc(nx, ny, 9.5 * pulse, 0, Math.PI * 2);
+              ctx.fillStyle = activePalette.light;
+              ctx.shadowColor = activePalette.light;
+              ctx.shadowBlur = 32 * pulse;
             } else if (node.isPleiades) {
-              ctx.arc(nx, ny, 3.5 * pulse, 0, Math.PI * 2);
+              ctx.arc(nx, ny, 4 * pulse, 0, Math.PI * 2);
               ctx.fillStyle = '#FFFFFF';
-              ctx.shadowColor = '#a3e635';
-              ctx.shadowBlur = 14 * pulse;
+              ctx.shadowColor = activePalette.light;
+              ctx.shadowBlur = 16 * pulse;
             } else {
-              ctx.arc(nx, ny, 5 * pulse, 0, Math.PI * 2);
-              ctx.fillStyle = '#E2FF6F';
-              ctx.shadowColor = '#E2FF6F';
-              ctx.shadowBlur = 20 * pulse;
+              ctx.arc(nx, ny, 6.0 * pulse, 0, Math.PI * 2);
+              ctx.fillStyle = activePalette.light;
+              ctx.shadowColor = activePalette.light;
+              ctx.shadowBlur = 22 * pulse;
             }
             ctx.fill();
           }
@@ -276,16 +265,15 @@ export default function BigBangIntro({ onComplete }) {
           const shockRadius = revealT * Math.max(width, height) * 0.75;
           ctx.beginPath();
           ctx.arc(centerx, centery, Math.max(1, shockRadius), 0, Math.PI * 2);
-          ctx.strokeStyle = `rgba(163, 230, 53, ${(1 - revealT) * 0.75})`;
-          ctx.lineWidth = 5 * (1 - revealT);
-          ctx.shadowColor = '#a3e635';
-          ctx.shadowBlur = 18;
+          ctx.strokeStyle = `rgba(${activePalette.rgb}, ${(1 - revealT) * 0.85})`;
+          ctx.lineWidth = 6 * (1 - revealT);
+          ctx.shadowColor = activePalette.light;
+          ctx.shadowBlur = 20;
           ctx.stroke();
 
           ctx.restore();
 
         } else {
-          // --- DONE ---
           setIsDone(true);
           if (onComplete) onComplete();
           return;
@@ -304,7 +292,7 @@ export default function BigBangIntro({ onComplete }) {
       window.removeEventListener('resize', handleResize);
       if (animFrameRef.current) cancelAnimationFrame(animFrameRef.current);
     };
-  }, [onComplete]);
+  }, [onComplete, colorTheme]);
 
   if (isDone) return null;
 
@@ -332,17 +320,18 @@ export default function BigBangIntro({ onComplete }) {
           position: 'absolute',
           bottom: '24px',
           right: '24px',
-          padding: '8px 16px',
+          padding: '8px 18px',
           borderRadius: '9999px',
-          backgroundColor: 'rgba(163, 230, 53, 0.15)',
-          border: '1px solid rgba(163, 230, 53, 0.4)',
-          color: '#a3e635',
+          backgroundColor: `rgba(${activePalette.rgb}, 0.15)`,
+          border: `1px solid rgba(${activePalette.rgb}, 0.45)`,
+          color: activePalette.light,
           fontFamily: 'monospace',
           fontSize: '0.75rem',
           fontWeight: 700,
           cursor: 'pointer',
           backdropFilter: 'blur(4px)',
           zIndex: 1000000,
+          boxShadow: `0 0 16px rgba(${activePalette.rgb}, 0.3)`,
         }}
       >
         SKIP INTRO ➔

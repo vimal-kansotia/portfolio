@@ -1,4 +1,5 @@
-import { ExternalLink, CheckCircle2, Dna, Activity, HeartPulse, Mic, BarChart3, Cloud, FileText } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { ExternalLink, CheckCircle2, Plus, X, Github, Dna, Activity, HeartPulse, Mic, BarChart3, Cloud, FileText } from 'lucide-react';
 
 const PROJECT_ICON_MAP = {
   dna: Dna,
@@ -14,6 +15,7 @@ const DEFAULT_PROJECTS = [
   {
     id: 'project-hpa',
     title: 'Human Protein Atlas (HPA) Gene Expression Explorer',
+    category: 'BIOINFORMATICS & TRANSCRIPTOMICS',
     description: 'End-to-end interactive web application built with Streamlit and Python for transcriptomic profiling and multi-omics data analysis across normal tissues and cancer cell lines.',
     techStack: ['Streamlit', 'Plotly', 'Pandas', 'NumPy', 'Openpyxl', 'Python'],
     highlights: [
@@ -25,11 +27,13 @@ const DEFAULT_PROJECTS = [
     ],
     tags: ['Streamlit', 'Plotly', 'Pandas', 'NumPy', 'Python'],
     iconKey: 'dna',
+    image: '/projects/hpa-explorer.png',
     link: 'https://vimalbio.streamlit.app/'
   },
   {
     id: 'project-hospital-los',
     title: 'Hospital Length of Stay (LOS) Dashboard',
+    category: 'HEALTHCARE ANALYTICS & ML',
     description: 'Comprehensive healthcare analytics platform for tracking patient hospitalization duration. Features interactive visualizations for bed capacity tracking, clinical workflow insights, and resource optimization.',
     techStack: ['Streamlit', 'Python', 'Power BI', 'Healthcare Analytics', 'Pandas'],
     highlights: [
@@ -41,11 +45,13 @@ const DEFAULT_PROJECTS = [
     ],
     tags: ['Streamlit', 'Python', 'Power BI', 'Healthcare Analytics'],
     iconKey: 'activity',
+    image: '/projects/hospital-los.png',
     link: 'https://hospital-los.streamlit.app/'
   },
   {
     id: 'project-jarvis',
     title: 'Personalized Local AI Assistant (Jarvis)',
+    category: 'LOCAL AI & LLM INFERENCE',
     description: 'Voice-activated AI assistant running 100% locally on CachyOS (Linux) for total data privacy. Integrates Llama 3.2 via Ollama for local reasoning and OpenAI Whisper for real-time speech-to-text.',
     techStack: ['Llama 3.2', 'Ollama', 'Whisper', 'Linux (CachyOS)', 'Python'],
     highlights: [
@@ -57,11 +63,13 @@ const DEFAULT_PROJECTS = [
     ],
     tags: ['LLMs', 'Ollama', 'Whisper', 'Linux', 'Python'],
     iconKey: 'mic',
+    image: '/projects/jarvis-ai.jpg',
     link: ''
   },
   {
     id: 'project-pneumo-ai',
     title: 'Pneumo-AI: Advanced Pneumonia Detection',
+    category: 'MEDICAL DIAGNOSTICS & DL',
     description: 'AI-driven medical diagnostic interface to classify Chest X-rays into Normal vs. Pneumonia with 96% accuracy using Random Projection (Johnson-Lindenstrauss lemma) and Deep Learning.',
     techStack: ['CNN', 'SVM', 'Random Projection', 'Streamlit', 'Linux (CachyOS)'],
     highlights: [
@@ -73,11 +81,13 @@ const DEFAULT_PROJECTS = [
     ],
     tags: ['Deep Learning', 'CNN', 'Streamlit', 'Machine Learning', 'Linux'],
     iconKey: 'heart-pulse',
+    image: '/projects/pneumo-ai.png',
     link: ''
   },
   {
     id: 'project-amazon-sales',
     title: 'Amazon End-to-End Sales Analytics Dashboard',
+    category: 'SALES ANALYTICS & ETL',
     description: 'End-to-end sales dashboard analyzing 1.8 Lakh+ records. Processed raw data via SQL/Python for 100% integrity, tracking $2.18M YTD sales, profit margins, and regional category performance.',
     techStack: ['SQL', 'Power BI', 'Python', 'Excel', 'ETL'],
     highlights: [
@@ -89,11 +99,13 @@ const DEFAULT_PROJECTS = [
     ],
     tags: ['Power BI', 'SQL', 'Python', 'ETL', 'Excel'],
     iconKey: 'bar-chart',
+    image: '/projects/amazon-sales.jpg',
     link: ''
   },
   {
     id: 'project-aqi',
     title: 'Real-time Air Quality Index (AQI) Dashboard',
+    category: 'ENVIRONMENTAL MONITORING',
     description: 'Environmental monitoring platform connecting live REST APIs to fetch real-time pollution metrics (PM2.5, PM10, NO2). Visualizes time-series trends with dynamic location filtering in Power BI.',
     techStack: ['Power BI', 'API Integration', 'SQL', 'Excel', 'Python'],
     highlights: [
@@ -105,6 +117,7 @@ const DEFAULT_PROJECTS = [
     ],
     tags: ['Power BI', 'API Integration', 'SQL', 'Python'],
     iconKey: 'cloud',
+    image: '/projects/aqi-dashboard.png',
     link: ''
   }
 ];
@@ -116,6 +129,19 @@ function SectionHeading({ children, className = '' }) {
 export default function ProjectsSection({ projects = [] }) {
   const githubUrl = 'https://github.com/vimal-kansotia?tab=repositories';
   const projectList = DEFAULT_PROJECTS;
+  const [selectedProject, setSelectedProject] = useState(null);
+
+  // Duplicated list for continuous seamless infinite marquee loop (1..6 -> 1..6...)
+  const marqueeProjects = [...projectList, ...projectList];
+
+  // Close modal on ESC key
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') setSelectedProject(null);
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
 
   return (
     <section id="projects" className="section projects-template">
@@ -127,115 +153,59 @@ export default function ProjectsSection({ projects = [] }) {
       <div className="projects-template-header">
         <span className="projects-template-eyebrow">Selected work</span>
         <SectionHeading className="projects-template-title">
-          Featured <span className="text-gradient-shimmer">Projects</span>
+          <span className="text-gradient-shimmer">Featured Projects</span>
         </SectionHeading>
         <p className="projects-template-subtitle">
-          A curated selection of AI, data engineering, and full-stack analytics builds with real-world impact.
+          A continuous showcase of AI, data engineering, and full-stack analytics builds. Click the <strong>+</strong> button on any project to explore details.
         </p>
       </div>
 
-      <div className="projects-template-grid">
-        {projectList.map((project, index) => {
-          const Icon = PROJECT_ICON_MAP[project.iconKey] || FileText;
-
-          const techStackList = project.techStack || project.tags || [];
-          const highlights = project.highlights || [
-            "High-performance architecture",
-            "Data-driven insights & analytics",
-            "Scalable pipeline & web interface",
-            "Optimized query performance"
-          ];
-
-          return (
-            <article
-              key={project.id || project.title || index}
-              className={`project-card-v2 glass card-3d ${project.link ? 'cursor-pointer' : ''}`}
-              onClick={project.link ? (e) => {
-                // If user didn't click inside a child link, trigger top window open
-                if (e.target.tagName !== 'A' && !e.target.closest('a')) {
-                  window.open(project.link, '_blank', 'noopener,noreferrer');
-                }
-              } : undefined}
-            >
-              {/* Top Bar: Icon + External Link */}
-              <div className="project-v2-top">
-                <div className="project-v2-icon-box">
-                  <Icon size={20} className="text-[#82A626]" />
+      {/* Continuous Infinite Marquee Carousel (1..6 -> 1..6...) */}
+      <div className="projects-marquee-wrapper">
+        <div className="projects-marquee-track">
+          {marqueeProjects.map((project, index) => {
+            return (
+              <div
+                key={`${project.id}-${index}`}
+                className="project-card-minimal glass card-3d"
+                onClick={() => setSelectedProject(project)}
+              >
+                {/* 100% Fitted Image Wrapper (No cropping) */}
+                <div className="project-card-img-wrapper">
+                  <img
+                    src={project.image}
+                    alt={project.title}
+                    className="project-card-cover-img"
+                    loading="lazy"
+                  />
                 </div>
-                {project.link ? (
-                  <a
-                    href={project.link}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="project-v2-link-btn"
-                    aria-label={`View live demo for ${project.title}`}
-                    title="Open Live Streamlit App"
-                    onClick={(e) => e.stopPropagation()}
-                  >
-                    <ExternalLink size={18} />
-                  </a>
-                ) : (
-                  <span
-                    className="project-v2-link-btn opacity-30 cursor-default"
-                    title="Live Demo Unavailable"
-                  >
-                    <ExternalLink size={18} />
-                  </span>
-                )}
+
+                {/* Frosted Bottom Bar: Category & Title Left, Plus Button Right */}
+                <div className="project-card-bottom-bar">
+                  <div className="project-card-info">
+                    <span className="project-card-category">{project.category || 'PROJECT'}</span>
+                    <h3 className="project-card-name" title={project.title}>{project.title}</h3>
+                  </div>
+
+                  <div className="project-card-actions">
+                    <button
+                      type="button"
+                      className="project-plus-btn"
+                      aria-label={`Open details for ${project.title}`}
+                      title="View Full Details"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setSelectedProject(project);
+                      }}
+                    >
+                      <Plus size={20} />
+                    </button>
+                  </div>
+                </div>
               </div>
-
-              {/* Project Title */}
-              {project.link ? (
-                <h3 className="project-v2-title">
-                  <a
-                    href={project.link}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="hover:text-[#82A626] transition-colors"
-                    onClick={(e) => e.stopPropagation()}
-                  >
-                    {project.title}
-                  </a>
-                </h3>
-              ) : (
-                <h3 className="project-v2-title">{project.title}</h3>
-              )}
-
-              {/* Tech Stack Callout Box */}
-              <div className="project-v2-tech-box">
-                <span className="project-v2-tech-label">TECH STACK:</span>
-                <span className="project-v2-tech-list">
-                  {techStackList.join(' • ')}
-                </span>
-              </div>
-
-              {/* Project Description */}
-              <p className="project-v2-description">{project.description}</p>
-
-              {/* Key Highlights Container Box */}
-              <div className="project-v2-highlights-box">
-                <span className="project-v2-highlights-title">KEY HIGHLIGHTS:</span>
-                <ul className="project-v2-highlights-list">
-                  {highlights.map((item, hIdx) => (
-                    <li key={hIdx} className="project-v2-highlight-item">
-                      <CheckCircle2 size={16} className="text-[#82A626] shrink-0 mt-0.5" />
-                      <span>{item}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-
-              {/* Bottom Tag Pills */}
-              <div className="project-v2-pills-row">
-                {techStackList.map((tag, tIdx) => (
-                  <span key={tIdx} className="project-v2-pill">
-                    {tag}
-                  </span>
-                ))}
-              </div>
-            </article>
-          );
-        })}
+            );
+          })}
+        </div>
       </div>
 
       <div className="projects-template-footer">
@@ -243,6 +213,99 @@ export default function ProjectsSection({ projects = [] }) {
           See all projects on GitHub ↗
         </a>
       </div>
+
+      {/* Interactive Detail Pop-up Modal Overlay */}
+      {selectedProject && (
+        <div
+          className="project-modal-backdrop"
+          onClick={() => setSelectedProject(null)}
+        >
+          <div
+            className="project-modal-dialog"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Top Close Button (✕) */}
+            <button
+              type="button"
+              className="project-modal-close-btn"
+              onClick={() => setSelectedProject(null)}
+              aria-label="Close project details"
+              title="Close (ESC)"
+            >
+              <X size={22} />
+            </button>
+
+            {/* Modal Category Eyebrow */}
+            <span className="project-modal-eyebrow">
+              {selectedProject.category || 'FEATURED PROJECT'}
+            </span>
+
+            {/* Modal Title */}
+            <h2 className="project-modal-title">{selectedProject.title}</h2>
+
+            {/* Description */}
+            <p className="project-modal-description">{selectedProject.description}</p>
+
+            {/* Expanded Project Widescreen Banner Image */}
+            {selectedProject.image && (
+              <div className="project-modal-banner">
+                <img
+                  src={selectedProject.image}
+                  alt={selectedProject.title}
+                />
+              </div>
+            )}
+
+            {/* Tech Stack Callout Box */}
+            <div className="project-v2-tech-box mb-4">
+              <span className="project-v2-tech-label">TECH STACK:</span>
+              <span className="project-v2-tech-list">
+                {(selectedProject.techStack || selectedProject.tags || []).join(' • ')}
+              </span>
+            </div>
+
+            {/* Key Highlights */}
+            <div className="project-v2-highlights-box">
+              <span className="project-v2-highlights-title">KEY HIGHLIGHTS:</span>
+              <ul className="project-v2-highlights-list">
+                {(selectedProject.highlights || []).map((item, hIdx) => (
+                  <li key={hIdx} className="project-v2-highlight-item">
+                    <CheckCircle2 size={16} style={{ color: 'var(--color-primary)' }} className="shrink-0 mt-0.5" />
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Action Buttons: GitHub & Live App (Only for HPA Explorer & Hospital LOS Dashboard) */}
+            {(selectedProject.id === 'project-hpa' || selectedProject.id === 'project-hospital-los') && (
+              <div className="project-modal-footer-actions">
+                {selectedProject.link && (
+                  <a
+                    href={selectedProject.link}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="project-modal-action-btn project-modal-btn-primary"
+                  >
+                    <ExternalLink size={18} />
+                    <span>Open Live Demo ↗</span>
+                  </a>
+                )}
+
+                <a
+                  href={selectedProject.github || githubUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="project-modal-action-btn project-modal-btn-secondary"
+                >
+                  <Github size={18} />
+                  <span>View Code on GitHub</span>
+                </a>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
     </section>
   );
 }

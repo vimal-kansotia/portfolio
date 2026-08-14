@@ -64,7 +64,7 @@ export default function LeadershipSection() {
           <span className="leadership-eyebrow-label">COMMUNITY & GROWTH</span>
           <div className="leadership-heading-wrapper">
             <h2 className="leadership-section-title">
-              Leadership & <span className="text-gradient-shimmer">Mentorship</span>
+              <span className="text-gradient-shimmer">Leadership & Mentorship</span>
             </h2>
             <div className="leadership-heading-line" />
           </div>
@@ -83,7 +83,7 @@ export default function LeadershipSection() {
               <div className="leadership-card-top">
                 <div className="leadership-card-title-group">
                   <div className="leadership-icon-box">
-                    <IconComp size={26} className="text-[#82A626]" />
+                    <IconComp size={26} style={{ color: 'var(--color-primary)' }} />
                   </div>
                   <div>
                     <h3 className="leadership-role-title">
@@ -106,7 +106,7 @@ export default function LeadershipSection() {
               <div className="leadership-points-grid">
                 {item.points.map((point, idx) => (
                   <div key={idx} className="leadership-point-item">
-                    <CheckCircle2 size={20} className="text-[#82A626] shrink-0 mt-0.5" />
+                    <CheckCircle2 size={20} style={{ color: 'var(--color-primary)' }} className="shrink-0 mt-0.5" />
                     <span>{point}</span>
                   </div>
                 ))}

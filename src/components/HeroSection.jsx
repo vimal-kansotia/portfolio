@@ -15,9 +15,9 @@ export default function HeroSection({ hero, resumeUrl }) {
           <p className="hero-eyebrow reveal-up">{hero.eyebrow}</p>
 
           <h1 className="hero-title animate-float reveal-up delay-1">
-            {hero.name}
+            <span className="text-gradient-shimmer">{hero.name}</span>
             <br />
-            <span className="text-gradient-shimmer">{hero.title}</span>
+            <span className="hero-role-title">{hero.title}</span>
           </h1>
 
           <p className="hero-subtitle reveal-up delay-2">

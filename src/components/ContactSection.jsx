@@ -117,8 +117,7 @@ export default function ContactSection({ contact }) {
       <div className="contact-template-header">
         <span className="contact-template-eyebrow">{contact?.eyebrow || 'Get in Touch'}</span>
         <SectionHeading>
-          {contact?.title ? contact.title.split(' ').slice(0, -1).join(' ') : 'Contact'}{' '}
-          <span className="text-gradient-shimmer">{contact?.title ? contact.title.split(' ').slice(-1)[0] : 'Me'}</span>
+          <span className="text-gradient-shimmer">{contact?.title || 'Get In Touch'}</span>
         </SectionHeading>
         <p className="contact-template-subtitle">
           {contact?.subtitle || "Let's connect and build something amazing together."}

@@ -2,24 +2,36 @@
 
 import React, { useEffect, useRef, useState } from 'react';
 
+const DRAGON_COLOR_PALETTES = {
+  gold: { primary: '#D97706', light: '#FBBF24', headShade: '#FDE047', rgb: '245, 158, 11', hueFilter: 'hue-rotate(-45deg)' },
+  purple: { primary: '#8B5CF6', light: '#C084FC', headShade: '#E9D5FF', rgb: '168, 85, 247', hueFilter: 'hue-rotate(180deg)' },
+  cyan: { primary: '#0891B2', light: '#22D3EE', headShade: '#67E8F9', rgb: '6, 182, 212', hueFilter: 'hue-rotate(100deg)' },
+  teal: { primary: '#059669', light: '#34D399', headShade: '#A7F3D0', rgb: '16, 185, 129', hueFilter: 'hue-rotate(60deg)' },
+  blue: { primary: '#2563EB', light: '#60A5FA', headShade: '#93C5FD', rgb: '59, 130, 246', hueFilter: 'hue-rotate(140deg)' },
+  indigo: { primary: '#4F46E5', light: '#818CF8', headShade: '#C7D2FE', rgb: '99, 102, 241', hueFilter: 'hue-rotate(160deg)' },
+  lime: { primary: '#65A30D', light: '#A3E635', headShade: '#D9F99D', rgb: '132, 204, 22', hueFilter: 'hue-rotate(25deg)' },
+  olive: { primary: '#6A8C1A', light: '#a3e635', headShade: '#BEF264', rgb: '130, 166, 38', hueFilter: 'none' },
+  orange: { primary: '#EA580C', light: '#FB923C', headShade: '#FDBA74', rgb: '249, 115, 22', hueFilter: 'hue-rotate(-70deg)' },
+  pink: { primary: '#DB2777', light: '#F472B6', headShade: '#FBCFE8', rgb: '236, 72, 153', hueFilter: 'hue-rotate(220deg)' },
+  red: { primary: '#DC2626', light: '#F87171', headShade: '#FCA5A5', rgb: '239, 68, 68', hueFilter: 'hue-rotate(-100deg)' },
+};
+
 /**
  * CustomCursor - Celestial Neon Energy Dragon Engine
- * 
- * Fixed: JS transform safely combines translate3d(x,y,0) with scale(s) so hovering over 
- * leadership cards, view project buttons, or contact cards NEVER wipes translate3d or 
- * flings the dot/ring to the top-left of the screen!
  */
-export default function CustomCursor({ theme = 'dark' }) {
+export default function CustomCursor({ theme = 'dark', colorTheme = 'olive' }) {
   const canvasRef = useRef(null);
   const dotRef = useRef(null);
   const ringRef = useRef(null);
+
+  const activeColorPalette = DRAGON_COLOR_PALETTES[colorTheme] || DRAGON_COLOR_PALETTES.olive;
 
   const [hoverText, setHoverText] = useState('');
   const [isHoveredState, setIsHoveredState] = useState(false);
   const [isMouseDownState, setIsMouseDownState] = useState(false);
   const [isVisibleState, setIsVisibleState] = useState(false);
 
-  // Refs for animation state (prevents re-render teardown bugs)
+  // Refs for animation state
   const isHoveredRef = useRef(false);
   const isMouseDownRef = useRef(false);
   const isVisibleRef = useRef(false);
@@ -29,13 +41,15 @@ export default function CustomCursor({ theme = 'dark' }) {
   const ringPosRef = useRef({ x: -100, y: -100 });
   const animFrameRef = useRef(null);
 
-  // Processed Transparent Canvas Sprites
+  // Processed Transparent Canvas Sprites & Tinting Engine
   const headSpriteRef = useRef(null);
   const bodySpriteRef = useRef(null);
   const clawSpriteRef = useRef(null);
+  const tintedHeadRef = useRef(null);
+  const tintedClawRef = useRef(null);
   const spritesReadyRef = useRef(false);
 
-  // Dynamic Dragon Spine (32 nodes on mobile touch for 60fps, 60 nodes on desktop)
+  // Dynamic Dragon Spine
   const isMobileRef = useRef(false);
   const dragonSpineRef = useRef(null);
   const particlesRef = useRef([]);
@@ -54,7 +68,7 @@ export default function CustomCursor({ theme = 'dark' }) {
     }
   }, []);
 
-  // In-Memory Chroma-Keyer: Removes black background pixels safely
+  // In-Memory Chroma-Keyer
   const createTransparentSprite = (src) => {
     return new Promise((resolve) => {
       const img = new Image();
@@ -90,7 +104,32 @@ export default function CustomCursor({ theme = 'dark' }) {
     });
   };
 
-  // Preload dragon textures
+  const getTintedSprite = (rawCanvas, colorHex) => {
+    if (!rawCanvas || !colorHex) return rawCanvas;
+    const off = document.createElement('canvas');
+    off.width = rawCanvas.width;
+    off.height = rawCanvas.height;
+    const ctx = off.getContext('2d');
+    
+    ctx.drawImage(rawCanvas, 0, 0);
+    ctx.globalCompositeOperation = 'source-atop';
+    ctx.fillStyle = colorHex;
+    ctx.fillRect(0, 0, off.width, off.height);
+    
+    return off;
+  };
+
+  const rawHeadRef = useRef(null);
+  const rawClawRef = useRef(null);
+
+  const applySpriteTint = (headCanvas, clawCanvas, themeKey) => {
+    if (!headCanvas || !clawCanvas) return;
+    const palette = DRAGON_COLOR_PALETTES[themeKey] || DRAGON_COLOR_PALETTES.olive;
+    tintedHeadRef.current = getTintedSprite(headCanvas, palette.headShade || palette.light);
+    tintedClawRef.current = getTintedSprite(clawCanvas, palette.primary);
+  };
+
+  // Preload dragon textures & generate tinted sprites
   useEffect(() => {
     if (typeof window === 'undefined') return;
 
@@ -98,19 +137,28 @@ export default function CustomCursor({ theme = 'dark' }) {
       createTransparentSprite('/dragon/head.png'),
       createTransparentSprite('/dragon/body.png'),
       createTransparentSprite('/dragon/claw.png'),
-    ]).then(([headCanvas, bodyCanvas, clawCanvas]) => {
-      if (headCanvas) headSpriteRef.current = headCanvas;
-      if (bodyCanvas) bodySpriteRef.current = bodyCanvas;
-      if (clawCanvas) clawSpriteRef.current = clawCanvas;
+    ]).then(([head, body, claw]) => {
+      rawHeadRef.current = head;
+      rawClawRef.current = claw;
+      headSpriteRef.current = head;
+      bodySpriteRef.current = body;
+      clawSpriteRef.current = claw;
       spritesReadyRef.current = true;
+
+      applySpriteTint(head, claw, colorTheme);
     });
   }, []);
+
+  useEffect(() => {
+    if (!rawHeadRef.current || !rawClawRef.current) return;
+    applySpriteTint(rawHeadRef.current, rawClawRef.current, colorTheme);
+  }, [colorTheme]);
 
   // Main Render Effect
   useEffect(() => {
     if (typeof window === 'undefined') return;
     const isTouchOrMobile = window.matchMedia('(max-width: 768px)').matches || ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
-    if (isTouchOrMobile) return; // Completely disable canvas dragon cursor on mobile phones
+    if (isTouchOrMobile) return; 
 
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (prefersReducedMotion) return;
@@ -126,9 +174,8 @@ export default function CustomCursor({ theme = 'dark' }) {
     handleResize();
     window.addEventListener('resize', handleResize);
 
-    const updatePointerPos = (x, y) => {
-      posRef.current = { x, y };
-
+    const updatePointerPos = (clientX, clientY) => {
+      posRef.current = { x: clientX, y: clientY };
       if (!isVisibleRef.current) {
         isVisibleRef.current = true;
         setIsVisibleState(true);
@@ -136,17 +183,18 @@ export default function CustomCursor({ theme = 'dark' }) {
         const spine = dragonSpineRef.current;
         if (spine && spine[0].x === -100) {
           for (let i = 0; i < spine.length; i++) {
-            spine[i].x = x;
-            spine[i].y = y;
+            spine[i].x = clientX;
+            spine[i].y = clientY;
           }
-          ringPosRef.current = { x, y };
+          ringPosRef.current = { x: clientX, y: clientY };
         }
       }
 
-      if (Math.random() < 0.5) {
+      // Spawn dragon ember particles
+      if (Math.random() < 0.35) {
         particlesRef.current.push({
-          x: x + (Math.random() - 0.5) * 20,
-          y: y + (Math.random() - 0.5) * 20,
+          x: clientX,
+          y: clientY,
           vx: (Math.random() - 0.5) * 2.5,
           vy: (Math.random() - 0.5) * 2.5 - 0.8,
           size: Math.random() * 3 + 1.2,
@@ -156,30 +204,13 @@ export default function CustomCursor({ theme = 'dark' }) {
       }
     };
 
-    const handleMouseMove = (e) => {
-      updatePointerPos(e.clientX, e.clientY);
-    };
-
-    const handleTouchMove = (e) => {
-      if (e.touches && e.touches[0]) {
-        updatePointerPos(e.touches[0].clientX, e.touches[0].clientY);
-      }
-    };
-
-    const handleTouchStart = (e) => {
-      if (e.touches && e.touches[0]) {
-        updatePointerPos(e.touches[0].clientX, e.touches[0].clientY);
-      }
-    };
-
+    const handleMouseMove = (e) => updatePointerPos(e.clientX, e.clientY);
+    const handleTouchMove = (e) => { if (e.touches && e.touches[0]) updatePointerPos(e.touches[0].clientX, e.touches[0].clientY); };
+    const handleTouchStart = (e) => { if (e.touches && e.touches[0]) updatePointerPos(e.touches[0].clientX, e.touches[0].clientY); };
     const handleMouseOver = (e) => {
       const target = e.target;
       if (!target) return;
-
-      const interactiveEl = target.closest(
-        'a, button, input, textarea, select, [role="button"], .project-card, .skill-card, .stat-card, .glass-card, .hero-cta, .social-icon-btn, .theme-toggle, .contact-card, .form-input, .contact-template, .leadership-card'
-      );
-
+      const interactiveEl = target.closest('a, button, input, textarea, select, [role="button"], .project-card, .skill-card, .stat-card, .glass-card, .hero-cta, .social-icon-btn, .theme-toggle, .contact-card, .form-input, .contact-template, .leadership-card');
       if (interactiveEl) {
         isHoveredRef.current = true;
         setIsHoveredState(true);
@@ -192,22 +223,10 @@ export default function CustomCursor({ theme = 'dark' }) {
       }
     };
 
-    const handleMouseDown = () => {
-      isMouseDownRef.current = true;
-      setIsMouseDownState(true);
-    };
-    const handleMouseUp = () => {
-      isMouseDownRef.current = false;
-      setIsMouseDownState(false);
-    };
-    const handleMouseLeave = () => {
-      isVisibleRef.current = false;
-      setIsVisibleState(false);
-    };
-    const handleMouseEnter = () => {
-      isVisibleRef.current = true;
-      setIsVisibleState(true);
-    };
+    const handleMouseDown = () => { isMouseDownRef.current = true; setIsMouseDownState(true); };
+    const handleMouseUp = () => { isMouseDownRef.current = false; setIsMouseDownState(false); };
+    const handleMouseLeave = () => { isVisibleRef.current = false; setIsVisibleState(false); };
+    const handleMouseEnter = () => { isVisibleRef.current = true; setIsVisibleState(true); };
 
     window.addEventListener('mousemove', handleMouseMove, { passive: true });
     window.addEventListener('touchmove', handleTouchMove, { passive: true });
@@ -223,6 +242,7 @@ export default function CustomCursor({ theme = 'dark' }) {
     const render = () => {
       time += 0.05;
       ctx.clearRect(0, 0, canvas.width, canvas.height);
+      const isDark = theme === 'dark';
 
       const targetX = posRef.current.x;
       const targetY = posRef.current.y;
@@ -235,7 +255,6 @@ export default function CustomCursor({ theme = 'dark' }) {
       ringPosRef.current.x += (targetX - ringPosRef.current.x) * 0.25;
       ringPosRef.current.y += (targetY - ringPosRef.current.y) * 0.25;
 
-      // Safely combine translate3d and scale in inline style to keep cursor sleek and minimal
       const dotScale = isHoveredRef.current ? (isMouseDownRef.current ? 0.7 : 1.25) : (isMouseDownRef.current ? 0.7 : 1.0);
       const ringScale = isHoveredRef.current ? (isMouseDownRef.current ? 0.85 : 1.15) : (isMouseDownRef.current ? 0.85 : 1.0);
 
@@ -246,7 +265,6 @@ export default function CustomCursor({ theme = 'dark' }) {
         ringRef.current.style.transform = `translate3d(${ringPosRef.current.x}px, ${ringPosRef.current.y}px, 0) scale(${ringScale})`;
       }
 
-      // --- 1. IK Dragon Physics ---
       const spine = dragonSpineRef.current;
       if (spine && spine.length > 0) {
         const head = spine[0];
@@ -269,7 +287,6 @@ export default function CustomCursor({ theme = 'dark' }) {
           const dy = prev.y - curr.y;
           const angle = Math.atan2(dy, dx);
           curr.angle = angle;
-
           curr.x = prev.x - Math.cos(angle) * SEGMENT_DIST;
           curr.y = prev.y - Math.sin(angle) * SEGMENT_DIST;
         }
@@ -284,12 +301,15 @@ export default function CustomCursor({ theme = 'dark' }) {
         };
 
         const isDark = theme === 'dark';
-        const jadeNeon = isDark ? '#a3e635' : '#6A8C1A';
-        const eyeColor = isDark ? '#E2FF6F' : '#A3E635';
+        const jadeNeon = isDark ? activeColorPalette.light : activeColorPalette.primary;
+        const eyeColor = isDark ? activeColorPalette.light : activeColorPalette.primary;
+        const rgbStr = activeColorPalette.rgb;
+        const mainShadowColor = isDark ? jadeNeon : 'rgba(0, 0, 0, 0.55)';
+        const shadowBlurAmount = isDark ? 16 : 10;
 
         ctx.save();
 
-        // --- 2. Render Inner Hyper-Bright Spinal Laser Core ---
+        // 2. Render Inner Hyper-Bright Spinal Laser Core
         ctx.save();
         ctx.beginPath();
         ctx.moveTo(spine[0].x, spine[0].y);
@@ -298,75 +318,53 @@ export default function CustomCursor({ theme = 'dark' }) {
           const yc = (spine[i].y + spine[i + 1].y) / 2;
           ctx.quadraticCurveTo(spine[i].x, spine[i].y, xc, yc);
         }
-        ctx.strokeStyle = isDark ? '#E2FF6F' : '#415B06';
-        ctx.lineWidth = isMobileRef.current ? 2.8 : 4;
-        if (!isMobileRef.current) {
-          ctx.shadowColor = jadeNeon;
-          ctx.shadowBlur = isDark ? 16 : 8;
-        }
+        ctx.strokeStyle = activeColorPalette.primary;
+        ctx.lineWidth = isMobileRef.current ? 3 : 4.5;
+        ctx.shadowColor = mainShadowColor;
+        ctx.shadowBlur = shadowBlurAmount;
         ctx.stroke();
         ctx.restore();
 
-        // --- 3. Render Intricate Dragon Scale Rings & Ribs ---
+        // 3. Render Intricate Dragon Scale Rings & Ribs
         ctx.save();
         for (let i = 1; i < spine.length - 2; i++) {
           const pt = spine[i];
           const r = getRadius(i);
-
           ctx.save();
           ctx.translate(pt.x, pt.y);
           ctx.rotate(pt.angle);
-
           ctx.beginPath();
           ctx.ellipse(0, 0, r * 0.4, r, 0, 0, Math.PI * 2);
-          ctx.strokeStyle = `rgba(${isDark ? '163, 230, 53' : '65, 91, 6'}, ${(1 - i / spine.length) * 0.85})`;
-          ctx.lineWidth = 1.4;
+          ctx.strokeStyle = isDark
+            ? `rgba(${rgbStr}, ${(1 - i / spine.length) * 0.9})`
+            : `rgba(${rgbStr}, ${Math.max(0.65, 1 - i / spine.length)})`;
+          ctx.lineWidth = isDark ? 1.4 : 2.0;
+          if (!isDark) {
+            ctx.shadowColor = 'rgba(0, 0, 0, 0.4)';
+            ctx.shadowBlur = 4;
+          }
           ctx.stroke();
-
           if (i % 2 === 0) {
             ctx.beginPath();
             ctx.moveTo(-r * 0.5, -r * 0.8);
             ctx.lineTo(r * 0.2, 0);
             ctx.lineTo(-r * 0.5, r * 0.8);
-            ctx.strokeStyle = `rgba(${isDark ? '226, 255, 111' : '106, 140, 26'}, ${(1 - i / spine.length) * 0.7})`;
-            ctx.lineWidth = 1.4;
+            ctx.strokeStyle = isDark
+              ? `rgba(${rgbStr}, ${(1 - i / spine.length) * 0.75})`
+              : `rgba(${rgbStr}, ${Math.max(0.55, 1 - i / spine.length)})`;
+            ctx.lineWidth = isDark ? 1.4 : 1.8;
             ctx.stroke();
           }
-
           ctx.restore();
         }
         ctx.restore();
 
-        // --- 4. Render Dragon Dorsal Spine Spikes ---
-        ctx.save();
-        for (let i = 2; i < spine.length - 4; i += 2) {
-          const pt = spine[i];
-          const r = getRadius(i);
-          const finAngle = pt.angle - Math.PI / 2;
-          const finLen = 14 + Math.sin(time * 3 + i) * 4;
-
-          ctx.beginPath();
-          ctx.moveTo(pt.x, pt.y);
-          ctx.lineTo(
-            pt.x + Math.cos(finAngle) * (r + finLen),
-            pt.y + Math.sin(finAngle) * (r + finLen)
-          );
-          ctx.lineTo(
-            pt.x - Math.cos(pt.angle) * 10,
-            pt.y - Math.sin(pt.angle) * 10
-          );
-          ctx.fillStyle = jadeNeon;
-          ctx.fill();
-        }
-        ctx.restore();
-
-        // --- 5. Render Ethereal Spirit Flame Ribbons Along Body ---
+        // 5. Render Ethereal Spirit Flame Ribbons
         ctx.save();
         for (let i = 4; i < spine.length - 8; i += 6) {
           const pt = spine[i];
           const r = getRadius(i);
           const wave = Math.sin(time * 3.5 + i) * 12;
-
           ctx.beginPath();
           ctx.moveTo(pt.x, pt.y);
           ctx.quadraticCurveTo(
@@ -375,55 +373,61 @@ export default function CustomCursor({ theme = 'dark' }) {
             pt.x - Math.cos(pt.angle) * 35 + Math.sin(pt.angle) * (r + 25 + wave),
             pt.y - Math.sin(pt.angle) * 35 - Math.cos(pt.angle) * (r + 25 + wave)
           );
-          ctx.strokeStyle = `rgba(${isDark ? '226, 255, 111' : '106, 140, 26'}, 0.6)`;
-          ctx.lineWidth = 1.6;
+          ctx.strokeStyle = `rgba(${rgbStr}, ${isDark ? 0.85 : 0.95})`;
+          ctx.lineWidth = isDark ? 1.6 : 2.2;
+          if (!isDark) {
+            ctx.shadowColor = 'rgba(0, 0, 0, 0.35)';
+            ctx.shadowBlur = 4;
+          }
           ctx.stroke();
         }
         ctx.restore();
 
-        // --- 6. Render Dragon Claws ---
+        // 6. Render Dragon Claws
         const clawIndices = [10, 26, 42, 56];
+        const clawCanvas = tintedClawRef.current || clawSpriteRef.current;
+        const headCanvas = tintedHeadRef.current || headSpriteRef.current;
+
         for (const idx of clawIndices) {
           if (idx < spine.length) {
             const pt = spine[idx];
 
-            if (spritesReadyRef.current && clawSpriteRef.current) {
+            if (spritesReadyRef.current && clawCanvas) {
               ctx.save();
               ctx.translate(pt.x, pt.y);
               ctx.rotate(pt.angle + Math.PI / 2 + 0.4);
-              ctx.shadowColor = jadeNeon;
-              ctx.shadowBlur = 6;
-              ctx.drawImage(clawSpriteRef.current, 0, -20, 50, 40);
+              ctx.shadowColor = mainShadowColor;
+              ctx.shadowBlur = shadowBlurAmount;
+              ctx.drawImage(clawCanvas, 0, -20, 50, 40);
               ctx.restore();
 
               ctx.save();
               ctx.translate(pt.x, pt.y);
               ctx.rotate(pt.angle - Math.PI / 2 - 0.4);
               ctx.scale(1, -1);
-              ctx.shadowColor = jadeNeon;
-              ctx.shadowBlur = 6;
-              ctx.drawImage(clawSpriteRef.current, 0, -20, 50, 40);
+              ctx.shadowColor = mainShadowColor;
+              ctx.shadowBlur = shadowBlurAmount;
+              ctx.drawImage(clawCanvas, 0, -20, 50, 40);
               ctx.restore();
             }
           }
         }
 
-        // --- 7. Render Crisp Dragon Head (140px, Transparent) ---
-        if (spritesReadyRef.current && headSpriteRef.current) {
+        // 7. Render Crisp Dragon Head
+        if (spritesReadyRef.current && headCanvas) {
           ctx.save();
           ctx.translate(head.x, head.y);
           ctx.rotate(head.angle);
-
-          ctx.shadowColor = jadeNeon;
-          ctx.shadowBlur = isDark ? 6 : 2;
-          ctx.drawImage(headSpriteRef.current, -55, -70, 140, 140);
-
+          ctx.shadowColor = isDark ? jadeNeon : 'rgba(0, 0, 0, 0.65)';
+          ctx.shadowBlur = isDark ? 8 : 12;
+          ctx.drawImage(headCanvas, -55, -70, 140, 140);
+          
           ctx.beginPath();
           ctx.arc(26, -15, 5, 0, Math.PI * 2);
           ctx.arc(26, 15, 5, 0, Math.PI * 2);
           ctx.fillStyle = eyeColor;
           ctx.shadowColor = eyeColor;
-          ctx.shadowBlur = 8;
+          ctx.shadowBlur = 10;
           ctx.fill();
 
           const w1 = Math.sin(time * 3) * 10;
@@ -433,8 +437,12 @@ export default function CustomCursor({ theme = 'dark' }) {
           ctx.bezierCurveTo(75, -28, 90 + w1, -40, 120 + w1, -30);
           ctx.moveTo(50, 8);
           ctx.bezierCurveTo(75, 28, 90 + w2, 40, 120 + w2, 30);
-          ctx.strokeStyle = `rgba(${isDark ? '226, 255, 111' : '65, 91, 6'}, 0.95)`;
-          ctx.lineWidth = 2.8;
+          ctx.strokeStyle = `rgba(${rgbStr}, 1.0)`;
+          ctx.lineWidth = 3.2;
+          if (!isDark) {
+            ctx.shadowColor = 'rgba(0, 0, 0, 0.5)';
+            ctx.shadowBlur = 5;
+          }
           ctx.stroke();
 
           ctx.restore();
@@ -460,10 +468,11 @@ export default function CustomCursor({ theme = 'dark' }) {
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.size * p.life, 0, Math.PI * 2);
 
-        const isDark = theme === 'dark';
-        const particleColor = isDark
-          ? `rgba(226, 255, 111, ${p.life * 0.9})`
-          : `rgba(160, 150, 135, ${p.life * 0.4})`;
+        const particleColor = `rgba(${activeColorPalette.rgb}, ${p.life * 0.95})`;
+        if (!isDark) {
+          ctx.shadowColor = 'rgba(0, 0, 0, 0.4)';
+          ctx.shadowBlur = 4;
+        }
 
         ctx.fillStyle = particleColor;
         ctx.fill();
@@ -487,7 +496,7 @@ export default function CustomCursor({ theme = 'dark' }) {
       document.removeEventListener('mouseenter', handleMouseEnter);
       if (animFrameRef.current) cancelAnimationFrame(animFrameRef.current);
     };
-  }, [theme]);
+  }, [theme, colorTheme]);
 
   return (
     <>

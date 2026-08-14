@@ -10,12 +10,12 @@ export default function ExperienceSection({ experiences }) {
         {/* Section Header */}
         <div className="skills-section-header">
           <div className="skills-header-row">
-            <Briefcase className="w-5 h-5" style={{ color: '#82A626' }} />
+            <Briefcase className="w-5 h-5" style={{ color: 'var(--color-primary)' }} />
             <span className="skills-eyebrow-label">Professional Background</span>
           </div>
           <div className="skills-heading-wrapper">
             <h2 className="skills-section-title">
-              Work <span className="text-gradient-shimmer">Experience</span>
+              <span className="text-gradient-shimmer">Work Experience</span>
             </h2>
             <div className="skills-heading-line" />
           </div>
