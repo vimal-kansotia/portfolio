@@ -205,6 +205,37 @@
   ],
   "projects": [
     {
+      "id": "project-diabetic-readmission",
+      "title": "Diabetic 30-Day Readmission Predictor",
+      "description": "Built an end-to-end ML dashboard predicting 30-day hospital readmission risk for diabetic patients using XGBoost & CatBoost. Includes SHAP explainability, live risk predictor, and interactive EDA explorer on 101,766 patient encounters.",
+      "techStack": ["Streamlit", "Plotly", "XGBoost", "CatBoost", "SHAP", "Scikit-learn", "Pandas", "NumPy", "Python"],
+      "highlights": [
+        "5-page interactive dashboard with live patient risk predictor",
+        "Trained 4 ML models (LR, Random Forest, XGBoost, CatBoost) on 101,766 encounters",
+        "SHAP Explainability with global beeswarm & local waterfall charts",
+        "Interactive EDA Explorer with healthcare utilization & demographic charts",
+        "ROC/PR curves, confusion matrix switcher & live threshold optimization slider",
+        "Patient-level train/test split to prevent data leakage (GroupShuffleSplit)",
+        "Handles 11.16% class imbalance using balanced weights & PR-AUC evaluation"
+      ],
+      "tags": [
+        "Streamlit",
+        "Plotly",
+        "XGBoost",
+        "CatBoost",
+        "SHAP",
+        "Scikit-learn",
+        "Pandas",
+        "NumPy",
+        "Python"
+      ],
+      "accent": "cyan",
+      "iconKey": "heart-pulse",
+      "link": "https://diabetic-readmission.streamlit.app/",
+      "github": "https://github.com/vimal-kansotia/diabetic-readmission-dashboard",
+      "image": "/projects/diabetic-readmission.png"
+    },
+    {
       "id": "project-hpa",
       "title": "Human Protein Atlas (HPA) Gene Expression Explorer",
       "description": "End-to-end interactive web application built with Streamlit and Python for transcriptomic profiling and multi-omics data analysis across normal tissues and cancer cell lines.",
@@ -227,7 +258,7 @@
       "iconKey": "dna",
       "link": "https://vimalbio.streamlit.app/",
       "github": "https://github.com/vimal-kansotia/Bioinformatics-",
-      "image": ""
+      "image": "/projects/hpa-explorer.png"
     },
     {
       "id": "project-jarvis",
@@ -251,7 +282,8 @@
       "accent": "yellow",
       "iconKey": "mic",
       "link": "https://github.com/vimal-kansotia/Jarvis-AI",
-      "image": ""
+      "github": "https://github.com/vimal-kansotia/Jarvis-AI",
+      "image": "/projects/jarvis-ai.jpg"
     },
     {
       "id": "project-pneumo-ai",
@@ -275,7 +307,8 @@
       "accent": "green",
       "iconKey": "heart-pulse",
       "link": "https://github.com/vimal-kansotia/Pneumo-AI",
-      "image": ""
+      "github": "https://github.com/vimal-kansotia/Pneumo-AI",
+      "image": "/projects/pneumo-ai.png"
     },
     {
       "id": "project-amazon-sales",
@@ -299,7 +332,8 @@
       "accent": "orange",
       "iconKey": "bar-chart",
       "link": "https://github.com/vimal-kansotia/Amazon-Sales-Analytics",
-      "image": ""
+      "github": "https://github.com/vimal-kansotia/Amazon-Sales-Analytics",
+      "image": "/projects/amazon-sales.jpg"
     },
     {
       "id": "project-aqi",
@@ -322,7 +356,8 @@
       "accent": "blue",
       "iconKey": "cloud",
       "link": "https://github.com/vimal-kansotia/AQI-Dashboard",
-      "image": ""
+      "github": "https://github.com/vimal-kansotia/AQI-Dashboard",
+      "image": "/projects/aqi-dashboard.png"
     },
     {
       "id": "project-hospital-los",
@@ -346,7 +381,7 @@
       "iconKey": "activity",
       "link": "https://hospital-los.streamlit.app/",
       "github": "https://github.com/vimal-kansotia/hospital-los-dashboard",
-      "image": ""
+      "image": "/projects/hospital-los.png"
     }
   ],
   "contact": {

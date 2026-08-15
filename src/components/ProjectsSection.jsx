@@ -13,6 +13,28 @@ const PROJECT_ICON_MAP = {
 
 const DEFAULT_PROJECTS = [
   {
+    id: 'project-diabetic-readmission',
+    title: 'Diabetic 30-Day Readmission Predictor',
+    category: 'HEALTHCARE ML & EXPLAINABILITY',
+    description: 'Built an end-to-end ML dashboard predicting 30-day hospital readmission risk for diabetic patients using XGBoost & CatBoost. Includes SHAP explainability, live risk predictor, and interactive EDA explorer on 101,766 patient encounters.',
+    techStack: ['Streamlit', 'Plotly', 'XGBoost', 'CatBoost', 'SHAP', 'Scikit-learn', 'Pandas', 'NumPy', 'Python'],
+    highlights: [
+      '5-page interactive dashboard with live patient risk predictor',
+      'Trained 4 ML models (LR, Random Forest, XGBoost, CatBoost) on 101,766 encounters',
+      'SHAP Explainability with global beeswarm & local waterfall charts',
+      'Interactive EDA Explorer with healthcare utilization & demographic charts',
+      'ROC/PR curves, confusion matrix switcher & live threshold optimization slider',
+      'Patient-level train/test split to prevent data leakage (GroupShuffleSplit)',
+      'Handles 11.16% class imbalance using balanced weights & PR-AUC evaluation'
+    ],
+    tags: ['Streamlit', 'Plotly', 'XGBoost', 'CatBoost', 'SHAP', 'Scikit-learn', 'Pandas', 'NumPy', 'Python'],
+    accent: 'cyan',
+    iconKey: 'heart-pulse',
+    image: '/projects/diabetic-readmission.png',
+    link: 'https://diabetic-readmission.streamlit.app/',
+    github: 'https://github.com/vimal-kansotia/diabetic-readmission-dashboard'
+  },
+  {
     id: 'project-hpa',
     title: 'Human Protein Atlas (HPA) Gene Expression Explorer',
     category: 'BIOINFORMATICS & TRANSCRIPTOMICS',
@@ -26,9 +48,11 @@ const DEFAULT_PROJECTS = [
       'Full Data Browser with custom sorting & direct CSV export'
     ],
     tags: ['Streamlit', 'Plotly', 'Pandas', 'NumPy', 'Python'],
+    accent: 'cyan',
     iconKey: 'dna',
     image: '/projects/hpa-explorer.png',
-    link: 'https://vimalbio.streamlit.app/'
+    link: 'https://vimalbio.streamlit.app/',
+    github: 'https://github.com/vimal-kansotia/Bioinformatics-'
   },
   {
     id: 'project-hospital-los',
@@ -44,9 +68,11 @@ const DEFAULT_PROJECTS = [
       'Clinical workflow & data-driven healthcare insights'
     ],
     tags: ['Streamlit', 'Python', 'Power BI', 'Healthcare Analytics'],
+    accent: 'purple',
     iconKey: 'activity',
     image: '/projects/hospital-los.png',
-    link: 'https://hospital-los.streamlit.app/'
+    link: 'https://hospital-los.streamlit.app/',
+    github: 'https://github.com/vimal-kansotia/hospital-los-dashboard'
   },
   {
     id: 'project-jarvis',
@@ -62,9 +88,11 @@ const DEFAULT_PROJECTS = [
       'Custom Python Logic for time-based greetings & TTS logic'
     ],
     tags: ['LLMs', 'Ollama', 'Whisper', 'Linux', 'Python'],
+    accent: 'yellow',
     iconKey: 'mic',
     image: '/projects/jarvis-ai.jpg',
-    link: ''
+    link: '',
+    github: 'https://github.com/vimal-kansotia/Jarvis-AI'
   },
   {
     id: 'project-pneumo-ai',
@@ -80,9 +108,11 @@ const DEFAULT_PROJECTS = [
       'High-performance ML execution environment on CachyOS Linux'
     ],
     tags: ['Deep Learning', 'CNN', 'Streamlit', 'Machine Learning', 'Linux'],
+    accent: 'green',
     iconKey: 'heart-pulse',
     image: '/projects/pneumo-ai.png',
-    link: ''
+    link: '',
+    github: 'https://github.com/vimal-kansotia/Pneumo-AI'
   },
   {
     id: 'project-amazon-sales',
@@ -98,9 +128,11 @@ const DEFAULT_PROJECTS = [
       'Actionable Insights for Inventory Management & Seasonal Demand'
     ],
     tags: ['Power BI', 'SQL', 'Python', 'ETL', 'Excel'],
+    accent: 'orange',
     iconKey: 'bar-chart',
     image: '/projects/amazon-sales.jpg',
-    link: ''
+    link: '',
+    github: 'https://github.com/vimal-kansotia/Amazon-Sales-Analytics'
   },
   {
     id: 'project-aqi',
@@ -116,9 +148,11 @@ const DEFAULT_PROJECTS = [
       'Automated Data Refresh & Environmental Assessment Insights'
     ],
     tags: ['Power BI', 'API Integration', 'SQL', 'Python'],
+    accent: 'blue',
     iconKey: 'cloud',
     image: '/projects/aqi-dashboard.png',
-    link: ''
+    link: '',
+    github: 'https://github.com/vimal-kansotia/AQI-Dashboard'
   }
 ];
 
@@ -128,10 +162,10 @@ function SectionHeading({ children, className = '' }) {
 
 export default function ProjectsSection({ projects = [] }) {
   const githubUrl = 'https://github.com/vimal-kansotia?tab=repositories';
-  const projectList = DEFAULT_PROJECTS;
+  const projectList = (projects && projects.length > 0) ? projects : DEFAULT_PROJECTS;
   const [selectedProject, setSelectedProject] = useState(null);
 
-  // Duplicated list for continuous seamless infinite marquee loop (1..6 -> 1..6...)
+  // Duplicated list for continuous seamless infinite marquee loop (1..N -> 1..N...)
   const marqueeProjects = [...projectList, ...projectList];
 
   // Close modal on ESC key
@@ -160,7 +194,7 @@ export default function ProjectsSection({ projects = [] }) {
         </p>
       </div>
 
-      {/* Continuous Infinite Marquee Carousel (1..6 -> 1..6...) */}
+      {/* Continuous Infinite Marquee Carousel (1..N -> 1..N...) */}
       <div className="projects-marquee-wrapper">
         <div className="projects-marquee-track">
           {marqueeProjects.map((project, index) => {
@@ -277,8 +311,8 @@ export default function ProjectsSection({ projects = [] }) {
               </ul>
             </div>
 
-            {/* Action Buttons: GitHub & Live App (Only for HPA Explorer & Hospital LOS Dashboard) */}
-            {(selectedProject.id === 'project-hpa' || selectedProject.id === 'project-hospital-los') && (
+            {/* Action Buttons: GitHub & Live App */}
+            {(selectedProject.link || selectedProject.github) && (
               <div className="project-modal-footer-actions">
                 {selectedProject.link && (
                   <a
