@@ -49,10 +49,21 @@ const ICON_MAP = {
 const heroImage = '/Assets/profile.jpg';
 const resumeUrl = '/Assets/Resume.pdf';
 
-/* ─── Enrich projects with icon components ─── */
+const DEFAULT_PROJECT_IMAGES = {
+  'project-diabetic-readmission': '/projects/diabetic-readmission.png',
+  'project-hpa': '/projects/hpa-explorer.png',
+  'project-hospital-los': '/projects/hospital-los.png',
+  'project-jarvis': '/projects/jarvis-ai.jpg',
+  'project-pneumo-ai': '/projects/pneumo-ai.png',
+  'project-amazon-sales': '/projects/amazon-sales.jpg',
+  'project-aqi': '/projects/aqi-dashboard.png'
+};
+
+/* ─── Enrich projects with icon components & image fallbacks ─── */
 function enrichProjects(projects) {
   return projects.map((p) => ({
     ...p,
+    image: p.image || DEFAULT_PROJECT_IMAGES[p.id] || '',
     icon: ICON_MAP[p.iconKey] || FileText,
   }));
 }
