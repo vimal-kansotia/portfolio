@@ -58,7 +58,7 @@ export default function CustomCursor({ theme = 'dark', colorTheme = 'olive' }) {
     if (typeof window !== 'undefined') {
       const isMobile = window.matchMedia('(max-width: 768px)').matches || ('ontouchstart' in window);
       isMobileRef.current = isMobile;
-      const numPoints = isMobile ? 32 : 60;
+      const numPoints = isMobile ? 22 : 36;
 
       const spine = [];
       for (let i = 0; i < numPoints; i++) {
@@ -189,19 +189,6 @@ export default function CustomCursor({ theme = 'dark', colorTheme = 'olive' }) {
           ringPosRef.current = { x: clientX, y: clientY };
         }
       }
-
-      // Spawn dragon ember particles
-      if (Math.random() < 0.35) {
-        particlesRef.current.push({
-          x: clientX,
-          y: clientY,
-          vx: (Math.random() - 0.5) * 2.5,
-          vy: (Math.random() - 0.5) * 2.5 - 0.8,
-          size: Math.random() * 3 + 1.2,
-          life: 1,
-          decay: Math.random() * 0.04 + 0.02,
-        });
-      }
     };
 
     const handleMouseMove = (e) => updatePointerPos(e.clientX, e.clientY);
@@ -252,8 +239,9 @@ export default function CustomCursor({ theme = 'dark', colorTheme = 'olive' }) {
         return;
       }
 
-      ringPosRef.current.x += (targetX - ringPosRef.current.x) * 0.25;
-      ringPosRef.current.y += (targetY - ringPosRef.current.y) * 0.25;
+      // Snappier magnetic ring follow (low latency)
+      ringPosRef.current.x += (targetX - ringPosRef.current.x) * 0.45;
+      ringPosRef.current.y += (targetY - ringPosRef.current.y) * 0.45;
 
       const dotScale = isHoveredRef.current ? (isMouseDownRef.current ? 0.7 : 1.25) : (isMouseDownRef.current ? 0.7 : 1.0);
       const ringScale = isHoveredRef.current ? (isMouseDownRef.current ? 0.85 : 1.15) : (isMouseDownRef.current ? 0.85 : 1.0);
@@ -272,45 +260,50 @@ export default function CustomCursor({ theme = 'dark', colorTheme = 'olive' }) {
         const dyHead = targetY - head.y;
         const distHead = Math.hypot(dxHead, dyHead);
 
-        if (distHead > 0.5) {
-          head.x += dxHead * 0.92;
-          head.y += dyHead * 0.92;
-          head.angle = Math.atan2(dyHead, dxHead);
+        if (distHead > 0.1) {
+          // Responsive follow: high tracking speed with micro-damping to eliminate lag
+          head.x += dxHead * 0.95;
+          head.y += dyHead * 0.95;
+
+          // Smooth rotational articulation without snapping
+          const targetAngle = Math.atan2(dyHead, dxHead);
+          let diff = targetAngle - head.angle;
+          while (diff < -Math.PI) diff += Math.PI * 2;
+          while (diff > Math.PI) diff -= Math.PI * 2;
+          head.angle += diff * 0.55;
         }
 
-        const SEGMENT_DIST = isMobileRef.current ? 12 : 14;
+        const SEGMENT_DIST = isMobileRef.current ? 13 : 15;
 
         for (let i = 1; i < spine.length; i++) {
           const prev = spine[i - 1];
           const curr = spine[i];
           const dx = prev.x - curr.x;
           const dy = prev.y - curr.y;
-          const angle = Math.atan2(dy, dx);
-          curr.angle = angle;
-          curr.x = prev.x - Math.cos(angle) * SEGMENT_DIST;
-          curr.y = prev.y - Math.sin(angle) * SEGMENT_DIST;
+          const targetAngle = Math.atan2(dy, dx);
+          
+          let diff = targetAngle - curr.angle;
+          while (diff < -Math.PI) diff += Math.PI * 2;
+          while (diff > Math.PI) diff -= Math.PI * 2;
+          curr.angle += diff * 0.85;
+
+          curr.x = prev.x - Math.cos(curr.angle) * SEGMENT_DIST;
+          curr.y = prev.y - Math.sin(curr.angle) * SEGMENT_DIST;
         }
 
         const getRadius = (index) => {
           const t = index / (spine.length - 1);
-          let baseR = isMobileRef.current ? 14 : 18;
-          if (t < 0.1) baseR = (isMobileRef.current ? 14 : 18) + t * 30;
-          else if (t < 0.7) baseR = (isMobileRef.current ? 16 : 22) - (t - 0.1) * 8;
-          else baseR = Math.max(2, (isMobileRef.current ? 12 : 16) * (1 - (t - 0.7) / 0.3));
-          return baseR * (isHoveredRef.current ? 1.2 : 1.0);
+          let baseR = isMobileRef.current ? 13 : 17;
+          if (t < 0.15) baseR = (isMobileRef.current ? 13 : 17) + t * 24;
+          else if (t < 0.65) baseR = (isMobileRef.current ? 15 : 20) - (t - 0.15) * 8;
+          else baseR = Math.max(2, (isMobileRef.current ? 11 : 15) * (1 - (t - 0.65) / 0.35));
+          return baseR * (isHoveredRef.current ? 1.15 : 1.0);
         };
 
-        const isDark = theme === 'dark';
-        const jadeNeon = isDark ? activeColorPalette.light : activeColorPalette.primary;
-        const eyeColor = isDark ? activeColorPalette.light : activeColorPalette.primary;
         const rgbStr = activeColorPalette.rgb;
-        const mainShadowColor = isDark ? jadeNeon : 'rgba(0, 0, 0, 0.55)';
-        const shadowBlurAmount = isDark ? 16 : 10;
+        const eyeColor = isDark ? activeColorPalette.light : activeColorPalette.primary;
 
-        ctx.save();
-
-        // 2. Render Inner Hyper-Bright Spinal Laser Core
-        ctx.save();
+        // 1. Render Spinal Laser Core: dual stroke for glow (zero shadowBlur GPU penalty)
         ctx.beginPath();
         ctx.moveTo(spine[0].x, spine[0].y);
         for (let i = 1; i < spine.length - 1; i++) {
@@ -318,165 +311,149 @@ export default function CustomCursor({ theme = 'dark', colorTheme = 'olive' }) {
           const yc = (spine[i].y + spine[i + 1].y) / 2;
           ctx.quadraticCurveTo(spine[i].x, spine[i].y, xc, yc);
         }
-        ctx.strokeStyle = activeColorPalette.primary;
-        ctx.lineWidth = isMobileRef.current ? 3 : 4.5;
-        ctx.shadowColor = mainShadowColor;
-        ctx.shadowBlur = shadowBlurAmount;
+        // Outer soft glow stroke
+        ctx.strokeStyle = isDark ? `rgba(${rgbStr}, 0.28)` : `rgba(${rgbStr}, 0.18)`;
+        ctx.lineWidth = isMobileRef.current ? 7 : 10;
         ctx.stroke();
-        ctx.restore();
 
-        // 3. Render Intricate Dragon Scale Rings & Ribs
-        ctx.save();
+        // Inner intense core stroke
+        ctx.strokeStyle = activeColorPalette.primary;
+        ctx.lineWidth = isMobileRef.current ? 2.5 : 3.5;
+        ctx.stroke();
+
+        // 2. Render Intricate Dragon Scale Rings & Ribs
         for (let i = 1; i < spine.length - 2; i++) {
           const pt = spine[i];
           const r = getRadius(i);
+          const alphaVal = 1 - i / spine.length;
           ctx.save();
           ctx.translate(pt.x, pt.y);
           ctx.rotate(pt.angle);
           ctx.beginPath();
           ctx.ellipse(0, 0, r * 0.4, r, 0, 0, Math.PI * 2);
-          ctx.strokeStyle = isDark
-            ? `rgba(${rgbStr}, ${(1 - i / spine.length) * 0.9})`
-            : `rgba(${rgbStr}, ${Math.max(0.65, 1 - i / spine.length)})`;
-          ctx.lineWidth = isDark ? 1.4 : 2.0;
-          if (!isDark) {
-            ctx.shadowColor = 'rgba(0, 0, 0, 0.4)';
-            ctx.shadowBlur = 4;
-          }
+          ctx.strokeStyle = `rgba(${rgbStr}, ${alphaVal * (isDark ? 0.85 : 0.75)})`;
+          ctx.lineWidth = isDark ? 1.4 : 1.8;
           ctx.stroke();
+
           if (i % 2 === 0) {
             ctx.beginPath();
             ctx.moveTo(-r * 0.5, -r * 0.8);
             ctx.lineTo(r * 0.2, 0);
             ctx.lineTo(-r * 0.5, r * 0.8);
-            ctx.strokeStyle = isDark
-              ? `rgba(${rgbStr}, ${(1 - i / spine.length) * 0.75})`
-              : `rgba(${rgbStr}, ${Math.max(0.55, 1 - i / spine.length)})`;
-            ctx.lineWidth = isDark ? 1.4 : 1.8;
+            ctx.strokeStyle = `rgba(${rgbStr}, ${alphaVal * (isDark ? 0.7 : 0.6)})`;
+            ctx.lineWidth = isDark ? 1.2 : 1.5;
             ctx.stroke();
           }
           ctx.restore();
         }
-        ctx.restore();
 
-        // 5. Render Ethereal Spirit Flame Ribbons
-        ctx.save();
-        for (let i = 4; i < spine.length - 8; i += 6) {
+        // 3. Render Ethereal Spirit Flame Ribbons
+        for (let i = 3; i < spine.length - 6; i += 5) {
           const pt = spine[i];
           const r = getRadius(i);
-          const wave = Math.sin(time * 3.5 + i) * 12;
+          const wave = Math.sin(time * 3.5 + i) * 10;
           ctx.beginPath();
           ctx.moveTo(pt.x, pt.y);
           ctx.quadraticCurveTo(
-            pt.x - Math.cos(pt.angle) * 20 + Math.sin(pt.angle) * (r + 15),
-            pt.y - Math.sin(pt.angle) * 20 - Math.cos(pt.angle) * (r + 15),
-            pt.x - Math.cos(pt.angle) * 35 + Math.sin(pt.angle) * (r + 25 + wave),
-            pt.y - Math.sin(pt.angle) * 35 - Math.cos(pt.angle) * (r + 25 + wave)
+            pt.x - Math.cos(pt.angle) * 18 + Math.sin(pt.angle) * (r + 12),
+            pt.y - Math.sin(pt.angle) * 18 - Math.cos(pt.angle) * (r + 12),
+            pt.x - Math.cos(pt.angle) * 30 + Math.sin(pt.angle) * (r + 20 + wave),
+            pt.y - Math.sin(pt.angle) * 30 - Math.cos(pt.angle) * (r + 20 + wave)
           );
-          ctx.strokeStyle = `rgba(${rgbStr}, ${isDark ? 0.85 : 0.95})`;
-          ctx.lineWidth = isDark ? 1.6 : 2.2;
-          if (!isDark) {
-            ctx.shadowColor = 'rgba(0, 0, 0, 0.35)';
-            ctx.shadowBlur = 4;
-          }
+          ctx.strokeStyle = `rgba(${rgbStr}, ${isDark ? 0.75 : 0.65})`;
+          ctx.lineWidth = isDark ? 1.5 : 1.8;
           ctx.stroke();
         }
-        ctx.restore();
 
-        // 6. Render Dragon Claws
-        const clawIndices = [10, 26, 42, 56];
+        // 4. Render Dragon Claws (Fast rasterization without blur penalty)
+        const clawIndices = isMobileRef.current ? [5, 11, 17] : [6, 14, 22, 30];
         const clawCanvas = tintedClawRef.current || clawSpriteRef.current;
         const headCanvas = tintedHeadRef.current || headSpriteRef.current;
 
-        for (const idx of clawIndices) {
-          if (idx < spine.length) {
-            const pt = spine[idx];
-
-            if (spritesReadyRef.current && clawCanvas) {
+        if (spritesReadyRef.current && clawCanvas) {
+          for (const idx of clawIndices) {
+            if (idx < spine.length) {
+              const pt = spine[idx];
+              // Left claw
               ctx.save();
               ctx.translate(pt.x, pt.y);
-              ctx.rotate(pt.angle + Math.PI / 2 + 0.4);
-              ctx.shadowColor = mainShadowColor;
-              ctx.shadowBlur = shadowBlurAmount;
-              ctx.drawImage(clawCanvas, 0, -20, 50, 40);
+              ctx.rotate(pt.angle + Math.PI / 2 + 0.35);
+              ctx.drawImage(clawCanvas, 0, -18, 44, 35);
               ctx.restore();
 
+              // Right claw
               ctx.save();
               ctx.translate(pt.x, pt.y);
-              ctx.rotate(pt.angle - Math.PI / 2 - 0.4);
+              ctx.rotate(pt.angle - Math.PI / 2 - 0.35);
               ctx.scale(1, -1);
-              ctx.shadowColor = mainShadowColor;
-              ctx.shadowBlur = shadowBlurAmount;
-              ctx.drawImage(clawCanvas, 0, -20, 50, 40);
+              ctx.drawImage(clawCanvas, 0, -18, 44, 35);
               ctx.restore();
             }
           }
         }
 
-        // 7. Render Crisp Dragon Head
+        // 5. Render Crisp Dragon Head
         if (spritesReadyRef.current && headCanvas) {
           ctx.save();
           ctx.translate(head.x, head.y);
           ctx.rotate(head.angle);
-          ctx.shadowColor = isDark ? jadeNeon : 'rgba(0, 0, 0, 0.65)';
-          ctx.shadowBlur = isDark ? 8 : 12;
-          ctx.drawImage(headCanvas, -55, -70, 140, 140);
+          ctx.drawImage(headCanvas, -50, -65, 130, 130);
           
+          // Glowing Eyes
           ctx.beginPath();
-          ctx.arc(26, -15, 5, 0, Math.PI * 2);
-          ctx.arc(26, 15, 5, 0, Math.PI * 2);
+          ctx.arc(24, -14, 4.5, 0, Math.PI * 2);
+          ctx.arc(24, 14, 4.5, 0, Math.PI * 2);
           ctx.fillStyle = eyeColor;
-          ctx.shadowColor = eyeColor;
-          ctx.shadowBlur = 10;
           ctx.fill();
 
-          const w1 = Math.sin(time * 3) * 10;
-          const w2 = Math.cos(time * 3) * 10;
+          // Dynamic Whiskers
+          const w1 = Math.sin(time * 3.5) * 8;
+          const w2 = Math.cos(time * 3.5) * 8;
           ctx.beginPath();
-          ctx.moveTo(50, -8);
-          ctx.bezierCurveTo(75, -28, 90 + w1, -40, 120 + w1, -30);
-          ctx.moveTo(50, 8);
-          ctx.bezierCurveTo(75, 28, 90 + w2, 40, 120 + w2, 30);
-          ctx.strokeStyle = `rgba(${rgbStr}, 1.0)`;
-          ctx.lineWidth = 3.2;
-          if (!isDark) {
-            ctx.shadowColor = 'rgba(0, 0, 0, 0.5)';
-            ctx.shadowBlur = 5;
-          }
+          ctx.moveTo(48, -8);
+          ctx.bezierCurveTo(72, -26, 85 + w1, -38, 112 + w1, -28);
+          ctx.moveTo(48, 8);
+          ctx.bezierCurveTo(72, 26, 85 + w2, 38, 112 + w2, 28);
+          ctx.strokeStyle = `rgba(${rgbStr}, 0.95)`;
+          ctx.lineWidth = 2.6;
           ctx.stroke();
 
           ctx.restore();
         }
 
-        ctx.restore();
+        // 6. Spawn Dragon Ember Particles during active movement (rate-limited)
+        if (distHead > 2.5 && particlesRef.current.length < 24 && Math.random() < 0.3) {
+          particlesRef.current.push({
+            x: head.x + (Math.random() - 0.5) * 14,
+            y: head.y + (Math.random() - 0.5) * 14,
+            vx: (Math.random() - 0.5) * 1.8 - Math.cos(head.angle) * 1.2,
+            vy: (Math.random() - 0.5) * 1.8 - Math.sin(head.angle) * 1.2,
+            size: Math.random() * 2.5 + 1.0,
+            life: 1,
+            decay: Math.random() * 0.04 + 0.025,
+          });
+        }
       }
 
-      // --- 8. Dragon Ember Particles ---
+      // --- 7. Dragon Ember Particles (Batch rendered in single path) ---
       const particles = particlesRef.current;
-      for (let i = particles.length - 1; i >= 0; i--) {
-        const p = particles[i];
-        p.x += p.vx;
-        p.y += p.vy;
-        p.life -= p.decay;
+      if (particles.length > 0) {
+        for (let i = particles.length - 1; i >= 0; i--) {
+          const p = particles[i];
+          p.x += p.vx;
+          p.y += p.vy;
+          p.life -= p.decay;
 
-        if (p.life <= 0) {
-          particles.splice(i, 1);
-          continue;
+          if (p.life <= 0) {
+            particles.splice(i, 1);
+            continue;
+          }
+
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.size * p.life, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(${activeColorPalette.rgb}, ${p.life * 0.8})`;
+          ctx.fill();
         }
-
-        ctx.save();
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.size * p.life, 0, Math.PI * 2);
-
-        const particleColor = `rgba(${activeColorPalette.rgb}, ${p.life * 0.95})`;
-        if (!isDark) {
-          ctx.shadowColor = 'rgba(0, 0, 0, 0.4)';
-          ctx.shadowBlur = 4;
-        }
-
-        ctx.fillStyle = particleColor;
-        ctx.fill();
-        ctx.restore();
       }
 
       animFrameRef.current = requestAnimationFrame(render);

@@ -5748,6 +5748,9 @@ textarea.form-input {
   z-index: 2; /* Rendered BEHIND cards (z-index: 10) & content, above 3D background */
   opacity: 0;
   transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform;
+  transform: translateZ(0);
+  contain: strict;
 }
 
 .laser-canvas-behind.visible {
