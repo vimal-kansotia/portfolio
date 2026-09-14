@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://ameyajarvis.qzz.io/sitemap.xml
+Sitemap: https://vimal-kansotia.vercel.app/sitemap.xml
