@@ -429,7 +429,7 @@ export default function ProjectsSection({ projects = [] }) {
                 key={`${project.id}-${index}`}
                 className="project-card-minimal glass card-3d"
                 onClick={(e) => {
-                  if (dragDistanceRef.current > 8) {
+                  if (dragDistanceRef.current > 25) {
                     e.preventDefault();
                     e.stopPropagation();
                     return;
@@ -461,7 +461,10 @@ export default function ProjectsSection({ projects = [] }) {
                       className="project-plus-btn"
                       aria-label={`Open details for ${project.title}`}
                       title="View Full Details"
+                      onMouseDown={(e) => e.stopPropagation()}
+                      onTouchStart={(e) => e.stopPropagation()}
                       onClick={(e) => {
+                        e.preventDefault();
                         e.stopPropagation();
                         setSelectedProject(project);
                       }}
