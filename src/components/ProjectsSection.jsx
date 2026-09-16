@@ -428,8 +428,13 @@ export default function ProjectsSection({ projects = [] }) {
               <div
                 key={`${project.id}-${index}`}
                 className="project-card-minimal glass card-3d"
+                onPointerUp={(e) => {
+                  if (dragDistanceRef.current < 15) {
+                    setSelectedProject(project);
+                  }
+                }}
                 onClick={(e) => {
-                  if (dragDistanceRef.current > 25) {
+                  if (dragDistanceRef.current >= 15) {
                     e.preventDefault();
                     e.stopPropagation();
                     return;
