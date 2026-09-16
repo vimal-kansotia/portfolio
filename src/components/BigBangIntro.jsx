@@ -38,7 +38,8 @@ export default function BigBangIntro({ onComplete, colorTheme = 'cyan' }) {
     try {
       const params = new URLSearchParams(window.location.search);
       const forceIntro = params.get('intro') === 'true' || params.get('intro') === '1';
-      const shown = !forceIntro && sessionStorage.getItem('vimal_intro_shown') === 'true';
+      const hasHash = Boolean(window.location.hash && window.location.hash !== '' && window.location.hash !== '#');
+      const shown = (!forceIntro && hasHash) || (!forceIntro && sessionStorage.getItem('vimal_intro_shown') === 'true');
       setIsDone(shown);
     } catch (e) {
       setIsDone(false);
