@@ -202,6 +202,8 @@ export default function ProjectsSection({ projects = [] }) {
   const isHoveredRef = useRef(false);
   const isAnimatingBtnRef = useRef(false);
 
+  const dragDistanceRef = useRef(0);
+
   // Measure single set width
   const updateMetrics = useCallback(() => {
     if (trackRef.current && trackRef.current.children.length >= 2) {
@@ -262,10 +264,10 @@ export default function ProjectsSection({ projects = [] }) {
 
   // Pointer / Mouse / Touch Dragging Handlers
   const handlePointerDown = (e) => {
-    // Only respond to main click or touch
     if (e.button && e.button !== 0) return;
     isDraggingRef.current = true;
     hasMovedRef.current = false;
+    dragDistanceRef.current = 0;
     const clientX = e.touches && e.touches.length > 0 ? e.touches[0].clientX : (e.clientX ?? 0);
     startXRef.current = clientX;
     startOffsetRef.current = offsetRef.current;
@@ -280,8 +282,9 @@ export default function ProjectsSection({ projects = [] }) {
     if (!isDraggingRef.current) return;
     const clientX = e.touches && e.touches.length > 0 ? e.touches[0].clientX : (e.clientX ?? 0);
     const deltaX = clientX - startXRef.current;
+    dragDistanceRef.current = Math.abs(deltaX);
 
-    if (Math.abs(deltaX) > 12) {
+    if (Math.abs(deltaX) > 10) {
       hasMovedRef.current = true;
     }
 
@@ -426,7 +429,7 @@ export default function ProjectsSection({ projects = [] }) {
                 key={`${project.id}-${index}`}
                 className="project-card-minimal glass card-3d"
                 onClick={(e) => {
-                  if (hasMovedRef.current) {
+                  if (dragDistanceRef.current > 8) {
                     e.preventDefault();
                     e.stopPropagation();
                     return;
