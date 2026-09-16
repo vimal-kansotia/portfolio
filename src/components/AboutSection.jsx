@@ -1,5 +1,5 @@
 import { Award, GraduationCap, Shield } from 'lucide-react';
-import ExecutiveProfileCard from './ExecutiveProfileCard';
+import ProfilePhoto from './ProfilePhoto';
 
 function SectionHeading({ children, className = '' }) {
   return <h2 className={`section-heading ${className}`}>{children}</h2>;
@@ -78,8 +78,8 @@ export default function AboutSection({ about, skillBars, education, certificatio
           </div>
         </article>
 
-        <article className="about-tile about-tile-center glass card-3d">
-          <ExecutiveProfileCard profileName={about.profileName || 'Vimal Santosh Kansotia'} location={about.location || 'Mumbai, India'} />
+        <article className="about-tile about-tile-center glass card-3d" style={{ padding: 0, overflow: 'hidden', height: '100%', minHeight: '360px', position: 'relative' }}>
+          <ProfilePhoto src="/Assets/profile-formal.png" alt={about.profileName || 'Vimal Santosh Kansotia'} />
         </article>
 
         <article className="about-tile about-tile-mindset glass card-3d">

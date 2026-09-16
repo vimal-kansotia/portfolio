@@ -24,16 +24,14 @@ export default function CustomCursor({ theme = 'dark', colorTheme = 'cyan' }) {
   const dotRef = useRef(null);
   const ringRef = useRef(null);
 
-  // Deactivate completely on phones / mobile touch devices (User: "not dragon")
-  const [isTouchDevice, setIsTouchDevice] = useState(true);
+  // Deactivate completely on phones / mobile touch devices
+  const [isTouchDevice, setIsTouchDevice] = useState(false);
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const isMobileOrTouch =
-        window.matchMedia('(max-width: 768px)').matches ||
-        window.matchMedia('(pointer: coarse)').matches ||
-        ('ontouchstart' in window) ||
-        Boolean(navigator.maxTouchPoints && navigator.maxTouchPoints > 0);
+        window.innerWidth <= 768 ||
+        (window.matchMedia('(pointer: coarse)').matches && !window.matchMedia('(pointer: fine)').matches);
 
       setIsTouchDevice(isMobileOrTouch);
     }
@@ -146,13 +144,7 @@ export default function CustomCursor({ theme = 'dark', colorTheme = 'cyan' }) {
 
   // Preload dragon textures & generate tinted sprites (Desktop only)
   useEffect(() => {
-    if (typeof window === 'undefined') return;
-    const isTouchOrMobile =
-      window.matchMedia('(max-width: 768px)').matches ||
-      window.matchMedia('(pointer: coarse)').matches ||
-      ('ontouchstart' in window) ||
-      Boolean(navigator.maxTouchPoints && navigator.maxTouchPoints > 0);
-    if (isTouchOrMobile) return;
+    if (typeof window === 'undefined' || isTouchDevice) return;
 
     Promise.all([
       createTransparentSprite('/dragon/head.png'),
@@ -168,7 +160,7 @@ export default function CustomCursor({ theme = 'dark', colorTheme = 'cyan' }) {
 
       applySpriteTint(head, claw, colorTheme);
     });
-  }, []);
+  }, [isTouchDevice, colorTheme]);
 
   useEffect(() => {
     if (!rawHeadRef.current || !rawClawRef.current) return;
@@ -177,9 +169,7 @@ export default function CustomCursor({ theme = 'dark', colorTheme = 'cyan' }) {
 
   // Main Render Effect
   useEffect(() => {
-    if (typeof window === 'undefined') return;
-    const isTouchOrMobile = window.matchMedia('(max-width: 768px)').matches || ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
-    if (isTouchOrMobile) return; 
+    if (typeof window === 'undefined' || isTouchDevice) return; 
 
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (prefersReducedMotion) return;
@@ -515,7 +505,7 @@ export default function CustomCursor({ theme = 'dark', colorTheme = 'cyan' }) {
       document.removeEventListener('mouseenter', handleMouseEnter);
       if (animFrameRef.current) cancelAnimationFrame(animFrameRef.current);
     };
-  }, [theme, colorTheme]);
+  }, [theme, colorTheme, isTouchDevice]);
 
   if (isTouchDevice) return null;
 

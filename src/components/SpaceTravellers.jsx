@@ -268,6 +268,24 @@ export default function SpaceTravellers() {
     }
   });
 
+  const sparkTexture = useMemo(() => {
+    if (typeof document === 'undefined') return null;
+    const canvas = document.createElement('canvas');
+    canvas.width = 32;
+    canvas.height = 32;
+    const ctx = canvas.getContext('2d');
+    const gradient = ctx.createRadialGradient(16, 16, 0, 16, 16, 16);
+    gradient.addColorStop(0, 'rgba(255, 255, 255, 1)');
+    gradient.addColorStop(0.3, 'rgba(0, 229, 255, 0.8)');
+    gradient.addColorStop(0.7, 'rgba(0, 229, 255, 0.2)');
+    gradient.addColorStop(1, 'rgba(0, 229, 255, 0)');
+    ctx.fillStyle = gradient;
+    ctx.fillRect(0, 0, 32, 32);
+    const texture = new THREE.CanvasTexture(canvas);
+    texture.premultiplyAlpha = true;
+    return texture;
+  }, []);
+
   return (
     <group ref={groupRef}>
       {/* 🚀 COMPACT BLUE DEFENDER SPACESHIP (Dodging & Weaving) */}
@@ -385,7 +403,8 @@ export default function SpaceTravellers() {
           />
         </bufferGeometry>
         <pointsMaterial
-          size={0.15}
+          map={sparkTexture}
+          size={0.12}
           color="#00E5FF"
           transparent
           opacity={0.9}

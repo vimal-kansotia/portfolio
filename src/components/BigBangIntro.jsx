@@ -36,7 +36,9 @@ export default function BigBangIntro({ onComplete, colorTheme = 'cyan' }) {
   useEffect(() => {
     setMounted(true);
     try {
-      const shown = sessionStorage.getItem('vimal_intro_shown') === 'true';
+      const params = new URLSearchParams(window.location.search);
+      const forceIntro = params.get('intro') === 'true' || params.get('intro') === '1';
+      const shown = !forceIntro && sessionStorage.getItem('vimal_intro_shown') === 'true';
       setIsDone(shown);
     } catch (e) {
       setIsDone(false);
@@ -69,7 +71,7 @@ export default function BigBangIntro({ onComplete, colorTheme = 'cyan' }) {
   };
 
   useEffect(() => {
-    if (typeof window === 'undefined') return;
+    if (typeof window === 'undefined' || !mounted || isDone) return;
 
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -309,7 +311,7 @@ export default function BigBangIntro({ onComplete, colorTheme = 'cyan' }) {
       window.removeEventListener('resize', handleResize);
       if (animFrameRef.current) cancelAnimationFrame(animFrameRef.current);
     };
-  }, [onComplete, colorTheme]);
+  }, [mounted, isDone, onComplete, colorTheme]);
 
   if (!mounted || isDone) return null;
 
