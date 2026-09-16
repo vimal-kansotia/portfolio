@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { Linkedin, Mail, Phone, MapPin, Github, ExternalLink, Sparkles, ArrowUpRight, Send, Check, Copy } from 'lucide-react';
+import PostMailboxAnimation from './PostMailboxAnimation';
 
 function SectionHeading({ children, className = '' }) {
   return <h2 className={`section-heading ${className}`}>{children}</h2>;
@@ -222,6 +223,8 @@ const DEFAULT_CONTACT_LINKS = [
 
 export default function ContactSection({ contact }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isDelivered, setIsDelivered] = useState(false);
+  const [senderName, setSenderName] = useState('');
   const [status, setStatus] = useState({ kind: '', message: '' });
   const [copiedEmail, setCopiedEmail] = useState(false);
   const contactFormRef = useRef(null);
@@ -242,10 +245,15 @@ export default function ContactSection({ contact }) {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    setIsSubmitting(true);
-    setStatus({ kind: '', message: '' });
+    const formEl = contactFormRef.current;
+    if (!formEl) return;
+    const formData = new FormData(formEl);
+    const name = formData.get('from_name')?.toString() || '';
+    setSenderName(name);
 
-    const formData = new FormData(contactFormRef.current);
+    setIsSubmitting(true);
+    setIsDelivered(true);
+    setStatus({ kind: '', message: '' });
 
     try {
       const response = await fetch('https://formspree.io/f/xzepedjy', {
@@ -258,7 +266,6 @@ export default function ContactSection({ contact }) {
 
       if (response.ok) {
         setStatus({ kind: 'success', message: "Thanks! I'll get back to you soon." });
-        contactFormRef.current?.reset();
       } else {
         const data = await response.json();
         if (data && data.errors) {
@@ -361,59 +368,73 @@ export default function ContactSection({ contact }) {
           <QuoteCard />
         </div>
 
-        <form
-          ref={contactFormRef}
-          onSubmit={handleSubmit}
-          className="glass-strong contact-form contact-template-form"
-        >
-          <h4 className="github-linkout-style">🤝 SAY HELLO</h4>
+        {isDelivered ? (
+          <div className="glass-strong contact-form contact-template-form" style={{ padding: 0 }}>
+            <PostMailboxAnimation
+              senderName={senderName}
+              onReset={() => {
+                setIsDelivered(false);
+                setIsSubmitting(false);
+                setStatus({ kind: '', message: '' });
+                setSenderName('');
+              }}
+            />
+          </div>
+        ) : (
+          <form
+            ref={contactFormRef}
+            onSubmit={handleSubmit}
+            className="glass-strong contact-form contact-template-form"
+          >
+            <h4 className="github-linkout-style">🤝 SAY HELLO</h4>
 
-          <div className="form-group">
-            <label className="form-label" htmlFor="from_name">Your Name</label>
-            <input
-              id="from_name"
-              type="text"
-              name="from_name"
-              required
-              placeholder="Your name"
-              className="form-input"
-            />
-          </div>
-          <div className="form-group">
-            <label className="form-label" htmlFor="from_email">Your Email</label>
-            <input
-              id="from_email"
-              type="email"
-              name="from_email"
-              required
-              placeholder="your@gmail.com"
-              className="form-input"
-            />
-          </div>
-          <div className="form-group">
-            <label className="form-label" htmlFor="message">Message</label>
-            <textarea
-              id="message"
-              name="message"
-              rows="4"
-              required
-              placeholder="What's on your mind?"
-              className="form-input"
-              style={{ resize: 'none' }}
-            />
-          </div>
-
-          {status.message && (
-            <div className={`form-status ${status.kind}`}>
-              {status.message}
+            <div className="form-group">
+              <label className="form-label" htmlFor="from_name">Your Name</label>
+              <input
+                id="from_name"
+                type="text"
+                name="from_name"
+                required
+                placeholder="Your name"
+                className="form-input"
+              />
             </div>
-          )}
+            <div className="form-group">
+              <label className="form-label" htmlFor="from_email">Your Email</label>
+              <input
+                id="from_email"
+                type="email"
+                name="from_email"
+                required
+                placeholder="your@gmail.com"
+                className="form-input"
+              />
+            </div>
+            <div className="form-group">
+              <label className="form-label" htmlFor="message">Message</label>
+              <textarea
+                id="message"
+                name="message"
+                rows="4"
+                required
+                placeholder="What's on your mind?"
+                className="form-input"
+                style={{ resize: 'none' }}
+              />
+            </div>
 
-          <button type="submit" disabled={isSubmitting} className="btn btn-primary btn-submit">
-            <SendAirplaneLogo isSubmitting={isSubmitting} />
-            <span>{isSubmitting ? 'Sending...' : 'Send Message'}</span>
-          </button>
-        </form>
+            {status.message && (
+              <div className={`form-status ${status.kind}`}>
+                {status.message}
+              </div>
+            )}
+
+            <button type="submit" disabled={isSubmitting} className="btn btn-primary btn-submit">
+              <SendAirplaneLogo isSubmitting={isSubmitting} />
+              <span>{isSubmitting ? 'Sending...' : 'Send Message'}</span>
+            </button>
+          </form>
+        )}
       </div>
     </section>
   );
