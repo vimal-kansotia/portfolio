@@ -574,30 +574,30 @@ export default function ProjectsSection({ projects = [] }) {
               </ul>
             </div>
 
-            {/* Action Buttons: GitHub & Live App */}
-            {(selectedProject.link || selectedProject.github) && (
+            {/* Action Buttons: GitHub & Live App (Only rendered if live demo link exists) */}
+            {selectedProject.link && (
               <div className="project-modal-footer-actions">
-                {selectedProject.link && (
-                  <a
-                    href={selectedProject.link}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="project-modal-action-btn project-modal-btn-primary"
-                  >
-                    <ExternalLink size={18} />
-                    <span>Open Live Demo ↗</span>
-                  </a>
-                )}
-
                 <a
-                  href={selectedProject.github || githubUrl}
+                  href={selectedProject.link}
                   target="_blank"
                   rel="noreferrer"
-                  className="project-modal-action-btn project-modal-btn-secondary"
+                  className="project-modal-action-btn project-modal-btn-primary"
                 >
-                  <Github size={18} />
-                  <span>View Code on GitHub</span>
+                  <ExternalLink size={18} />
+                  <span>Open Live Demo ↗</span>
                 </a>
+
+                {selectedProject.github && (
+                  <a
+                    href={selectedProject.github}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="project-modal-action-btn project-modal-btn-secondary"
+                  >
+                    <Github size={18} />
+                    <span>View Code on GitHub</span>
+                  </a>
+                )}
               </div>
             )}
           </div>
