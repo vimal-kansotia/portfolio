@@ -60,32 +60,13 @@ const DEFAULT_PROJECT_IMAGES = {
   'project-aqi': '/projects/aqi-dashboard.png'
 };
 
-const NO_ACTION_PROJECT_IDS = [
-  'project-jarvis',
-  'project-pneumo-ai',
-  'project-amazon-sales',
-  'project-aqi'
-];
-
 /* ─── Enrich projects with icon components & image fallbacks ─── */
 function enrichProjects(projects) {
-  return projects.map((p) => {
-    const titleLower = (p.title || '').toLowerCase();
-    const isNoAction = NO_ACTION_PROJECT_IDS.includes(p.id) ||
-      titleLower.includes('jarvis') ||
-      titleLower.includes('pneumo') ||
-      titleLower.includes('amazon') ||
-      titleLower.includes('air quality') ||
-      titleLower.includes('aqi');
-
-    return {
-      ...p,
-      link: isNoAction ? '' : (p.link || ''),
-      github: isNoAction ? '' : (p.github || ''),
-      image: p.image || DEFAULT_PROJECT_IMAGES[p.id] || '',
-      icon: ICON_MAP[p.iconKey] || FileText,
-    };
-  });
+  return projects.map((p) => ({
+    ...p,
+    image: p.image || DEFAULT_PROJECT_IMAGES[p.id] || '',
+    icon: ICON_MAP[p.iconKey] || FileText,
+  }));
 }
 
 /* ============================================================

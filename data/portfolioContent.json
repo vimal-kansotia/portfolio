@@ -314,7 +314,7 @@
       "accent": "yellow",
       "iconKey": "mic",
       "link": "",
-      "github": "",
+      "github": "https://github.com/vimal-kansotia/Jarvis-AI",
       "image": "/projects/jarvis-ai.jpg"
     },
     {
@@ -339,7 +339,7 @@
       "accent": "green",
       "iconKey": "heart-pulse",
       "link": "",
-      "github": "",
+      "github": "https://github.com/vimal-kansotia/Pneumo-AI",
       "image": "/projects/pneumo-ai.png"
     },
     {
@@ -364,7 +364,7 @@
       "accent": "orange",
       "iconKey": "bar-chart",
       "link": "",
-      "github": "",
+      "github": "https://github.com/vimal-kansotia/Amazon-Sales-Analytics",
       "image": "/projects/amazon-sales.jpg"
     },
     {
@@ -388,7 +388,7 @@
       "accent": "blue",
       "iconKey": "cloud",
       "link": "",
-      "github": "",
+      "github": "https://github.com/vimal-kansotia/AQI-Dashboard",
       "image": "/projects/aqi-dashboard.png"
     },
     {
