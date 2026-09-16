@@ -345,7 +345,7 @@ const CONSTELLATIONS_DATA = [
   }
 ];
 
-export default function Constellations3D({ colorHex = '#06B6D4' }) {
+export default function Constellations3D({ colorHex = '#06B6D4', overscrollTension = 0 }) {
   const groupRef = useRef();
   const linesRef = useRef();
   const { size } = useThree();
@@ -424,12 +424,16 @@ export default function Constellations3D({ colorHex = '#06B6D4' }) {
     const time = state.clock.elapsedTime;
     const cameraY = state.camera?.position?.y || 0;
 
-    // Gentle cosmic parallax
-    groupRef.current.position.y = cameraY * 0.04;
+    // Gentle cosmic parallax + downward overscroll tension displacement
+    groupRef.current.position.y = cameraY * 0.04 - overscrollTension * 1.5;
 
-    // Subtle celestial breathing rotation
-    groupRef.current.rotation.y = Math.sin(time * 0.08) * 0.03;
-    groupRef.current.rotation.x = Math.cos(time * 0.06) * 0.02;
+    // Clean 3D scale (No stretching)
+    groupRef.current.scale.set(1.0, 1.0, 1.0);
+
+    // Subtle celestial breathing rotation + 3D multiverse roll
+    groupRef.current.rotation.z = overscrollTension * 0.45;
+    groupRef.current.rotation.y = Math.sin(time * 0.08) * 0.03 + overscrollTension * 0.2;
+    groupRef.current.rotation.x = Math.cos(time * 0.06) * 0.02 + overscrollTension * 0.25;
 
     // Interactive mouse parallax response
     if (state.pointer) {

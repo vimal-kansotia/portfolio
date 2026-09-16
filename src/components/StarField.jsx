@@ -2,8 +2,9 @@ import { useRef, useMemo } from 'react';
 import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 
-export default function StarField({ count = 6500 }) {
+export default function StarField({ count = 6500, overscrollTension = 0 }) {
   const meshRef = useRef();
+  const materialRef = useRef();
 
   const { positions, colors, sizes } = useMemo(() => {
     const posArr = new Float32Array(count * 3);
@@ -56,23 +57,34 @@ export default function StarField({ count = 6500 }) {
     const time = state.clock.elapsedTime;
     const cameraY = state.camera?.position?.y || 0;
 
-    // Follow camera Y so space stars follow all the way down to bottom footer
-    meshRef.current.position.y = cameraY;
+    // Follow camera Y with downward elastic offset during multiverse roll
+    meshRef.current.position.y = cameraY - overscrollTension * 2.5;
 
-    // Cosmic orbital drift
-    meshRef.current.rotation.y = time * 0.01;
-    meshRef.current.rotation.x = time * 0.005;
+    // Clean 3D space scale (No vertical stretching)
+    meshRef.current.scale.set(1.0, 1.0, 1.0);
+
+    // 3D Space Rolling & Rotational Drift into the Multiverse
+    const rollSpeedMultiplier = 1.0 + overscrollTension * 2.5;
+    meshRef.current.rotation.z = overscrollTension * 0.75;
+    meshRef.current.rotation.y = time * 0.01 * rollSpeedMultiplier;
+    meshRef.current.rotation.x = time * 0.005 * rollSpeedMultiplier + overscrollTension * 0.35;
 
     // Mouse parallax
     if (state.pointer) {
       meshRef.current.rotation.y += state.pointer.x * 0.015;
       meshRef.current.rotation.x += state.pointer.y * 0.015;
     }
+
+    // Dynamic star material opacity adjustment during multiverse overscroll
+    if (materialRef.current) {
+      materialRef.current.opacity = Math.min(1.0, 0.88 + overscrollTension * 0.12);
+    }
   });
 
   return (
     <points ref={meshRef} geometry={starGeometry}>
       <pointsMaterial
+        ref={materialRef}
         size={0.055}
         vertexColors
         transparent
@@ -84,3 +96,4 @@ export default function StarField({ count = 6500 }) {
     </points>
   );
 }
+

@@ -21,6 +21,8 @@ import LeadershipSection from '../src/components/LeadershipSection';
 import ContactSection from '../src/components/ContactSection';
 import Footer from '../src/components/Footer';
 import useScrollAnimations from '../src/hooks/useScrollAnimations';
+import useOverscrollTension from '../src/hooks/useOverscrollTension';
+import CosmicOverscrollGlow from '../src/components/CosmicOverscrollGlow';
 
 const Scene3D = dynamic(() => import('../src/components/Scene3D'), {
   ssr: false,
@@ -50,6 +52,7 @@ const heroImage = '/Assets/profile.jpg';
 const resumeUrl = '/Assets/Resume.pdf';
 
 const DEFAULT_PROJECT_IMAGES = {
+  'project-uk-housing': '/projects/uk-housing-price.png',
   'project-credit-risk': '/projects/loan-credit-risk.png',
   'project-diabetic-readmission': '/projects/diabetic-readmission.png',
   'project-hpa': '/projects/hpa-explorer.png',
@@ -194,6 +197,9 @@ export default function PortfolioApp({ initialContent }) {
   const activeQuickLinks = (content.footer.quickLinks || []).filter(l => !l.deleted);
   const activeSocialLinks = (content.footer.socialLinks || []).filter(l => !l.deleted);
 
+  /* ── Overscroll tension physics hook ── */
+  const overscrollTension = useOverscrollTension();
+
   /* ── Render ── */
   return (
     <>
@@ -204,7 +210,7 @@ export default function PortfolioApp({ initialContent }) {
       <CustomCursor theme={theme} colorTheme={colorTheme} />
 
       {/* 3D background */}
-      <Scene3D colorTheme={colorTheme} />
+      <Scene3D colorTheme={colorTheme} theme={theme} overscrollTension={overscrollTension} />
 
       {/* Portfolio */}
       <div className="app-container" ref={mainRef}>

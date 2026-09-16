@@ -230,6 +230,12 @@
   padding: 0;
 }
 
+html, body {
+  overscroll-behavior: none !important;
+  overscroll-behavior-y: none !important;
+  overscroll-behavior-x: none !important;
+}
+
 html {
   scroll-behavior: smooth;
   font-size: 16px;
@@ -238,18 +244,14 @@ html {
 
 body {
   transition: background-color 0.4s ease, color 0.4s ease;
-}
-
-body {
   font-family: var(--font-body);
-  background: var(--color-bg);
+  background-color: var(--color-bg);
   color: var(--color-text);
   min-height: 100vh;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   line-height: 1.65;
-  background-image: none !important;
 }
 
 /* Hide all background color orbs and corner glow pseudo-elements */

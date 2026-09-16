@@ -14,6 +14,27 @@ const PROJECT_ICON_MAP = {
 
 const DEFAULT_PROJECTS = [
   {
+    id: 'project-uk-housing',
+    title: 'UK Housing Price Prediction',
+    category: 'BIG DATA & DISTRIBUTED ML',
+    description: 'An enterprise-grade, distributed machine learning system deployed on Apache Spark 3.5.0 processing 22.5 million historical UK Land Registry property sales with a Medallion Lakehouse architecture.',
+    techStack: ['Apache Spark 3.5.0', 'Streamlit', 'Python', 'XGBoost', 'LightGBM', 'Medallion Lakehouse', 'Distributed Compute', 'Parquet', 'Scikit-learn', 'Pandas'],
+    highlights: [
+      'Processed 22.49 Million Historical Records (2.4 GB Snappy Parquet) on Apache Spark 3.5.0',
+      'Distributed Compute Engine with 6 CPU Cores / 32 Partitions & 100% DAG Self-Healing Fault Tolerance',
+      'Medallion Lakehouse Architecture (Bronze/Silver/Gold data validation & schema profiling)',
+      'Achieved Best R² Score of 0.8351 and Best RMSE of £99,168 using Distributed XGBoost & LightGBM',
+      'Fastest Training Benchmark of 4.4ms with Linear Regression & Interactive Model Filter Toolbar',
+      'Real-Time Property Price Valuation Engine & Spark vs. Pandas Distributed Pipeline Benchmarks'
+    ],
+    tags: ['Apache Spark', 'Streamlit', 'XGBoost', 'LightGBM', 'Python', 'Medallion Lakehouse'],
+    accent: 'purple',
+    iconKey: 'bar-chart',
+    image: '/projects/uk-housing-price.png',
+    link: 'https://uk-housing-price-prediction.streamlit.app',
+    github: 'https://github.com/vimal-kansotia/UK-Housing-Price-Prediction'
+  },
+  {
     id: 'project-credit-risk',
     title: '100,000-Loan Credit Risk & Default Prediction System',
     category: 'FINANCIAL ML & EXPLAINABLE AI',
@@ -269,16 +290,18 @@ export default function ProjectsSection({ projects = [] }) {
     return () => cancelAnimationFrame(animId);
   }, [wrapOffset]);
 
+  const isMouseDownRef = useRef(false);
+
   // Pointer / Mouse / Touch Dragging Handlers
   const handlePointerDown = (e) => {
     if (e.button && e.button !== 0) return;
-    isDraggingRef.current = true;
+    isMouseDownRef.current = true;
     hasMovedRef.current = false;
+    isDraggingRef.current = false;
     dragDistanceRef.current = 0;
     const clientX = e.touches && e.touches.length > 0 ? e.touches[0].clientX : (e.clientX ?? 0);
     startXRef.current = clientX;
     startOffsetRef.current = offsetRef.current;
-    setIsDragging(true);
 
     if (trackRef.current) {
       trackRef.current.style.transition = 'none';
@@ -286,30 +309,35 @@ export default function ProjectsSection({ projects = [] }) {
   };
 
   const handlePointerMove = useCallback((e) => {
-    if (!isDraggingRef.current) return;
+    if (!isMouseDownRef.current) return;
     const clientX = e.touches && e.touches.length > 0 ? e.touches[0].clientX : (e.clientX ?? 0);
     const deltaX = clientX - startXRef.current;
     dragDistanceRef.current = Math.abs(deltaX);
 
     if (Math.abs(deltaX) > 10) {
       hasMovedRef.current = true;
+      isDraggingRef.current = true;
+      setIsDragging(true);
     }
 
-    offsetRef.current = startOffsetRef.current + deltaX;
-    wrapOffset();
+    if (isDraggingRef.current) {
+      offsetRef.current = startOffsetRef.current + deltaX;
+      wrapOffset();
 
-    if (trackRef.current) {
-      trackRef.current.style.transform = `translate3d(${offsetRef.current}px, 0, 0)`;
+      if (trackRef.current) {
+        trackRef.current.style.transform = `translate3d(${offsetRef.current}px, 0, 0)`;
+      }
     }
   }, [wrapOffset]);
 
   const handlePointerUp = useCallback(() => {
-    if (!isDraggingRef.current) return;
-    isDraggingRef.current = false;
+    isMouseDownRef.current = false;
     setIsDragging(false);
     setTimeout(() => {
+      isDraggingRef.current = false;
+      hasMovedRef.current = false;
       dragDistanceRef.current = 0;
-    }, 150);
+    }, 100);
   }, []);
 
   // Global pointer move and up listeners so drag doesn't get lost
@@ -438,29 +466,11 @@ export default function ProjectsSection({ projects = [] }) {
               <div
                 key={`${project.id}-${index}`}
                 className="project-card-minimal glass card-3d"
-                onPointerDown={(e) => {
-                  cardClickStartRef.current = {
-                    x: e.clientX ?? 0,
-                    y: e.clientY ?? 0
-                  };
-                }}
-                onPointerUp={(e) => {
-                  const clientX = e.clientX ?? 0;
-                  const clientY = e.clientY ?? 0;
-                  const dx = Math.abs(clientX - cardClickStartRef.current.x);
-                  const dy = Math.abs(clientY - cardClickStartRef.current.y);
-                  if (dx < 15 && dy < 15) {
-                    setSelectedProject(project);
-                  }
-                }}
                 onClick={(e) => {
-                  const clientX = e.clientX ?? 0;
-                  const clientY = e.clientY ?? 0;
-                  const dx = Math.abs(clientX - cardClickStartRef.current.x);
-                  const dy = Math.abs(clientY - cardClickStartRef.current.y);
-                  if (dx < 15 && dy < 15) {
-                    setSelectedProject(project);
-                  }
+                  e.preventDefault();
+                  e.stopPropagation();
+                  if (hasMovedRef.current) return;
+                  setSelectedProject(project);
                 }}
               >
                 {/* 100% Fitted Image Wrapper (No cropping) */}

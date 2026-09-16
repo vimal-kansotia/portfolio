@@ -41,8 +41,8 @@ export const CONTACT_ICON_OPTIONS = [
   { value: 'external-link', label: 'External Link' },
 ];
 
-function createProject(id, title, description, tags, accent, iconKey, link, image = '') {
-  return { id, title, description, tags, accent, iconKey, link, image };
+function createProject(id, title, description, tags, accent, iconKey, link, image = '', github = '') {
+  return { id, title, description, tags, accent, iconKey, link, image, github };
 }
 
 function createSkill(id, label, value, color) {
@@ -230,6 +230,17 @@ export function createDefaultPortfolioContent({ heroImage, resumeUrl }) {
       }
     ],
     projects: [
+      createProject(
+        'project-uk-housing',
+        'UK Housing Price Prediction',
+        'An enterprise-grade, distributed machine learning system deployed on Apache Spark 3.5.0 processing 22.5 million historical UK Land Registry property sales with a Medallion Lakehouse architecture.',
+        ['Apache Spark', 'Streamlit', 'XGBoost', 'LightGBM', 'Python', 'Medallion Lakehouse'],
+        'purple',
+        'bar-chart',
+        'https://uk-housing-price-prediction.streamlit.app',
+        '/projects/uk-housing-price.png',
+        'https://github.com/vimal-kansotia/UK-Housing-Price-Prediction'
+      ),
       createProject(
         'project-credit-risk',
         '100,000-Loan Credit Risk & Default Prediction System',
