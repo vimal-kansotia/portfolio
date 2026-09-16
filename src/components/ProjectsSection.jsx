@@ -318,6 +318,9 @@ export default function ProjectsSection({ projects = [] }) {
     if (!isDraggingRef.current) return;
     isDraggingRef.current = false;
     setIsDragging(false);
+    setTimeout(() => {
+      dragDistanceRef.current = 0;
+    }, 150);
   }, []);
 
   // Global pointer move and up listeners so drag doesn't get lost
@@ -446,12 +449,8 @@ export default function ProjectsSection({ projects = [] }) {
               <div
                 key={`${project.id}-${index}`}
                 className="project-card-minimal glass card-3d"
-                onClick={(e) => {
-                  if (dragDistanceRef.current > 25) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    return;
-                  }
+                onClick={() => {
+                  if (dragDistanceRef.current > 15) return;
                   setSelectedProject(project);
                 }}
               >
