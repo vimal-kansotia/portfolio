@@ -11,6 +11,24 @@ const PROJECT_ICON_MAP = {
   'file-text': FileText,
 };
 
+const NO_ACTION_PROJECT_IDS = [
+  'project-jarvis',
+  'project-pneumo-ai',
+  'project-amazon-sales',
+  'project-aqi'
+];
+
+const isNoActionProject = (p) => {
+  if (!p) return false;
+  if (NO_ACTION_PROJECT_IDS.includes(p.id)) return true;
+  const titleLower = (p.title || '').toLowerCase();
+  return titleLower.includes('jarvis') ||
+         titleLower.includes('pneumo') ||
+         titleLower.includes('amazon') ||
+         titleLower.includes('air quality') ||
+         titleLower.includes('aqi');
+};
+
 const DEFAULT_PROJECTS = [
   {
     id: 'project-credit-risk',
@@ -575,7 +593,7 @@ export default function ProjectsSection({ projects = [] }) {
             </div>
 
             {/* Action Buttons: GitHub & Live App */}
-            {(selectedProject.link || selectedProject.github) ? (
+            {(!isNoActionProject(selectedProject) && (selectedProject.link || selectedProject.github)) ? (
               <div className="project-modal-footer-actions">
                 {selectedProject.link && (
                   <a
