@@ -453,28 +453,6 @@ export default function ProjectsSection({ projects = [] }) {
                   </div>
 
                   <div className="project-card-actions">
-                    {project.link && (
-                      <a
-                        href={project.link}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="project-card-action-link"
-                        title="Open Live Demo ↗"
-                        onClick={(e) => e.stopPropagation()}
-                      >
-                        <ExternalLink size={18} />
-                      </a>
-                    )}
-                    <a
-                      href={project.github || githubUrl}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="project-card-action-link"
-                      title="View Code on GitHub"
-                      onClick={(e) => e.stopPropagation()}
-                    >
-                      <Github size={18} />
-                    </a>
                     <button
                       type="button"
                       className="project-plus-btn"
