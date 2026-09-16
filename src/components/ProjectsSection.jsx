@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
+import { createPortal } from 'react-dom';
 import { ExternalLink, CheckCircle2, Plus, X, Github, ChevronLeft, ChevronRight, MoveHorizontal, Dna, Activity, HeartPulse, Mic, BarChart3, Cloud, FileText } from 'lucide-react';
 
 const PROJECT_ICON_MAP = {
@@ -187,6 +188,11 @@ export default function ProjectsSection({ projects = [] }) {
   const projectList = (projects && projects.length > 0) ? projects : DEFAULT_PROJECTS;
   const [selectedProject, setSelectedProject] = useState(null);
   const [isDragging, setIsDragging] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   // Repeat projects 4 times for seamless, unbounded infinite dragging in either direction
   const marqueeProjects = [...projectList, ...projectList, ...projectList, ...projectList];
@@ -532,7 +538,7 @@ export default function ProjectsSection({ projects = [] }) {
       </div>
 
       {/* Interactive Detail Pop-up Modal Overlay */}
-      {selectedProject && (
+      {mounted && selectedProject && createPortal(
         <div
           className="project-modal-backdrop"
           onClick={() => setSelectedProject(null)}
@@ -623,7 +629,8 @@ export default function ProjectsSection({ projects = [] }) {
               </div>
             ) : null}
           </div>
-        </div>
+        </div>,
+        document.body
       )}
     </section>
   );
