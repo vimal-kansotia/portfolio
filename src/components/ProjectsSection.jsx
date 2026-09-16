@@ -203,6 +203,7 @@ export default function ProjectsSection({ projects = [] }) {
   const isAnimatingBtnRef = useRef(false);
 
   const dragDistanceRef = useRef(0);
+  const cardClickStartRef = useRef({ x: 0, y: 0 });
 
   // Measure single set width
   const updateMetrics = useCallback(() => {
@@ -431,9 +432,29 @@ export default function ProjectsSection({ projects = [] }) {
               <div
                 key={`${project.id}-${index}`}
                 className="project-card-minimal glass card-3d"
-                onClick={() => {
-                  if (dragDistanceRef.current > 15) return;
-                  setSelectedProject(project);
+                onPointerDown={(e) => {
+                  cardClickStartRef.current = {
+                    x: e.clientX ?? 0,
+                    y: e.clientY ?? 0
+                  };
+                }}
+                onPointerUp={(e) => {
+                  const clientX = e.clientX ?? 0;
+                  const clientY = e.clientY ?? 0;
+                  const dx = Math.abs(clientX - cardClickStartRef.current.x);
+                  const dy = Math.abs(clientY - cardClickStartRef.current.y);
+                  if (dx < 15 && dy < 15) {
+                    setSelectedProject(project);
+                  }
+                }}
+                onClick={(e) => {
+                  const clientX = e.clientX ?? 0;
+                  const clientY = e.clientY ?? 0;
+                  const dx = Math.abs(clientX - cardClickStartRef.current.x);
+                  const dy = Math.abs(clientY - cardClickStartRef.current.y);
+                  if (dx < 15 && dy < 15) {
+                    setSelectedProject(project);
+                  }
                 }}
               >
                 {/* 100% Fitted Image Wrapper (No cropping) */}
