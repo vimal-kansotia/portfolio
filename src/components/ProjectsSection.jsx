@@ -114,7 +114,7 @@ const DEFAULT_PROJECTS = [
     iconKey: 'mic',
     image: '/projects/jarvis-ai.jpg',
     link: '',
-    github: 'https://github.com/vimal-kansotia/Jarvis-AI'
+    github: ''
   },
   {
     id: 'project-pneumo-ai',
@@ -134,7 +134,7 @@ const DEFAULT_PROJECTS = [
     iconKey: 'heart-pulse',
     image: '/projects/pneumo-ai.png',
     link: '',
-    github: 'https://github.com/vimal-kansotia/Pneumo-AI'
+    github: ''
   },
   {
     id: 'project-amazon-sales',
@@ -154,7 +154,7 @@ const DEFAULT_PROJECTS = [
     iconKey: 'bar-chart',
     image: '/projects/amazon-sales.jpg',
     link: '',
-    github: 'https://github.com/vimal-kansotia/Amazon-Sales-Analytics'
+    github: ''
   },
   {
     id: 'project-aqi',
@@ -174,7 +174,7 @@ const DEFAULT_PROJECTS = [
     iconKey: 'cloud',
     image: '/projects/aqi-dashboard.png',
     link: '',
-    github: 'https://github.com/vimal-kansotia/AQI-Dashboard'
+    github: ''
   }
 ];
 
@@ -428,13 +428,8 @@ export default function ProjectsSection({ projects = [] }) {
               <div
                 key={`${project.id}-${index}`}
                 className="project-card-minimal glass card-3d"
-                onPointerUp={(e) => {
-                  if (dragDistanceRef.current < 15) {
-                    setSelectedProject(project);
-                  }
-                }}
                 onClick={(e) => {
-                  if (dragDistanceRef.current >= 15) {
+                  if (dragDistanceRef.current > 25) {
                     e.preventDefault();
                     e.stopPropagation();
                     return;
@@ -579,18 +574,20 @@ export default function ProjectsSection({ projects = [] }) {
               </ul>
             </div>
 
-            {/* Action Buttons: GitHub & Live App (Only rendered if live demo link exists) */}
-            {selectedProject.link && (
+            {/* Action Buttons: GitHub & Live App */}
+            {(selectedProject.link || selectedProject.github) ? (
               <div className="project-modal-footer-actions">
-                <a
-                  href={selectedProject.link}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="project-modal-action-btn project-modal-btn-primary"
-                >
-                  <ExternalLink size={18} />
-                  <span>Open Live Demo ↗</span>
-                </a>
+                {selectedProject.link && (
+                  <a
+                    href={selectedProject.link}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="project-modal-action-btn project-modal-btn-primary"
+                  >
+                    <ExternalLink size={18} />
+                    <span>Open Live Demo ↗</span>
+                  </a>
+                )}
 
                 {selectedProject.github && (
                   <a
@@ -604,7 +601,7 @@ export default function ProjectsSection({ projects = [] }) {
                   </a>
                 )}
               </div>
-            )}
+            ) : null}
           </div>
         </div>
       )}

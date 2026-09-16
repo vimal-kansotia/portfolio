@@ -267,7 +267,7 @@ export function createDefaultPortfolioContent({ heroImage, resumeUrl }) {
         ['LLMs', 'Ollama', 'Whisper', 'Linux', 'Python'],
         'yellow',
         'mic',
-        'https://github.com/vimal-kansotia/Jarvis-AI',
+        '',
         '/projects/jarvis-ai.jpg',
       ),
       createProject(
@@ -277,7 +277,7 @@ export function createDefaultPortfolioContent({ heroImage, resumeUrl }) {
         ['Deep Learning', 'CNN', 'Streamlit', 'Machine Learning', 'Linux'],
         'green',
         'heart-pulse',
-        'https://github.com/vimal-kansotia/Pneumo-AI',
+        '',
         '/projects/pneumo-ai.png',
       ),
       createProject(
@@ -287,7 +287,7 @@ export function createDefaultPortfolioContent({ heroImage, resumeUrl }) {
         ['Power BI', 'SQL', 'Python', 'ETL', 'Excel'],
         'orange',
         'bar-chart',
-        'https://github.com/vimal-kansotia/Amazon-Sales-Analytics',
+        '',
         '/projects/amazon-sales.jpg',
       ),
       createProject(
@@ -297,7 +297,7 @@ export function createDefaultPortfolioContent({ heroImage, resumeUrl }) {
         ['Power BI', 'API Integration', 'SQL', 'Python'],
         'blue',
         'cloud',
-        'https://github.com/vimal-kansotia/AQI-Dashboard',
+        '',
         '/projects/aqi-dashboard.png',
       ),
       createProject(
