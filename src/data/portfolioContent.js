@@ -231,6 +231,16 @@ export function createDefaultPortfolioContent({ heroImage, resumeUrl }) {
     ],
     projects: [
       createProject(
+        'project-credit-risk',
+        '100,000-Loan Credit Risk & Default Prediction System',
+        'Master’s research project for MSc Big Data Analytics. Engineered an end-to-end Decision Support System on 100,000 institutional loan records and 26 features with LightGBM, SHAP Explainable AI, and interactive Streamlit live underwriting engine.',
+        ['Streamlit', 'LightGBM', 'XGBoost', 'CatBoost', 'SHAP', 'Plotly', 'Scikit-learn', 'Pandas', 'Python'],
+        'cyan',
+        'bar-chart',
+        'https://loan-credit-risk-prediction.streamlit.app',
+        '/projects/loan-credit-risk.png'
+      ),
+      createProject(
         'project-diabetic-readmission',
         'Diabetic 30-Day Readmission Predictor',
         'Built an end-to-end ML dashboard predicting 30-day hospital readmission risk for diabetic patients using XGBoost & CatBoost. Includes SHAP explainability, live risk predictor, and interactive EDA explorer on 101,766 patient encounters.',

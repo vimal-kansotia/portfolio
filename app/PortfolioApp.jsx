@@ -50,6 +50,7 @@ const heroImage = '/Assets/profile.jpg';
 const resumeUrl = '/Assets/Resume.pdf';
 
 const DEFAULT_PROJECT_IMAGES = {
+  'project-credit-risk': '/projects/loan-credit-risk.png',
   'project-diabetic-readmission': '/projects/diabetic-readmission.png',
   'project-hpa': '/projects/hpa-explorer.png',
   'project-hospital-los': '/projects/hospital-los.png',

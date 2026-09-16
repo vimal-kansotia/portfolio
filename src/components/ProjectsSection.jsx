@@ -13,6 +13,28 @@ const PROJECT_ICON_MAP = {
 
 const DEFAULT_PROJECTS = [
   {
+    id: 'project-credit-risk',
+    title: '100,000-Loan Credit Risk & Default Prediction System',
+    category: 'FINANCIAL ML & EXPLAINABLE AI',
+    description: 'Master’s research project for MSc Big Data Analytics. Engineered an end-to-end Decision Support System on 100,000 institutional loan records and 26 features with LightGBM, SHAP Explainable AI, and interactive Streamlit live underwriting engine.',
+    techStack: ['Streamlit', 'LightGBM', 'XGBoost', 'CatBoost', 'SHAP', 'Plotly', 'Scikit-learn', 'Pandas', 'Python'],
+    highlights: [
+      'Master’s research project for MSc Big Data Analytics (St. Xavier’s College, Mumbai)',
+      'Underwrote 100,000 loan records ($1.60B total underwritten) across 26 financial variables',
+      'Achieved 94.11% ROC-AUC, 90.63% PR-AUC, and 86.74% holdout accuracy using LightGBM',
+      'Saved $78.4M in potential default losses (55% capital loss reduction)',
+      'SHAP Explainability with global beeswarm ranking & FCRA-compliant adverse action risk factors',
+      'Interactive Streamlit Underwriting Engine with real-time risk gauge & threshold simulator slider',
+      '5-Fold Stratified Cross-Validation (0.9407 ± 0.0010) ensuring zero data leakage'
+    ],
+    tags: ['Streamlit', 'LightGBM', 'XGBoost', 'CatBoost', 'SHAP', 'Plotly', 'Scikit-learn', 'Pandas', 'Python'],
+    accent: 'cyan',
+    iconKey: 'bar-chart',
+    image: '/projects/loan-credit-risk.png',
+    link: 'https://loan-credit-risk-prediction.streamlit.app',
+    github: 'https://github.com/vimal-kansotia/loan-credit-risk-prediction'
+  },
+  {
     id: 'project-diabetic-readmission',
     title: 'Diabetic 30-Day Readmission Predictor',
     category: 'HEALTHCARE ML & EXPLAINABILITY',
