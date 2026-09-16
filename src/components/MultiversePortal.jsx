@@ -576,12 +576,12 @@ export default function MultiversePortal({ overscrollTension = 0, colorHex = '#0
   const PLANETS = useMemo(() => [
     { name: 'Mercury', radius: 0.45, dist: 5.2,  speed: 2.45, tilt: 0.03,  texture: textures.mercury, bumpMap: textures.mercuryBump, roughness: 0.8 },
     { name: 'Venus',   radius: 0.68, dist: 7.5,  speed: 1.55, tilt: 177.3, texture: textures.venus,   roughness: 0.5, hasAtmosphere: true },
-    { name: 'Earth',   radius: 0.82, dist: 10.2, speed: 1.30, tilt: 23.44, texture: textures.earth,   roughnessMap: textures.earthSpecular, roughness: 0.3, hasClouds: true, hasNight: true, moons: [{ name: 'Moon', radius: 0.22, dist: 1.45, speed: 2.4 }] },
-    { name: 'Mars',    radius: 0.58, dist: 13.0, speed: 1.05, tilt: 25.19, texture: textures.mars,    bumpMap: textures.mercuryBump, roughness: 0.7, moons: [{ name: 'Phobos', radius: 0.08, dist: 0.9, speed: 4.5 }, { name: 'Deimos', radius: 0.06, dist: 1.25, speed: 2.8 }] },
-    { name: 'Jupiter', radius: 1.85, dist: 16.8, speed: 0.58, tilt: 3.13,  texture: textures.jupiter, roughness: 0.4, moons: [{ name: 'Io', radius: 0.14, dist: 2.3, speed: 3.2, color: '#FACC15' }, { name: 'Europa', radius: 0.12, dist: 2.8, speed: 2.5, color: '#BAE6FD' }, { name: 'Ganymede', radius: 0.18, dist: 3.4, speed: 1.8, color: '#94A3B8' }, { name: 'Callisto', radius: 0.16, dist: 4.1, speed: 1.3, color: '#64748B' }] },
-    { name: 'Saturn',  radius: 1.50, dist: 21.8, speed: 0.42, tilt: 26.73, texture: textures.saturn,  roughness: 0.4, hasRings: true, moons: [{ name: 'Titan', radius: 0.20, dist: 4.2, speed: 1.6, color: '#F97316' }] },
-    { name: 'Uranus',  radius: 1.08, dist: 26.5, speed: 0.28, tilt: 97.77, texture: textures.uranus,  roughness: 0.3, hasUranusRings: true, moons: [{ name: 'Miranda', radius: 0.10, dist: 2.2, speed: 2.1, color: '#CBD5E1' }] },
-    { name: 'Neptune', radius: 1.02, dist: 31.2, speed: 0.19, tilt: 28.32, texture: textures.neptune, roughness: 0.3, moons: [{ name: 'Triton', radius: 0.14, dist: 2.1, speed: -2.0, color: '#A5F3FC' }] },
+    { name: 'Earth',   radius: 0.82, dist: 10.2, speed: 1.30, tilt: 23.44, texture: textures.earth,   roughnessMap: textures.earthSpecular, roughness: 0.3, hasClouds: true, hasNight: true, moons: [{ name: 'Moon', radius: 0.20, dist: 1.75, speed: 2.2, color: '#FFFFFF' }] },
+    { name: 'Mars',    radius: 0.58, dist: 13.0, speed: 1.05, tilt: 25.19, texture: textures.mars,    bumpMap: textures.mercuryBump, roughness: 0.7, moons: [{ name: 'Phobos', radius: 0.08, dist: 1.0, speed: 4.5, color: '#CBD5E1' }, { name: 'Deimos', radius: 0.06, dist: 1.4, speed: 2.8, color: '#94A3B8' }] },
+    { name: 'Jupiter', radius: 1.85, dist: 16.8, speed: 0.58, tilt: 3.13,  texture: textures.jupiter, roughness: 0.4, moons: [{ name: 'Io', radius: 0.14, dist: 2.5, speed: 3.2, color: '#FACC15' }, { name: 'Europa', radius: 0.12, dist: 3.0, speed: 2.5, color: '#BAE6FD' }, { name: 'Ganymede', radius: 0.18, dist: 3.6, speed: 1.8, color: '#94A3B8' }, { name: 'Callisto', radius: 0.16, dist: 4.3, speed: 1.3, color: '#64748B' }] },
+    { name: 'Saturn',  radius: 1.50, dist: 21.8, speed: 0.42, tilt: 26.73, texture: textures.saturn,  roughness: 0.4, hasRings: true, moons: [{ name: 'Titan', radius: 0.20, dist: 4.4, speed: 1.6, color: '#F97316' }] },
+    { name: 'Uranus',  radius: 1.08, dist: 26.5, speed: 0.28, tilt: 97.77, texture: textures.uranus,  roughness: 0.3, hasUranusRings: true, moons: [{ name: 'Miranda', radius: 0.10, dist: 2.4, speed: 2.1, color: '#CBD5E1' }] },
+    { name: 'Neptune', radius: 1.02, dist: 31.2, speed: 0.19, tilt: 28.32, texture: textures.neptune, roughness: 0.3, moons: [{ name: 'Triton', radius: 0.14, dist: 2.3, speed: -2.0, color: '#A5F3FC' }] },
   ], [textures]);
 
   // Concentric Orbital Path Rings for Planets
@@ -707,7 +707,7 @@ export default function MultiversePortal({ overscrollTension = 0, colorHex = '#0
               const mAngle = time * moon.speed * 1.2;
               mRef.position.x = ref.position.x + Math.cos(mAngle) * moon.dist;
               mRef.position.z = ref.position.z + Math.sin(mAngle) * moon.dist;
-              mRef.position.y = Math.sin(mAngle * 0.5) * 0.4;
+              mRef.position.y = ref.position.y + Math.sin(mAngle) * (moon.dist * 0.08);
               mRef.rotation.y = time * 0.6;
             }
           });
@@ -779,26 +779,42 @@ export default function MultiversePortal({ overscrollTension = 0, colorHex = '#0
             />
           </mesh>
 
-          {/* Render Planet Moons */}
+          {/* Render Planet Moons & Their Orbit Path Rings */}
           {planet.moons && planet.moons.map((moon) => {
             const moonKey = `${planet.name}-${moon.name}`;
             return (
-              <mesh
-                key={moonKey}
-                ref={(el) => (moonRefs.current[moonKey] = el)}
-                position={[planet.dist + moon.dist, 0, 0]}
-              >
-                <sphereGeometry args={[moon.radius, 32, 32]} />
-                <meshStandardMaterial
-                  map={textures.mercury}
-                  bumpMap={textures.mercuryBump}
-                  bumpScale={0.03}
-                  color="#FFFFFF"
-                  emissive="#FFFFFF"
-                  emissiveIntensity={isLight ? 0.70 : 0.45}
-                  roughness={0.3}
-                />
-              </mesh>
+              <group key={moonKey}>
+                {/* Moon Orbit Line Loop */}
+                {moonOrbitGeometries[moonKey] && (
+                  <lineLoop
+                    ref={(el) => (moonRefs.current[`${moonKey}-orbit`] = el)}
+                    geometry={moonOrbitGeometries[moonKey]}
+                  >
+                    <lineBasicMaterial
+                      color={isLight ? '#333333' : '#FFFFFF'}
+                      transparent
+                      opacity={isLight ? 0.30 : 0.22}
+                    />
+                  </lineLoop>
+                )}
+
+                {/* Moon Mesh */}
+                <mesh
+                  ref={(el) => (moonRefs.current[moonKey] = el)}
+                  position={[planet.dist + moon.dist, 0, 0]}
+                >
+                  <sphereGeometry args={[moon.radius, 32, 32]} />
+                  <meshStandardMaterial
+                    map={textures.mercury}
+                    bumpMap={textures.mercuryBump}
+                    bumpScale={0.03}
+                    color={moon.color || '#FFFFFF'}
+                    emissive={moon.color || '#FFFFFF'}
+                    emissiveIntensity={isLight ? 0.65 : 0.40}
+                    roughness={0.3}
+                  />
+                </mesh>
+              </group>
             );
           })}
         </group>
