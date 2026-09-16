@@ -281,7 +281,7 @@ export default function ProjectsSection({ projects = [] }) {
     const clientX = e.touches && e.touches.length > 0 ? e.touches[0].clientX : (e.clientX ?? 0);
     const deltaX = clientX - startXRef.current;
 
-    if (Math.abs(deltaX) > 6) {
+    if (Math.abs(deltaX) > 12) {
       hasMovedRef.current = true;
     }
 
@@ -453,6 +453,28 @@ export default function ProjectsSection({ projects = [] }) {
                   </div>
 
                   <div className="project-card-actions">
+                    {project.link && (
+                      <a
+                        href={project.link}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="project-card-action-link"
+                        title="Open Live Demo ↗"
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        <ExternalLink size={18} />
+                      </a>
+                    )}
+                    <a
+                      href={project.github || githubUrl}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="project-card-action-link"
+                      title="View Code on GitHub"
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      <Github size={18} />
+                    </a>
                     <button
                       type="button"
                       className="project-plus-btn"
@@ -460,7 +482,6 @@ export default function ProjectsSection({ projects = [] }) {
                       title="View Full Details"
                       onClick={(e) => {
                         e.stopPropagation();
-                        if (hasMovedRef.current) return;
                         setSelectedProject(project);
                       }}
                     >
