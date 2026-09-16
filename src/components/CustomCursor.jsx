@@ -19,12 +19,27 @@ const DRAGON_COLOR_PALETTES = {
 /**
  * CustomCursor - Celestial Neon Energy Dragon Engine
  */
-export default function CustomCursor({ theme = 'dark', colorTheme = 'olive' }) {
+export default function CustomCursor({ theme = 'dark', colorTheme = 'cyan' }) {
   const canvasRef = useRef(null);
   const dotRef = useRef(null);
   const ringRef = useRef(null);
 
-  const activeColorPalette = DRAGON_COLOR_PALETTES[colorTheme] || DRAGON_COLOR_PALETTES.olive;
+  // Deactivate completely on phones / mobile touch devices (User: "not dragon")
+  const [isTouchDevice, setIsTouchDevice] = useState(true);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const isMobileOrTouch =
+        window.matchMedia('(max-width: 768px)').matches ||
+        window.matchMedia('(pointer: coarse)').matches ||
+        ('ontouchstart' in window) ||
+        Boolean(navigator.maxTouchPoints && navigator.maxTouchPoints > 0);
+
+      setIsTouchDevice(isMobileOrTouch);
+    }
+  }, []);
+
+  const activeColorPalette = DRAGON_COLOR_PALETTES[colorTheme] || DRAGON_COLOR_PALETTES.cyan;
 
   const [hoverText, setHoverText] = useState('');
   const [isHoveredState, setIsHoveredState] = useState(false);
@@ -58,7 +73,7 @@ export default function CustomCursor({ theme = 'dark', colorTheme = 'olive' }) {
     if (typeof window !== 'undefined') {
       const isMobile = window.matchMedia('(max-width: 768px)').matches || ('ontouchstart' in window);
       isMobileRef.current = isMobile;
-      const numPoints = isMobile ? 22 : 36;
+      const numPoints = isMobile ? 26 : 58;
 
       const spine = [];
       for (let i = 0; i < numPoints; i++) {
@@ -124,14 +139,20 @@ export default function CustomCursor({ theme = 'dark', colorTheme = 'olive' }) {
 
   const applySpriteTint = (headCanvas, clawCanvas, themeKey) => {
     if (!headCanvas || !clawCanvas) return;
-    const palette = DRAGON_COLOR_PALETTES[themeKey] || DRAGON_COLOR_PALETTES.olive;
+    const palette = DRAGON_COLOR_PALETTES[themeKey] || DRAGON_COLOR_PALETTES.cyan;
     tintedHeadRef.current = getTintedSprite(headCanvas, palette.headShade || palette.light);
     tintedClawRef.current = getTintedSprite(clawCanvas, palette.primary);
   };
 
-  // Preload dragon textures & generate tinted sprites
+  // Preload dragon textures & generate tinted sprites (Desktop only)
   useEffect(() => {
     if (typeof window === 'undefined') return;
+    const isTouchOrMobile =
+      window.matchMedia('(max-width: 768px)').matches ||
+      window.matchMedia('(pointer: coarse)').matches ||
+      ('ontouchstart' in window) ||
+      Boolean(navigator.maxTouchPoints && navigator.maxTouchPoints > 0);
+    if (isTouchOrMobile) return;
 
     Promise.all([
       createTransparentSprite('/dragon/head.png'),
@@ -273,7 +294,7 @@ export default function CustomCursor({ theme = 'dark', colorTheme = 'olive' }) {
           head.angle += diff * 0.55;
         }
 
-        const SEGMENT_DIST = isMobileRef.current ? 13 : 15;
+        const SEGMENT_DIST = isMobileRef.current ? 13 : 16.5;
 
         for (let i = 1; i < spine.length; i++) {
           const prev = spine[i - 1];
@@ -293,11 +314,11 @@ export default function CustomCursor({ theme = 'dark', colorTheme = 'olive' }) {
 
         const getRadius = (index) => {
           const t = index / (spine.length - 1);
-          let baseR = isMobileRef.current ? 13 : 17;
-          if (t < 0.15) baseR = (isMobileRef.current ? 13 : 17) + t * 24;
-          else if (t < 0.65) baseR = (isMobileRef.current ? 15 : 20) - (t - 0.15) * 8;
-          else baseR = Math.max(2, (isMobileRef.current ? 11 : 15) * (1 - (t - 0.65) / 0.35));
-          return baseR * (isHoveredRef.current ? 1.15 : 1.0);
+          let baseR = isMobileRef.current ? 14 : 22;
+          if (t < 0.18) baseR = (isMobileRef.current ? 14 : 22) + t * 30;
+          else if (t < 0.65) baseR = (isMobileRef.current ? 17 : 26) - (t - 0.18) * 10;
+          else baseR = Math.max(3, (isMobileRef.current ? 12 : 18) * (1 - (t - 0.65) / 0.35));
+          return baseR * (isHoveredRef.current ? 1.2 : 1.0);
         };
 
         const rgbStr = activeColorPalette.rgb;
@@ -312,13 +333,13 @@ export default function CustomCursor({ theme = 'dark', colorTheme = 'olive' }) {
           ctx.quadraticCurveTo(spine[i].x, spine[i].y, xc, yc);
         }
         // Outer soft glow stroke
-        ctx.strokeStyle = isDark ? `rgba(${rgbStr}, 0.28)` : `rgba(${rgbStr}, 0.18)`;
-        ctx.lineWidth = isMobileRef.current ? 7 : 10;
+        ctx.strokeStyle = isDark ? `rgba(${rgbStr}, 0.3)` : `rgba(${rgbStr}, 0.22)`;
+        ctx.lineWidth = isMobileRef.current ? 8 : 13;
         ctx.stroke();
 
         // Inner intense core stroke
         ctx.strokeStyle = activeColorPalette.primary;
-        ctx.lineWidth = isMobileRef.current ? 2.5 : 3.5;
+        ctx.lineWidth = isMobileRef.current ? 3.0 : 4.5;
         ctx.stroke();
 
         // 2. Render Intricate Dragon Scale Rings & Ribs
@@ -332,7 +353,7 @@ export default function CustomCursor({ theme = 'dark', colorTheme = 'olive' }) {
           ctx.beginPath();
           ctx.ellipse(0, 0, r * 0.4, r, 0, 0, Math.PI * 2);
           ctx.strokeStyle = `rgba(${rgbStr}, ${alphaVal * (isDark ? 0.85 : 0.75)})`;
-          ctx.lineWidth = isDark ? 1.4 : 1.8;
+          ctx.lineWidth = isDark ? 1.6 : 2.0;
           ctx.stroke();
 
           if (i % 2 === 0) {
@@ -340,33 +361,54 @@ export default function CustomCursor({ theme = 'dark', colorTheme = 'olive' }) {
             ctx.moveTo(-r * 0.5, -r * 0.8);
             ctx.lineTo(r * 0.2, 0);
             ctx.lineTo(-r * 0.5, r * 0.8);
-            ctx.strokeStyle = `rgba(${rgbStr}, ${alphaVal * (isDark ? 0.7 : 0.6)})`;
-            ctx.lineWidth = isDark ? 1.2 : 1.5;
+            ctx.strokeStyle = `rgba(${rgbStr}, ${alphaVal * (isDark ? 0.75 : 0.65)})`;
+            ctx.lineWidth = isDark ? 1.4 : 1.7;
             ctx.stroke();
           }
           ctx.restore();
         }
 
-        // 3. Render Ethereal Spirit Flame Ribbons
-        for (let i = 3; i < spine.length - 6; i += 5) {
+        // 3. Render Dragon Dorsal Spine Spikes / Fins
+        for (let i = 3; i < spine.length - 8; i += 2) {
           const pt = spine[i];
           const r = getRadius(i);
-          const wave = Math.sin(time * 3.5 + i) * 10;
+          const finAngle = pt.angle - Math.PI / 2;
+          const finLen = (isMobileRef.current ? 10 : 16) + Math.sin(time * 3 + i) * 4;
+
+          ctx.beginPath();
+          ctx.moveTo(pt.x, pt.y);
+          ctx.lineTo(
+            pt.x + Math.cos(finAngle) * (r + finLen),
+            pt.y + Math.sin(finAngle) * (r + finLen)
+          );
+          ctx.lineTo(
+            pt.x - Math.cos(pt.angle) * 10,
+            pt.y - Math.sin(pt.angle) * 10
+          );
+          ctx.fillStyle = isDark ? `rgba(${rgbStr}, 0.85)` : activeColorPalette.primary;
+          ctx.fill();
+        }
+
+        // 4. Render Ethereal Spirit Flame Ribbons
+        for (let i = 4; i < spine.length - 8; i += 6) {
+          const pt = spine[i];
+          const r = getRadius(i);
+          const wave = Math.sin(time * 3.5 + i) * 12;
           ctx.beginPath();
           ctx.moveTo(pt.x, pt.y);
           ctx.quadraticCurveTo(
-            pt.x - Math.cos(pt.angle) * 18 + Math.sin(pt.angle) * (r + 12),
-            pt.y - Math.sin(pt.angle) * 18 - Math.cos(pt.angle) * (r + 12),
-            pt.x - Math.cos(pt.angle) * 30 + Math.sin(pt.angle) * (r + 20 + wave),
-            pt.y - Math.sin(pt.angle) * 30 - Math.cos(pt.angle) * (r + 20 + wave)
+            pt.x - Math.cos(pt.angle) * 22 + Math.sin(pt.angle) * (r + 15),
+            pt.y - Math.sin(pt.angle) * 22 - Math.cos(pt.angle) * (r + 15),
+            pt.x - Math.cos(pt.angle) * 36 + Math.sin(pt.angle) * (r + 24 + wave),
+            pt.y - Math.sin(pt.angle) * 36 - Math.cos(pt.angle) * (r + 24 + wave)
           );
-          ctx.strokeStyle = `rgba(${rgbStr}, ${isDark ? 0.75 : 0.65})`;
-          ctx.lineWidth = isDark ? 1.5 : 1.8;
+          ctx.strokeStyle = `rgba(${rgbStr}, ${isDark ? 0.8 : 0.7})`;
+          ctx.lineWidth = isDark ? 1.8 : 2.2;
           ctx.stroke();
         }
 
-        // 4. Render Dragon Claws (Fast rasterization without blur penalty)
-        const clawIndices = isMobileRef.current ? [5, 11, 17] : [6, 14, 22, 30];
+        // 5. Render Dragon Claws (Fast rasterization without blur penalty)
+        const clawIndices = isMobileRef.current ? [6, 14, 20] : [9, 21, 33, 46];
         const clawCanvas = tintedClawRef.current || clawSpriteRef.current;
         const headCanvas = tintedHeadRef.current || headSpriteRef.current;
 
@@ -378,7 +420,7 @@ export default function CustomCursor({ theme = 'dark', colorTheme = 'olive' }) {
               ctx.save();
               ctx.translate(pt.x, pt.y);
               ctx.rotate(pt.angle + Math.PI / 2 + 0.35);
-              ctx.drawImage(clawCanvas, 0, -18, 44, 35);
+              ctx.drawImage(clawCanvas, 0, -22, 54, 43);
               ctx.restore();
 
               // Right claw
@@ -386,36 +428,36 @@ export default function CustomCursor({ theme = 'dark', colorTheme = 'olive' }) {
               ctx.translate(pt.x, pt.y);
               ctx.rotate(pt.angle - Math.PI / 2 - 0.35);
               ctx.scale(1, -1);
-              ctx.drawImage(clawCanvas, 0, -18, 44, 35);
+              ctx.drawImage(clawCanvas, 0, -22, 54, 43);
               ctx.restore();
             }
           }
         }
 
-        // 5. Render Crisp Dragon Head
+        // 6. Render Crisp Dragon Head (Upgraded to 148px)
         if (spritesReadyRef.current && headCanvas) {
           ctx.save();
           ctx.translate(head.x, head.y);
           ctx.rotate(head.angle);
-          ctx.drawImage(headCanvas, -50, -65, 130, 130);
+          ctx.drawImage(headCanvas, -56, -72, 148, 148);
           
           // Glowing Eyes
           ctx.beginPath();
-          ctx.arc(24, -14, 4.5, 0, Math.PI * 2);
-          ctx.arc(24, 14, 4.5, 0, Math.PI * 2);
+          ctx.arc(27, -15, 5.2, 0, Math.PI * 2);
+          ctx.arc(27, 15, 5.2, 0, Math.PI * 2);
           ctx.fillStyle = eyeColor;
           ctx.fill();
 
           // Dynamic Whiskers
-          const w1 = Math.sin(time * 3.5) * 8;
-          const w2 = Math.cos(time * 3.5) * 8;
+          const w1 = Math.sin(time * 3.5) * 9;
+          const w2 = Math.cos(time * 3.5) * 9;
           ctx.beginPath();
-          ctx.moveTo(48, -8);
-          ctx.bezierCurveTo(72, -26, 85 + w1, -38, 112 + w1, -28);
-          ctx.moveTo(48, 8);
-          ctx.bezierCurveTo(72, 26, 85 + w2, 38, 112 + w2, 28);
+          ctx.moveTo(52, -9);
+          ctx.bezierCurveTo(78, -28, 95 + w1, -42, 126 + w1, -30);
+          ctx.moveTo(52, 9);
+          ctx.bezierCurveTo(78, 28, 95 + w2, 42, 126 + w2, 30);
           ctx.strokeStyle = `rgba(${rgbStr}, 0.95)`;
-          ctx.lineWidth = 2.6;
+          ctx.lineWidth = 3.0;
           ctx.stroke();
 
           ctx.restore();
@@ -474,6 +516,8 @@ export default function CustomCursor({ theme = 'dark', colorTheme = 'olive' }) {
       if (animFrameRef.current) cancelAnimationFrame(animFrameRef.current);
     };
   }, [theme, colorTheme]);
+
+  if (isTouchDevice) return null;
 
   return (
     <>

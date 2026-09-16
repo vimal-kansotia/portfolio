@@ -2,7 +2,7 @@ import '../src/index.css';
 import Script from 'next/script';
 
 export const viewport = {
-  themeColor: '#415B06',
+  themeColor: '#06B6D4',
   width: 'device-width',
   initialScale: 1.0,
 };
@@ -70,10 +70,12 @@ const jsonLd = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" data-theme="dark">
+    <html lang="en" data-theme="dark" data-color-theme="cyan">
       <head>
         {/* Intercept third-party extension errors */}
-        <script
+        <Script
+          id="error-interceptor"
+          strategy="beforeInteractive"
           dangerouslySetInnerHTML={{
             __html: `
               window.addEventListener('error', function(event) {

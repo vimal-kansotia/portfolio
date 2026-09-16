@@ -107,29 +107,44 @@ export default function PortfolioApp({ initialContent }) {
   /* ── UI state ── */
   const [menuOpen, setMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('home');
-  const [scrollY, setScrollY] = useState(0);
   const [theme, setTheme] = useState('dark');
+  const activeSectionRef = useRef('home');
 
   const mainRef = useRef(null);
 
   /* ── Scroll animations (GSAP) ── */
   useScrollAnimations();
 
-  /* ── Scroll tracking ── */
+  /* ── Throttled active section tracking (zero full-tree re-renders on scroll) ── */
   useEffect(() => {
-    const handleScroll = () => {
-      setScrollY(window.scrollY);
+    let ticking = false;
 
+    const updateActiveSection = () => {
       const sections = document.querySelectorAll('section[id]');
+      const scrollPos = window.scrollY + 180;
       let current = 'home';
-      for (const section of sections) {
-        const top = section.offsetTop - 150;
-        if (window.scrollY >= top) {
-          current = section.getAttribute('id');
+
+      for (let i = 0; i < sections.length; i++) {
+        const section = sections[i];
+        if (section.offsetTop <= scrollPos) {
+          current = section.getAttribute('id') || current;
         }
       }
-      setActiveSection(current);
+
+      if (activeSectionRef.current !== current) {
+        activeSectionRef.current = current;
+        setActiveSection(current);
+      }
+      ticking = false;
     };
+
+    const handleScroll = () => {
+      if (!ticking) {
+        window.requestAnimationFrame(updateActiveSection);
+        ticking = true;
+      }
+    };
+
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
@@ -188,7 +203,7 @@ export default function PortfolioApp({ initialContent }) {
       <CustomCursor theme={theme} colorTheme={colorTheme} />
 
       {/* 3D background */}
-      <Scene3D scrollY={scrollY} colorTheme={colorTheme} />
+      <Scene3D colorTheme={colorTheme} />
 
       {/* Portfolio */}
       <div className="app-container" ref={mainRef}>

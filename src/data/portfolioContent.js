@@ -80,7 +80,7 @@ export function createDefaultPortfolioContent({ heroImage, resumeUrl }) {
       eyebrow: 'Data Science & Big Data Analytics',
       name: 'Vimal Santosh Kansotia',
       title: 'Big Data & Machine Learning Enthusiast',
-      subtitle: 'I build data-driven solutions using machine learning, big data, cloud technologies, and bioinformatics to turn complex data into meaningful insights.',
+      subtitle: 'I build data-driven solutions and scalable architectures using machine learning, big data, cloud technologies, and bioinformatics to turn complex data into meaningful insights. As a Data Engineer, I design high-throughput distributed pipelines and resilient data lakes with Apache Spark, Hadoop, Kafka, and AWS to empower high-velocity analytical decision making.',
       image: heroImage,
       resumeUrl,
       buttons: {

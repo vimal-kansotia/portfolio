@@ -26,27 +26,46 @@ const INTRO_COLOR_PALETTES = {
   red: { primary: '#EF4444', light: '#F87171', rgb: '239, 68, 68' },
 };
 
-export default function BigBangIntro({ onComplete, colorTheme = 'olive' }) {
+export default function BigBangIntro({ onComplete, colorTheme = 'cyan' }) {
   const canvasRef = useRef(null);
-  const [isDone, setIsDone] = useState(false);
+  const [mounted, setMounted] = useState(false);
+  const [isDone, setIsDone] = useState(true);
   const animFrameRef = useRef(null);
-  const activePalette = INTRO_COLOR_PALETTES[colorTheme] || INTRO_COLOR_PALETTES.olive;
+  const activePalette = INTRO_COLOR_PALETTES[colorTheme] || INTRO_COLOR_PALETTES.cyan;
 
   useEffect(() => {
-    if (typeof window === 'undefined') return;
+    setMounted(true);
+    try {
+      const shown = sessionStorage.getItem('vimal_intro_shown') === 'true';
+      setIsDone(shown);
+    } catch (e) {
+      setIsDone(false);
+    }
+  }, []);
+
+  const handleFinish = () => {
+    setIsDone(true);
+    if (typeof window !== 'undefined') {
+      try {
+        sessionStorage.setItem('vimal_intro_shown', 'true');
+      } catch (e) {}
+    }
+    if (onComplete) onComplete();
+  };
+
+  useEffect(() => {
+    if (typeof window === 'undefined' || isDone) return;
 
     // 3.6s Safety Fail-Safe
     const safetyTimer = setTimeout(() => {
-      setIsDone(true);
-      if (onComplete) onComplete();
+      handleFinish();
     }, 3600);
 
     return () => clearTimeout(safetyTimer);
-  }, [onComplete]);
+  }, [isDone, onComplete]);
 
   const handleSkip = () => {
-    setIsDone(true);
-    if (onComplete) onComplete();
+    handleFinish();
   };
 
   useEffect(() => {
@@ -274,15 +293,13 @@ export default function BigBangIntro({ onComplete, colorTheme = 'olive' }) {
           ctx.restore();
 
         } else {
-          setIsDone(true);
-          if (onComplete) onComplete();
+          handleFinish();
           return;
         }
 
         animFrameRef.current = requestAnimationFrame(render);
       } catch (err) {
-        setIsDone(true);
-        if (onComplete) onComplete();
+        handleFinish();
       }
     };
 
@@ -294,7 +311,7 @@ export default function BigBangIntro({ onComplete, colorTheme = 'olive' }) {
     };
   }, [onComplete, colorTheme]);
 
-  if (isDone) return null;
+  if (!mounted || isDone) return null;
 
   return (
     <div

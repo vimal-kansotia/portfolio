@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { FileText, Home, Mail, Menu, User, Code2, X, Sun, Moon, Sparkles, Award, Briefcase, ChevronDown } from 'lucide-react';
+import { scrollToSection } from '../utils/smoothScroll';
 
 const COLOR_PALETTES = [
   { id: 'gold', name: 'Gold / Amber', color: '#F59E0B' },
@@ -33,11 +34,17 @@ export default function Navbar({
   resumeUrl,
   theme,
   onToggleTheme,
-  colorTheme = 'olive',
+  colorTheme = 'cyan',
   onSelectColorTheme = () => {},
 }) {
   const [colorDropdownOpen, setColorDropdownOpen] = useState(false);
   const popoverRef = useRef(null);
+
+  const handleNavClick = (e, targetId) => {
+    e.preventDefault();
+    scrollToSection(targetId);
+    if (menuOpen) onCloseMenu();
+  };
 
   // Close palette dropdown on click outside or ESC key
   useEffect(() => {
@@ -66,13 +73,19 @@ export default function Navbar({
               <a
                 key={id}
                 href={`#${id}`}
+                onClick={(e) => handleNavClick(e, id)}
                 className={`nav-pill-link${activeSection === id ? ' active' : ''}`}
                 aria-current={activeSection === id ? 'page' : undefined}
               >
                 {label}
               </a>
             ))}
-            <a href={resumeUrl} target="_blank" rel="noreferrer" className="nav-pill-link nav-pill-action">
+            <a
+              href={resumeUrl}
+              target="_blank"
+              rel="noreferrer"
+              className="nav-pill-link nav-pill-action nav-pill-resume-highlight"
+            >
               Resume
             </a>
           </div>
@@ -114,6 +127,9 @@ export default function Navbar({
                         style={{ backgroundColor: palette.color }}
                         title={palette.name}
                         onClick={() => {
+                          try {
+                            localStorage.setItem('portfolio_color_theme_user_set', 'true');
+                          } catch (e) { }
                           onSelectColorTheme(palette.id);
                           setColorDropdownOpen(false);
                         }}
@@ -127,6 +143,7 @@ export default function Navbar({
             {/* Get in touch CTA button */}
             <a
               href="#contact"
+              onClick={(e) => handleNavClick(e, 'contact')}
               className="nav-get-in-touch-btn"
               title="Get in touch"
             >
@@ -176,14 +193,14 @@ export default function Navbar({
             <a
               key={id}
               href={`#${id}`}
-              onClick={onCloseMenu}
+              onClick={(e) => handleNavClick(e, id)}
               className={`mobile-nav-link${activeSection === id ? ' active' : ''}`}
             >
               <Icon />
               <span>{label}</span>
             </a>
           ))}
-          <a href={resumeUrl} target="_blank" rel="noreferrer" onClick={onCloseMenu} className="mobile-nav-link">
+          <a href={resumeUrl} target="_blank" rel="noreferrer" onClick={onCloseMenu} className="mobile-nav-link nav-mobile-resume-highlight">
             <FileText />
             <span>Resume</span>
           </a>

@@ -165,7 +165,7 @@ const DECOY_LOGOS = [
   { name: 'Android', color: '#3DDC84' },
 ];
 
-export default function AIChatbot({ ownerName = 'Vimal Kansotia', theme = 'dark' }) {
+export default function AIChatbot({ ownerName = 'Vimal Kansotia', theme = 'dark', colorTheme = 'cyan' }) {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState([
     {
@@ -249,11 +249,11 @@ export default function AIChatbot({ ownerName = 'Vimal Kansotia', theme = 'dark'
     const lower = trimmed.toLowerCase();
     const timeGreeting = getTimeBasedGreeting();
 
-    // Check for user introduction / greeting (e.g. "hi, I'm Rahul", "I am Rahul", "my name is Rahul", "hello")
+    // Check for user greeting or introduction
     const nameMatch =
       trimmed.match(/(?:hi|hello|hey)?\s*,?\s*(?:i'?m|i am|my name is|this is)\s+([a-zA-Z]+)/i);
 
-    const nonNameWords = ['what', 'why', 'how', 'who', 'tell', 'show', 'play', 'projects', 'skills', 'contact', 'hire', 'game', 'aws', 'python', 'sql', 'react', 'there', 'you'];
+    const nonNameWords = ['what', 'why', 'how', 'who', 'tell', 'show', 'play', 'projects', 'skills', 'contact', 'hire', 'game', 'aws', 'python', 'sql', 'react', 'there', 'you', 'spark', 'data'];
 
     if (
       lower.startsWith('hi') ||
@@ -266,12 +266,12 @@ export default function AIChatbot({ ownerName = 'Vimal Kansotia', theme = 'dark'
     ) {
       if (nameMatch && nameMatch[1] && !nonNameWords.includes(nameMatch[1].toLowerCase())) {
         const name = nameMatch[1].charAt(0).toUpperCase() + nameMatch[1].slice(1).toLowerCase();
-        return `Hello ${name}! ${timeGreeting} 🌅 Nice to meet you! How can I help you explore Vimal's portfolio today?`;
+        return `Hello ${name}! ${timeGreeting} 👋 Nice to meet you! How can I help you explore Vimal's Data Engineering & Data Science background today?`;
       }
-      return `Hello! ${timeGreeting} 👋 Welcome to Vimal Kansotia's AI portfolio! How can I assist you today?`;
+      return `Hello! ${timeGreeting} 👋 Welcome to Vimal Kansotia's AI portfolio! Ask me about his data engineering pipelines, machine learning models, cloud stack, or leadership roles!`;
     }
 
-    // Top Priority: If sentence mentions "talk" or "communication" or "contact"
+    // Contact & Reaching Out
     if (
       lower.includes('talk') ||
       lower.includes('communication') ||
@@ -288,29 +288,67 @@ export default function AIChatbot({ ownerName = 'Vimal Kansotia', theme = 'dark'
 📧 Email: kansotiavimal4@gmail.com
 💼 LinkedIn: https://www.linkedin.com/in/vimal-kansotia-586665231/
 🐙 GitHub: github.com/vimal-kansotia
-Or feel free to leave a message in the Contact section at the bottom of the page!`;
+Or feel free to send a message via the Contact form at the bottom of the page!`;
     }
 
-    if (lower.includes('project') || lower.includes('work')) {
-      return `I've built several high-impact projects! Highlights include:
-1. ☁️ AWS Cloud Data Engineering Pipeline (S3, Glue, Athena, Redshift).
-2. 📊 AI-Powered Data Analytics Dashboard (Python, Streamlit, Scikit-Learn).
-3. ⚡ Production Full-Stack Web Applications (React, Next.js, Node.js).
-Check out the Projects section below for live links and code repos!`;
+    // Data Engineering & Big Data specific queries
+    if (
+      lower.includes('data engineer') ||
+      lower.includes('big data') ||
+      lower.includes('spark') ||
+      lower.includes('hadoop') ||
+      lower.includes('kafka') ||
+      lower.includes('etl') ||
+      lower.includes('pipeline') ||
+      lower.includes('data lake') ||
+      lower.includes('hdfs')
+    ) {
+      return `🛠️ Vimal's Data Engineering & Big Data Architecture Expertise:
+• Distributed Frameworks: Apache Spark (PySpark), Apache Hadoop (HDFS, MapReduce), Apache Kafka, Hive.
+• Cloud Data Lakehouse: AWS Glue (Crawler & ETL Jobs), Amazon Athena (serverless querying), Amazon Redshift, Amazon S3.
+• Pipeline Orchestration & Storage: Partitioned Parquet, Delta Lake architecture, Docker containerization, and automated ETL/ELT workflows.
+• Core Goal: Designing resilient, high-throughput architectures that turn massive, messy datasets into structured, real-time intelligence!`;
     }
 
-    if (lower.includes('skill') || lower.includes('stack') || lower.includes('tech')) {
-      return `My core tech stack covers:
-• Languages: Python, SQL, JavaScript, C++, R, Java.
-• Cloud & Data: AWS (S3, Glue, Lambda, Athena, Redshift), Apache Parquet, Data Lakes.
-• Databases: MySQL, MongoDB, PostgreSQL, Amazon RDS.
-• Analytics & Dev: Power BI, Pandas, Scikit-learn, Docker, Git, Linux.`;
+    // Projects & Work
+    if (lower.includes('project') || lower.includes('work') || lower.includes('portfolio')) {
+      return `🚀 Vimal's featured engineering & data science work includes:
+1. ☁️ AWS Cloud Data Engineering Pipeline — End-to-end serverless ETL lakehouse with S3, Glue, Athena & Redshift.
+2. 🏥 Healthcare & Diabetic Readmission Analytics — Predictive modeling with Random Forest, XGBoost & Scikit-Learn.
+3. 🧬 Bioinformatics & Genomic Data Exploration — Computational biology workflows analyzing biological datasets.
+4. 📊 High-Performance Business Dashboards — Streamlit, Power BI, and interactive SQL analytical systems.
+Scroll down to the Projects section to explore them!`;
+    }
+
+    // Technical Skills & Tech Stack
+    if (lower.includes('skill') || lower.includes('stack') || lower.includes('tech') || lower.includes('tool')) {
+      return `💻 Vimal's Core Technical Arsenal:
+• Programming: Python, SQL (Advanced), JavaScript, C++, R, Java, Shell/Bash.
+• Big Data & Cloud: Apache Spark, Hadoop, Kafka, AWS (S3, Glue, Athena, Redshift, Lambda).
+• Machine Learning: Scikit-learn, Pandas, NumPy, Predictive Modeling, Feature Engineering, EDA.
+• Databases: PostgreSQL, MySQL, MongoDB, Amazon RDS.
+• DevOps & Analytics: Docker, Git, Linux/Unix, Power BI, Streamlit.`;
+    }
+
+    // Education, College & Academic CGPA
+    if (
+      lower.includes('education') ||
+      lower.includes('college') ||
+      lower.includes('cgpa') ||
+      lower.includes('degree') ||
+      lower.includes('study') ||
+      lower.includes('university')
+    ) {
+      return `🎓 Academic Background:
+• Degree: Bachelor of Science in Information Technology (B.Sc. IT).
+• Institution: B.K. Birla College of Arts, Science & Commerce (Autonomous), Kalyan.
+• Academic CGPA: 8.3+ with deep coursework in Distributed Computing, Data Science, Database Management, and Cloud Architectures.`;
     }
 
     // Specific Leadership Queries
     if (lower.includes('placement') || lower.includes('training') || lower.includes('t&p')) {
       return `🎓 Training & Development Coordinator — Placement Cell, B.K. Birla College:
-I coordinated campus recruitment drives, organized technical skill enhancement workshops, conducted resume building & mock interview sessions, and bridged student talents with industry recruiters to boost college placements.`;
+Vimal coordinated campus recruitment drives, organized technical skill enhancement workshops, conducted resume building & mock interview sessions, and bridged student talents with industry recruiters to boost college placements.`;
     }
 
     if (lower.includes('mpower') || lower.includes('mental health') || lower.includes('wellness')) {
@@ -321,7 +359,7 @@ Served 3 years on the core leadership team of MPower, advocating youth mental he
     if (lower.includes('astronomical') || lower.includes('astronomy') || lower.includes('stargazing') || lower.includes('class representative') || lower.includes('cr')) {
       return `🌟 Class Representative (3 Years) & Head of Astronomical Club — B.K. Birla College:
 • Served as Class Representative (CR) for 3 consecutive years, representing student interests to college faculty.
-• Headed the Astronomical Club, organizing stargazing camps, astrophysics seminars, and hosting major intercollegiate and intracollegiate events.`;
+• Headed the Astronomical Club, organizing stargazing camps, astrophysics seminars, and hosting major intercollegiate and intracollegiate events (which also inspired the 3D cosmic theme of this portfolio!).`;
     }
 
     if (lower.includes('aws student') || lower.includes('aws builder') || lower.includes('cloud builder')) {
@@ -329,28 +367,40 @@ Served 3 years on the core leadership team of MPower, advocating youth mental he
 Led a 100+ member cloud student community, organized hands-on AWS workshops (S3, Glue, Lambda, Redshift), mentored peers on cloud data architectures, and hosted tech hackathons.`;
     }
 
-    // General Leadership Query (lists ALL 4 leadership roles)
+    // General Leadership Query
     if (lower.includes('leadership') || lower.includes('leader') || lower.includes('role') || lower.includes('position') || lower.includes('community') || lower.includes('birla')) {
-      return `🏆 Here are all my 4 key leadership & coordinator roles at B.K. Birla College:
-
-1. ☁️ AWS Student Builder Group — Core Team Lead (100+ members, mentoring & cloud workshops)
-2. 🎓 Training & Development Coordinator — Placement Cell (Campus recruitment drives & interview prep)
-3. 💚 MPower Core Team Member (3 Years driving youth mental health & wellness campaigns)
-4. 🌟 Class Representative (3 Years) & Head of Astronomical Club (Stargazing camps & intercollegiate events)
-
-Feel free to ask me specifically about any of these roles!`;
+      return `🏆 Key Leadership & Community Roles at B.K. Birla College:
+1. ☁️ AWS Student Builder Group — Core Team Lead (100+ members, cloud mentoring)
+2. 🎓 Training & Development Coordinator — Placement Cell (Placement drives & interview workshops)
+3. 💚 MPower Core Team Member (3 Years advocating youth mental health)
+4. 🌟 Class Representative (3 Years) & Head of Astronomical Club (Stargazing expeditions & science seminars)
+Feel free to ask about any specific role!`;
     }
 
-    if (lower.includes('hire') || lower.includes('why')) {
-      return `You should hire me because I combine strong Cloud Architecture (AWS) & Data Engineering skills with production-ready web development. I focus on building scalable, data-driven applications that deliver real business value fast!`;
+    // Why Hire / Value Proposition
+    if (lower.includes('hire') || lower.includes('why') || lower.includes('value')) {
+      return `⭐ Why Hire Vimal Kansotia?
+Vimal bridges the critical gap between Big Data Engineering and Machine Learning. He builds production-ready distributed data pipelines (Spark, AWS, Hadoop) that ensure data reliability, while applying ML models to solve real-world problems. His proven leadership (AWS Lead, Placement Coordinator) ensures exceptional teamwork and communication!`;
     }
 
+    // Game Trigger
     if (lower.includes('game') || lower.includes('play')) {
       startLogoGame();
-      return `Let's play the Mind Reading Logo Game! 🎯`;
+      return `Let's play the Mind Reading Logo Game! 🎯 Pick any tech logo in your head!`;
     }
 
-    return `Thanks for asking! I'm passionate about Cloud Architecture, Data Engineering, and Full-Stack Development. Feel free to explore my portfolio sections or click any of the prompt chips below!`;
+    // STRICT DOMAIN FALLBACK (Error message when asked something outside training/domain)
+    return `⚠️ I'm sorry, I don't have information on that topic in Vimal's verified portfolio database.
+
+As Vimal's dedicated AI assistant, I am trained strictly on his professional background:
+• 🛠️ Data Engineering & Big Data Pipelines (Spark, Hadoop, AWS, Kafka)
+• 🤖 Machine Learning & Predictive Analytics (Python, Scikit-Learn)
+• 🧬 Bioinformatics & Healthcare Data
+• 🎓 Academic Records & CGPA (8.3+ at B.K. Birla College)
+• 🏆 Leadership Roles (AWS Builder Lead, Astronomical Club Head, Placement Coordinator)
+• 📬 Contact Details & Resume
+
+Please ask me a question related to Vimal's work, or click one of the quick prompt buttons below!`;
   };
 
   // --- LOGO GAME LOGIC ---
@@ -495,7 +545,7 @@ Feel free to ask me specifically about any of these roles!`;
                       onClick={() => handleQuickPrompt('What projects have you worked on?')}
                       className="chatbot-chip-btn"
                     >
-                      <Code2 size={15} className="text-[#a3e635]" />
+                      <Code2 size={15} style={{ color: 'var(--color-primary)' }} />
                       <span>What projects have you worked on?</span>
                     </button>
 
@@ -504,7 +554,7 @@ Feel free to ask me specifically about any of these roles!`;
                       onClick={() => handleQuickPrompt('Tell me about your technical skills.')}
                       className="chatbot-chip-btn"
                     >
-                      <BarChart2 size={15} className="text-[#E2FF6F]" />
+                      <BarChart2 size={15} style={{ color: 'var(--color-accent)' }} />
                       <span>Tell me about your technical skills.</span>
                     </button>
 
@@ -513,7 +563,7 @@ Feel free to ask me specifically about any of these roles!`;
                       onClick={() => handleQuickPrompt('Tell me about your AWS leadership.')}
                       className="chatbot-chip-btn"
                     >
-                      <Cloud size={15} className="text-[#a3e635]" />
+                      <Cloud size={15} style={{ color: 'var(--color-primary)' }} />
                       <span>Tell me about your AWS leadership.</span>
                     </button>
 
@@ -522,7 +572,7 @@ Feel free to ask me specifically about any of these roles!`;
                       onClick={() => handleQuickPrompt('Why should I hire you?')}
                       className="chatbot-chip-btn"
                     >
-                      <Briefcase size={15} className="text-[#E2FF6F]" />
+                      <Briefcase size={15} style={{ color: 'var(--color-accent)' }} />
                       <span>Why should I hire you?</span>
                     </button>
 
@@ -531,7 +581,7 @@ Feel free to ask me specifically about any of these roles!`;
                       onClick={() => handleQuickPrompt('How can I reach you?')}
                       className="chatbot-chip-btn"
                     >
-                      <Mail size={15} className="text-[#a3e635]" />
+                      <Mail size={15} style={{ color: 'var(--color-primary)' }} />
                       <span>How can I reach you?</span>
                     </button>
 
@@ -540,8 +590,8 @@ Feel free to ask me specifically about any of these roles!`;
                       onClick={() => handleQuickPrompt('Play a game')}
                       className={`chatbot-chip-btn game-highlight ${theme}`}
                     >
-                      <Gamepad2 size={18} className="game-icon animate-pulse" />
-                      <span className="game-text font-bold">🎮 Play a game</span>
+                      <Gamepad2 size={16} className="game-icon" style={{ color: 'inherit' }} />
+                      <span className="game-text">Play a game</span>
                     </button>
                   </div>
                 </div>
@@ -658,8 +708,9 @@ Feel free to ask me specifically about any of these roles!`;
                           type="button"
                           onClick={() => setGameStep('idle')}
                           className="chatbot-game-exit-btn"
+                          title="End game and return to chat"
                         >
-                          Back to Chat
+                          Okay, End Game
                         </button>
                       </div>
                     </div>

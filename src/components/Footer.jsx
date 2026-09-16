@@ -1,4 +1,5 @@
 import { Mail, Github, Linkedin, ExternalLink } from 'lucide-react';
+import { scrollToSection } from '../utils/smoothScroll';
 
 const FOOTER_ICON_MAP = {
   mail: Mail,
@@ -9,6 +10,13 @@ const FOOTER_ICON_MAP = {
 
 export default function Footer({ footer, resumeUrl }) {
   const year = new Date().getFullYear();
+
+  const handleLinkClick = (e, href) => {
+    if (href.startsWith('#')) {
+      e.preventDefault();
+      scrollToSection(href.replace('#', ''));
+    }
+  };
 
   return (
     <footer className="site-footer" role="contentinfo">
@@ -27,6 +35,7 @@ export default function Footer({ footer, resumeUrl }) {
                 <li key={link.id}>
                   <a
                     href={link.href}
+                    onClick={(e) => handleLinkClick(e, link.href)}
                     target={link.href.startsWith('#') ? undefined : '_blank'}
                     rel={link.href.startsWith('#') ? undefined : 'noreferrer'}
                   >

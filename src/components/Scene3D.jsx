@@ -1,6 +1,7 @@
 import { useRef } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import StarField from './StarField';
+import Constellations3D from './Constellations3D';
 import ShootingStars from './ShootingStars';
 import SpaceTravellers from './SpaceTravellers';
 
@@ -12,24 +13,30 @@ const THEME_COLOR_MAP = {
   blue: '#3B82F6',
   indigo: '#6366F1',
   lime: '#84CC16',
-  olive: '#415B06',
+  olive: '#82A626',
   orange: '#F97316',
   pink: '#EC4899',
   red: '#EF4444',
 };
 
-function ScrollCamera({ scrollY, colorHex = '#415B06' }) {
+function ScrollCamera({ colorHex = '#06B6D4' }) {
   const { camera } = useThree();
   const light1Ref = useRef();
   const light2Ref = useRef();
+  const currentYRef = useRef(0);
 
-  useFrame(() => {
+  useFrame((state, delta) => {
+    const scrollY = typeof window !== 'undefined' ? window.scrollY : 0;
     const targetY = -scrollY * 0.005;
-    camera.position.y = targetY;
+
+    // Frame-rate independent exponential damping for butter-smooth camera glide
+    const factor = 1 - Math.exp(-9 * Math.min(delta, 0.1));
+    currentYRef.current += (targetY - currentYRef.current) * factor;
+    camera.position.y = currentYRef.current;
 
     // Follow camera Y so 3D cosmic lighting ambience stays active at bottom of page
-    if (light1Ref.current) light1Ref.current.position.y = targetY + 5;
-    if (light2Ref.current) light2Ref.current.position.y = targetY - 5;
+    if (light1Ref.current) light1Ref.current.position.y = currentYRef.current + 5;
+    if (light2Ref.current) light2Ref.current.position.y = currentYRef.current - 5;
   });
 
   return (
@@ -40,8 +47,8 @@ function ScrollCamera({ scrollY, colorHex = '#415B06' }) {
   );
 }
 
-export default function Scene3D({ scrollY, colorTheme = 'olive' }) {
-  const colorHex = THEME_COLOR_MAP[colorTheme] || '#415B06';
+export default function Scene3D({ colorTheme = 'cyan' }) {
+  const colorHex = THEME_COLOR_MAP[colorTheme] || '#06B6D4';
   const containerRef = useRef(null);
 
   return (
@@ -54,8 +61,9 @@ export default function Scene3D({ scrollY, colorTheme = 'olive' }) {
         performance={{ min: 0.5 }}
       >
         <ambientLight intensity={1.8} />
-        <ScrollCamera scrollY={scrollY} colorHex={colorHex} />
-        <StarField count={2500} />
+        <ScrollCamera colorHex={colorHex} />
+        <StarField count={6500} />
+        <Constellations3D colorHex={colorHex} />
         <ShootingStars />
         <SpaceTravellers />
       </Canvas>

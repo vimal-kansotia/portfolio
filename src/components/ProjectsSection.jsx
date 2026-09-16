@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import { ExternalLink, CheckCircle2, Plus, X, Github, Dna, Activity, HeartPulse, Mic, BarChart3, Cloud, FileText } from 'lucide-react';
+import { useState, useEffect, useRef, useCallback } from 'react';
+import { ExternalLink, CheckCircle2, Plus, X, Github, ChevronLeft, ChevronRight, MoveHorizontal, Dna, Activity, HeartPulse, Mic, BarChart3, Cloud, FileText } from 'lucide-react';
 
 const PROJECT_ICON_MAP = {
   dna: Dna,
@@ -164,9 +164,177 @@ export default function ProjectsSection({ projects = [] }) {
   const githubUrl = 'https://github.com/vimal-kansotia?tab=repositories';
   const projectList = (projects && projects.length > 0) ? projects : DEFAULT_PROJECTS;
   const [selectedProject, setSelectedProject] = useState(null);
+  const [isDragging, setIsDragging] = useState(false);
 
-  // Duplicated list for continuous seamless infinite marquee loop (1..N -> 1..N...)
-  const marqueeProjects = [...projectList, ...projectList];
+  // Repeat projects 4 times for seamless, unbounded infinite dragging in either direction
+  const marqueeProjects = [...projectList, ...projectList, ...projectList, ...projectList];
+
+  const wrapperRef = useRef(null);
+  const trackRef = useRef(null);
+  const offsetRef = useRef(0);
+  const singleSetWidthRef = useRef(projectList.length * 444);
+  const isDraggingRef = useRef(false);
+  const startXRef = useRef(0);
+  const startOffsetRef = useRef(0);
+  const hasMovedRef = useRef(false);
+  const isHoveredRef = useRef(false);
+  const isAnimatingBtnRef = useRef(false);
+
+  // Measure single set width
+  const updateMetrics = useCallback(() => {
+    if (trackRef.current && trackRef.current.children.length >= 2) {
+      const firstChild = trackRef.current.children[0];
+      const secondChild = trackRef.current.children[1];
+      const cardWidth = secondChild.offsetLeft - firstChild.offsetLeft;
+      if (cardWidth > 0) {
+        singleSetWidthRef.current = cardWidth * projectList.length;
+      }
+    } else {
+      singleSetWidthRef.current = projectList.length * 444;
+    }
+  }, [projectList.length]);
+
+  // Keep offset wrapped inside the infinite middle zone [-2 * L, -L]
+  const wrapOffset = useCallback(() => {
+    const L = singleSetWidthRef.current || (projectList.length * 444);
+    while (offsetRef.current < -2 * L) {
+      offsetRef.current += L;
+      if (isDraggingRef.current) startOffsetRef.current += L;
+    }
+    while (offsetRef.current > -L) {
+      offsetRef.current -= L;
+      if (isDraggingRef.current) startOffsetRef.current -= L;
+    }
+  }, [projectList.length]);
+
+  // Initialize offset in the middle set on mount
+  useEffect(() => {
+    updateMetrics();
+    const L = singleSetWidthRef.current || (projectList.length * 444);
+    offsetRef.current = -L;
+    if (trackRef.current) {
+      trackRef.current.style.transform = `translate3d(${offsetRef.current}px, 0, 0)`;
+    }
+
+    const handleResize = () => updateMetrics();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, [projectList.length, updateMetrics]);
+
+  // Smooth continuous auto-drift when not interacting
+  useEffect(() => {
+    let animId;
+    const tick = () => {
+      if (!isDraggingRef.current && !isHoveredRef.current && !isAnimatingBtnRef.current) {
+        offsetRef.current -= 0.55; // Gentle smooth ambient drift
+        wrapOffset();
+        if (trackRef.current) {
+          trackRef.current.style.transform = `translate3d(${offsetRef.current}px, 0, 0)`;
+        }
+      }
+      animId = requestAnimationFrame(tick);
+    };
+    animId = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(animId);
+  }, [wrapOffset]);
+
+  // Pointer / Mouse / Touch Dragging Handlers
+  const handlePointerDown = (e) => {
+    // Only respond to main click or touch
+    if (e.button && e.button !== 0) return;
+    isDraggingRef.current = true;
+    hasMovedRef.current = false;
+    const clientX = e.touches && e.touches.length > 0 ? e.touches[0].clientX : (e.clientX ?? 0);
+    startXRef.current = clientX;
+    startOffsetRef.current = offsetRef.current;
+    setIsDragging(true);
+
+    if (trackRef.current) {
+      trackRef.current.style.transition = 'none';
+    }
+  };
+
+  const handlePointerMove = useCallback((e) => {
+    if (!isDraggingRef.current) return;
+    const clientX = e.touches && e.touches.length > 0 ? e.touches[0].clientX : (e.clientX ?? 0);
+    const deltaX = clientX - startXRef.current;
+
+    if (Math.abs(deltaX) > 6) {
+      hasMovedRef.current = true;
+    }
+
+    offsetRef.current = startOffsetRef.current + deltaX;
+    wrapOffset();
+
+    if (trackRef.current) {
+      trackRef.current.style.transform = `translate3d(${offsetRef.current}px, 0, 0)`;
+    }
+  }, [wrapOffset]);
+
+  const handlePointerUp = useCallback(() => {
+    if (!isDraggingRef.current) return;
+    isDraggingRef.current = false;
+    setIsDragging(false);
+  }, []);
+
+  // Global pointer move and up listeners so drag doesn't get lost
+  useEffect(() => {
+    const onMove = (e) => handlePointerMove(e);
+    const onUp = () => handlePointerUp();
+
+    window.addEventListener('mousemove', onMove);
+    window.addEventListener('mouseup', onUp);
+    window.addEventListener('touchmove', onMove, { passive: true });
+    window.addEventListener('touchend', onUp);
+    window.addEventListener('touchcancel', onUp);
+
+    return () => {
+      window.removeEventListener('mousemove', onMove);
+      window.removeEventListener('mouseup', onUp);
+      window.removeEventListener('touchmove', onMove);
+      window.removeEventListener('touchend', onUp);
+      window.removeEventListener('touchcancel', onUp);
+    };
+  }, [handlePointerMove, handlePointerUp]);
+
+  // Trackpad / Horizontal Wheel Navigation
+  useEffect(() => {
+    const wrapper = wrapperRef.current;
+    if (!wrapper) return;
+
+    const onWheel = (e) => {
+      if (Math.abs(e.deltaX) > Math.abs(e.deltaY) || e.shiftKey) {
+        e.preventDefault();
+        const delta = e.deltaX !== 0 ? e.deltaX : e.deltaY;
+        offsetRef.current -= delta * 1.15;
+        wrapOffset();
+        if (trackRef.current) {
+          trackRef.current.style.transform = `translate3d(${offsetRef.current}px, 0, 0)`;
+        }
+      }
+    };
+
+    wrapper.addEventListener('wheel', onWheel, { passive: false });
+    return () => wrapper.removeEventListener('wheel', onWheel);
+  }, [wrapOffset]);
+
+  // Arrow Button Sliding (direction: +1 for left/prev, -1 for right/next)
+  const slideBy = (direction) => {
+    isAnimatingBtnRef.current = true;
+    const cardEl = trackRef.current?.querySelector('.project-card-minimal');
+    const cardWidth = cardEl ? cardEl.offsetWidth + 20 : 340;
+    offsetRef.current += direction * cardWidth;
+    wrapOffset();
+
+    if (trackRef.current) {
+      trackRef.current.style.transition = 'transform 0.45s cubic-bezier(0.16, 1, 0.3, 1)';
+      trackRef.current.style.transform = `translate3d(${offsetRef.current}px, 0, 0)`;
+      setTimeout(() => {
+        if (trackRef.current) trackRef.current.style.transition = 'none';
+        isAnimatingBtnRef.current = false;
+      }, 460);
+    }
+  };
 
   // Close modal on ESC key
   useEffect(() => {
@@ -190,19 +358,59 @@ export default function ProjectsSection({ projects = [] }) {
           <span className="text-gradient-shimmer">Featured Projects</span>
         </SectionHeading>
         <p className="projects-template-subtitle">
-          A continuous showcase of AI, data engineering, and full-stack analytics builds. Click the <strong>+</strong> button on any project to explore details.
+          A continuous showcase of AI, data engineering, and full-stack analytics builds. Drag freely in either direction or use the arrow controls. Click <strong>+</strong> to explore details.
         </p>
       </div>
 
-      {/* Continuous Infinite Marquee Carousel (1..N -> 1..N...) */}
-      <div className="projects-marquee-wrapper">
-        <div className="projects-marquee-track">
+      {/* Interactive Draggable & Slideable Project Carousel */}
+      <div
+        className="projects-marquee-wrapper"
+        ref={wrapperRef}
+        onMouseEnter={() => { isHoveredRef.current = true; }}
+        onMouseLeave={() => { isHoveredRef.current = false; }}
+      >
+        {/* Floating Side Left Arrow Button */}
+        <button
+          type="button"
+          className="projects-floating-arrow arrow-left"
+          onClick={() => slideBy(1)}
+          aria-label="Slide Left"
+          title="Slide Left"
+        >
+          <ChevronLeft size={24} />
+        </button>
+
+        {/* Floating Side Right Arrow Button */}
+        <button
+          type="button"
+          className="projects-floating-arrow arrow-right"
+          onClick={() => slideBy(-1)}
+          aria-label="Slide Right"
+          title="Slide Right"
+        >
+          <ChevronRight size={24} />
+        </button>
+
+        {/* The Draggable Carousel Track */}
+        <div
+          ref={trackRef}
+          className={`projects-marquee-track ${isDragging ? 'is-dragging' : ''}`}
+          onMouseDown={handlePointerDown}
+          onTouchStart={handlePointerDown}
+        >
           {marqueeProjects.map((project, index) => {
             return (
               <div
                 key={`${project.id}-${index}`}
                 className="project-card-minimal glass card-3d"
-                onClick={() => setSelectedProject(project)}
+                onClick={(e) => {
+                  if (hasMovedRef.current) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    return;
+                  }
+                  setSelectedProject(project);
+                }}
               >
                 {/* 100% Fitted Image Wrapper (No cropping) */}
                 <div className="project-card-img-wrapper">
@@ -211,6 +419,7 @@ export default function ProjectsSection({ projects = [] }) {
                     alt={project.title}
                     className="project-card-cover-img"
                     loading="lazy"
+                    draggable="false"
                   />
                 </div>
 
@@ -229,6 +438,7 @@ export default function ProjectsSection({ projects = [] }) {
                       title="View Full Details"
                       onClick={(e) => {
                         e.stopPropagation();
+                        if (hasMovedRef.current) return;
                         setSelectedProject(project);
                       }}
                     >
@@ -240,6 +450,32 @@ export default function ProjectsSection({ projects = [] }) {
             );
           })}
         </div>
+      </div>
+
+      {/* Center Slider Navigation Controls (Left, Hint, Right) */}
+      <div className="projects-slider-controls">
+        <button
+          type="button"
+          className="projects-nav-btn"
+          onClick={() => slideBy(1)}
+          aria-label="Slide Left"
+          title="Slide Left"
+        >
+          <ChevronLeft size={22} />
+        </button>
+        <div className="projects-slider-hint">
+          <MoveHorizontal size={15} />
+          <span>Slide or drag left & right</span>
+        </div>
+        <button
+          type="button"
+          className="projects-nav-btn"
+          onClick={() => slideBy(-1)}
+          aria-label="Slide Right"
+          title="Slide Right"
+        >
+          <ChevronRight size={22} />
+        </button>
       </div>
 
       <div className="projects-template-footer">
