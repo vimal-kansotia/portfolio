@@ -369,7 +369,7 @@ export default function ContactSection({ contact }) {
         </div>
 
         {isDelivered ? (
-          <div className="glass-strong contact-form contact-template-form" style={{ padding: 0 }}>
+          <div className="glass-strong contact-form contact-template-form" style={{ padding: 0, overflow: 'hidden', minHeight: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
             <PostMailboxAnimation
               senderName={senderName}
               onReset={() => {

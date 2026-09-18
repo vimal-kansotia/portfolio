@@ -37,23 +37,19 @@ export default function PostMailboxAnimation({ senderName = '', onReset }) {
       <style>{`
         .postman-success-card {
           width: 100%;
-          min-height: 520px;
+          height: 100%;
+          min-height: 480px;
           display: flex;
           flex-direction: column;
           align-items: center;
           justify-content: center;
-          padding: 2rem 1.5rem;
+          padding: 2.25rem 1.75rem;
           position: relative;
           overflow: hidden;
           text-align: center;
-          background: linear-gradient(180deg, #0B1120 0%, #151F32 50%, #0F172A 100%);
-          border-radius: 24px;
-          box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.1), 0 20px 40px rgba(0, 0, 0, 0.4);
-        }
-
-        :root[data-theme='light'] .postman-success-card {
-          background: linear-gradient(180deg, #F8FAFC 0%, #E2E8F0 60%, #CBD5E1 100%);
-          box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.8), 0 15px 30px rgba(0, 0, 0, 0.08);
+          background: transparent;
+          border-radius: inherit;
+          box-sizing: border-box;
         }
 
         .postman-scene-stage {
