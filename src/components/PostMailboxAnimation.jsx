@@ -542,32 +542,49 @@ export default function PostMailboxAnimation({ senderName = '', onReset }) {
       {/* Delivery Confirmation Card & Actions */}
       <motion.div
         className="postman-delivery-info"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: isComplete ? 1 : 0.25, y: isComplete ? 0 : 20 }}
-        transition={{ duration: 0.5 }}
+        initial={{ opacity: 0, y: 15 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4 }}
       >
         <div className="postman-status-badge">
-          <Check size={14} strokeWidth={3} />
-          <span>Postal Delivery Confirmed</span>
+          {isComplete ? (
+            <>
+              <Check size={14} strokeWidth={3} />
+              <span>Postal Delivery Confirmed</span>
+            </>
+          ) : (
+            <>
+              <Sparkles size={14} className="animate-spin" />
+              <span>Delivering Your Message...</span>
+            </>
+          )}
         </div>
 
-        <h3 className="postman-delivery-title">Message Safely Delivered!</h3>
+        <h3 className="postman-delivery-title">
+          {isComplete ? 'Message Safely Delivered!' : 'Placing Mail in Mailbox...'}
+        </h3>
         <p className="postman-delivery-desc">
-          {senderName ? (
-            <>Thank you, <strong>{senderName}</strong>! The postman has inspected your letter and safely placed it inside Vimal's mailbox. I'll read your message and reply soon!</>
+          {isComplete ? (
+            senderName ? (
+              <>Thank you, <strong>{senderName}</strong>! The postman has inspected your letter and safely placed it inside Vimal's mailbox. I'll read your message and reply soon!</>
+            ) : (
+              <>The postman has safely placed your letter inside Vimal's mailbox. I'll read your note and get back to you soon!</>
+            )
           ) : (
-            <>The postman has safely placed your letter inside Vimal's mailbox. I'll read your note and get back to you soon!</>
+            <>Please wait a moment while the postman walks to the mailbox and places your envelope inside...</>
           )}
         </p>
 
-        <button
-          type="button"
-          onClick={onReset}
-          className="postman-reset-btn"
-        >
-          <RotateCcw size={15} />
-          <span>Send Another Message</span>
-        </button>
+        {isComplete && (
+          <button
+            type="button"
+            onClick={onReset}
+            className="postman-reset-btn"
+          >
+            <RotateCcw size={15} />
+            <span>Send Another Message</span>
+          </button>
+        )}
       </motion.div>
     </div>
   );
