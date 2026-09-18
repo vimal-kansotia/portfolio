@@ -333,7 +333,7 @@ export default function PostMailboxAnimation({ senderName = '', onReset }) {
           {/* ────────────────── 3D POSTMAN CHARACTER ────────────────── */}
           <motion.g
             id="postman-character"
-            initial={{ x: -100, y: 15 }}
+            initial={{ x: -100, y: 22 }}
             animate={{
               x: phase === 'walking'
                 ? 135
@@ -344,7 +344,7 @@ export default function PostMailboxAnimation({ senderName = '', onReset }) {
                 : phase === 'closing' || phase === 'flag_flip'
                 ? 180
                 : 155, // Step slightly back to salute viewer
-              y: phase === 'walking' ? [15, 12, 15] : 15
+              y: phase === 'walking' ? [22, 19, 22] : 22
             }}
             transition={{
               x: { duration: phase === 'walking' ? 1.5 : 0.5, ease: 'easeInOut' },
@@ -352,31 +352,33 @@ export default function PostMailboxAnimation({ senderName = '', onReset }) {
             }}
           >
             {/* Postman Ground Shadow */}
-            <ellipse cx="45" cy="195" rx="28" ry="6" fill="rgba(0,0,0,0.4)" filter="url(#softShadow)" />
+            <ellipse cx="46" cy="190" rx="26" ry="5" fill="rgba(0,0,0,0.4)" filter="url(#softShadow)" />
 
             {/* Left Leg */}
-            <motion.g
-              style={{ transformOrigin: '40px 145px' }}
-              animate={{
-                rotate: phase === 'walking' ? [24, -24, 24] : 0
-              }}
-              transition={{ repeat: phase === 'walking' ? Infinity : 0, duration: 0.48, ease: 'easeInOut' }}
-            >
-              <rect x="36" y="145" width="10" height="42" rx="4" fill="#1E3A8A" />
-              <path d="M 33 183 L 50 183 C 52 183, 54 186, 52 189 L 33 189 Z" fill="#0F172A" />
-            </motion.g>
+            <g transform="translate(41, 145)">
+              <motion.g
+                animate={{
+                  rotate: phase === 'walking' ? [24, -24, 24] : 0
+                }}
+                transition={{ repeat: phase === 'walking' ? Infinity : 0, duration: 0.48, ease: 'easeInOut' }}
+              >
+                <rect x="-5" y="0" width="10" height="42" rx="4" fill="#1E3A8A" />
+                <path d="M -8 38 L 9 38 C 11 38, 13 41, 11 44 L -8 44 Z" fill="#0F172A" />
+              </motion.g>
+            </g>
 
             {/* Right Leg */}
-            <motion.g
-              style={{ transformOrigin: '50px 145px' }}
-              animate={{
-                rotate: phase === 'walking' ? [-24, 24, -24] : 0
-              }}
-              transition={{ repeat: phase === 'walking' ? Infinity : 0, duration: 0.48, ease: 'easeInOut' }}
-            >
-              <rect x="46" y="145" width="10" height="42" rx="4" fill="#1D4ED8" />
-              <path d="M 43 183 L 60 183 C 62 183, 64 186, 62 189 L 43 189 Z" fill="#0F172A" />
-            </motion.g>
+            <g transform="translate(51, 145)">
+              <motion.g
+                animate={{
+                  rotate: phase === 'walking' ? [-24, 24, -24] : 0
+                }}
+                transition={{ repeat: phase === 'walking' ? Infinity : 0, duration: 0.48, ease: 'easeInOut' }}
+              >
+                <rect x="-5" y="0" width="10" height="42" rx="4" fill="#1D4ED8" />
+                <path d="M -8 38 L 9 38 C 11 38, 13 41, 11 44 L -8 44 Z" fill="#0F172A" />
+              </motion.g>
+            </g>
 
             {/* Torso & Uniform Jacket */}
             <rect x="32" y="85" width="28" height="62" rx="8" fill="url(#pmanJacket)" stroke="#1D4ED8" strokeWidth="1" />
@@ -432,80 +434,81 @@ export default function PostMailboxAnimation({ senderName = '', onReset }) {
               <circle cx="46" cy="51" r="3.5" fill="#FBBF24" stroke="#D97706" strokeWidth="0.8" />
             </motion.g>
 
-            {/* Left Arm (Holds Bag Strap / Reaches to Postal Flag) */}
-            <motion.g
-              style={{ transformOrigin: '36px 90px' }}
-              animate={{
-                rotate:
-                  phase === 'walking'
-                    ? [-20, 20, -20]
-                    : phase === 'flag_flip'
-                    ? -75 // Reaching up to flip the flag lever!
-                    : phase === 'salute' || phase === 'complete'
-                    ? -45 // Proud stance
-                    : -10
-              }}
-              transition={{ duration: 0.4 }}
-            >
-              <rect x="28" y="90" width="9" height="38" rx="4.5" fill="#1E40AF" />
-              <circle cx="32.5" cy="130" r="5" fill="url(#pmanSkin)" />
-            </motion.g>
+            {/* Left Arm Joint Pivot at Shoulder (32.5, 90) */}
+            <g transform="translate(32.5, 90)">
+              <motion.g
+                animate={{
+                  rotate:
+                    phase === 'walking'
+                      ? [-20, 20, -20]
+                      : phase === 'flag_flip'
+                      ? -65
+                      : phase === 'salute' || phase === 'complete'
+                      ? -30
+                      : -10
+                }}
+                transition={{ duration: 0.4 }}
+              >
+                <rect x="-4.5" y="0" width="9" height="38" rx="4.5" fill="#1E40AF" />
+                <circle cx="0" cy="38" r="5" fill="url(#pmanSkin)" />
+              </motion.g>
+            </g>
 
-            {/* Right Arm (Carries letter -> Inspects -> Opens flap -> Inserts -> Salutes/Hat Tip!) */}
-            <motion.g
-              style={{ transformOrigin: '54px 90px' }}
-              animate={{
-                rotate:
-                  phase === 'walking'
-                    ? [20, -20, 20]
-                    : phase === 'inspecting'
-                    ? -35 // Holds letter up to inspect address
-                    : phase === 'opening'
-                    ? -60 // Pulls door handle
-                    : phase === 'inserting'
-                    ? -45 // Inserts deep inside slot
-                    : phase === 'salute' || phase === 'complete'
-                    ? -125 // Tips cap with polite salute!
-                    : 0,
-                x: phase === 'inserting' ? 22 : 0,
-                y: phase === 'inserting' ? -8 : 0
-              }}
-              transition={{ duration: 0.45, ease: 'easeOut' }}
-            >
-              <rect x="52" y="90" width="9" height="36" rx="4.5" fill="#2563EB" />
-              <circle cx="56.5" cy="128" r="5" fill="url(#pmanSkin)" />
+            {/* Right Arm Joint Pivot at Shoulder (56.5, 90) */}
+            <g transform="translate(56.5, 90)">
+              <motion.g
+                animate={{
+                  rotate:
+                    phase === 'walking'
+                      ? [20, -20, 20]
+                      : phase === 'inspecting'
+                      ? -35
+                      : phase === 'opening'
+                      ? -55
+                      : phase === 'inserting'
+                      ? -40
+                      : phase === 'salute' || phase === 'complete'
+                      ? -75 // Friendly cap tip salute bringing hand to cap brim!
+                      : 0,
+                  x: phase === 'inserting' ? 20 : 0,
+                  y: phase === 'inserting' ? -6 : 0
+                }}
+                transition={{ duration: 0.45, ease: 'easeOut' }}
+              >
+                <rect x="-4.5" y="0" width="9" height="36" rx="4.5" fill="#2563EB" />
+                <circle cx="0" cy="36" r="5" fill="url(#pmanSkin)" />
 
-              {/* 💌 THE ENVELOPE (Glides cleanly into slot during insertion phase) */}
-              {phase !== 'closing' && phase !== 'flag_flip' && phase !== 'salute' && phase !== 'complete' && (
-                <motion.g
-                  id="delivery-envelope"
-                  initial={{ scale: 1, opacity: 1, x: 50, y: 108 }}
-                  animate={{
-                    x:
-                      phase === 'inspecting'
-                        ? 40
-                        : phase === 'inserting'
-                        ? 104
-                        : 50,
-                    y:
-                      phase === 'inspecting'
-                        ? 75
-                        : phase === 'inserting'
-                        ? 78
-                        : 108,
-                    scale: phase === 'inserting' ? 0.4 : 1,
-                    opacity: phase === 'inserting' ? 0 : 1
-                  }}
-                  transition={{ duration: phase === 'inserting' ? 0.75 : 0.45, ease: 'easeInOut' }}
-                >
-                  <rect x="0" y="0" width="34" height="22" rx="3" fill="#FFFFFF" stroke="#2563EB" strokeWidth="1.2" filter="url(#brightGlow)" />
-                  <path d="M 0 0 L 17 12 L 34 0" stroke="#94A3B8" strokeWidth="1" fill="#F8FAFC" />
-                  {/* Glowing Red Wax Seal */}
-                  <circle cx="17" cy="12" r="3.5" fill="#EF4444" />
-                  <path d="M 15.5 12 L 17 13.5 L 19 10.5" stroke="#FFFFFF" strokeWidth="0.8" strokeLinecap="round" />
-                </motion.g>
-              )}
-            </motion.g>
+                {/* 💌 THE ENVELOPE */}
+                {phase !== 'closing' && phase !== 'flag_flip' && phase !== 'salute' && phase !== 'complete' && (
+                  <motion.g
+                    id="delivery-envelope"
+                    initial={{ scale: 1, opacity: 1, x: -6, y: 20 }}
+                    animate={{
+                      x:
+                        phase === 'inspecting'
+                          ? -14
+                          : phase === 'inserting'
+                          ? 48
+                          : -6,
+                      y:
+                        phase === 'inspecting'
+                          ? -10
+                          : phase === 'inserting'
+                          ? -5
+                          : 20,
+                      scale: phase === 'inserting' ? 0.4 : 1,
+                      opacity: phase === 'inserting' ? 0 : 1
+                    }}
+                    transition={{ duration: phase === 'inserting' ? 0.75 : 0.45, ease: 'easeInOut' }}
+                  >
+                    <rect x="0" y="0" width="34" height="22" rx="3" fill="#FFFFFF" stroke="#2563EB" strokeWidth="1.2" filter="url(#brightGlow)" />
+                    <path d="M 0 0 L 17 12 L 34 0" stroke="#94A3B8" strokeWidth="1" fill="#F8FAFC" />
+                    <circle cx="17" cy="12" r="3.5" fill="#EF4444" />
+                    <path d="M 15.5 12 L 17 13.5 L 19 10.5" stroke="#FFFFFF" strokeWidth="0.8" strokeLinecap="round" />
+                  </motion.g>
+                )}
+              </motion.g>
+            </g>
           </motion.g>
 
           {/* ────────────────── CELEBRATION EFFECTS & PARTICLES ────────────────── */}
