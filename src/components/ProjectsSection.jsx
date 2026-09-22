@@ -57,6 +57,27 @@ const DEFAULT_PROJECTS = [
     github: 'https://github.com/vimal-kansotia/loan-credit-risk-prediction'
   },
   {
+    id: 'project-pcv3-bioinformatics',
+    title: 'PCV3 Bioinformatics & Phylogenetics Dashboard',
+    category: 'BIOINFORMATICS & GENOMIC DATA SCIENCE',
+    description: 'Comprehensive bioinformatics and genomic data science pipeline for analyzing genome variation, phylogenetics, and spatio-temporal trends across 500 complete Porcine Circovirus 3 (PCV3) genome sequences using MAFFT, IQ-TREE 3, PCA, K-Means clustering, and Monte Carlo statistical testing.',
+    techStack: ['Streamlit', 'Python', 'Biopython', 'MAFFT', 'IQ-TREE 3', 'Scikit-learn', 'Plotly', 'Pandas', 'NumPy', 'Phylogenetics'],
+    highlights: [
+      'Analyzed 500 PCV3 complete viral genome sequences (2,156 bp MAFFT alignment with 890 variable sites & 466 parsimony-informative sites)',
+      'Unsupervised ML genomic variation mapping with PCA (PC1: 22.4%, PC2: 15.7%) & K-Means clustering (k=7, Silhouette score 0.6047)',
+      'Maximum Likelihood Phylogenetics using IQ-TREE 3 ModelFinder with best-fit substitution model (GTR+F+I+G4)',
+      'Spatio-Temporal Statistical Testing via Monte Carlo permutation Chi-Square & Cramér\'s V (Geographic V=0.4185, Temporal V=0.3114)',
+      'Extracted genome SNP & k-mer (k=4) feature matrices (2,067 binary features) for variance & density profiling',
+      'Interactive Streamlit web dashboard with interactive tree viewers, PCA scatter plots, spatio-temporal heatmaps, and alignment browser'
+    ],
+    tags: ['Streamlit', 'Python', 'Biopython', 'MAFFT', 'IQ-TREE 3', 'Scikit-learn', 'Plotly', 'Phylogenetics'],
+    accent: 'green',
+    iconKey: 'dna',
+    image: '/projects/pcv3-bioinformatics.png',
+    link: 'https://pcv3-bioinformatics-dashboard.streamlit.app',
+    github: 'https://github.com/vimal-kansotia/PCV3-Bioinformatics-Dashboard'
+  },
+  {
     id: 'project-diabetic-readmission',
     title: 'Diabetic 30-Day Readmission Predictor',
     category: 'HEALTHCARE ML & EXPLAINABILITY',

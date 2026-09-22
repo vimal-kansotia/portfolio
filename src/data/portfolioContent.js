@@ -94,7 +94,7 @@ export function createDefaultPortfolioContent({ heroImage, resumeUrl }) {
       ],
       stats: [
         { id: 'stat-cgpa', value: '8.3+', label: 'Academic CGPA' },
-        { id: 'stat-projects', value: '6+', label: 'Data Science Projects' },
+        { id: 'stat-projects', value: '7+', label: 'Data Science Projects' },
         { id: 'stat-skills', value: '35+', label: 'Technical Skills' },
         { id: 'stat-focus', value: 'Data', label: 'Core Focus' },
       ],
@@ -250,6 +250,17 @@ export function createDefaultPortfolioContent({ heroImage, resumeUrl }) {
         'bar-chart',
         'https://loan-credit-risk-prediction.streamlit.app',
         '/projects/loan-credit-risk.png'
+      ),
+      createProject(
+        'project-pcv3-bioinformatics',
+        'PCV3 Bioinformatics & Phylogenetics Dashboard',
+        'Comprehensive bioinformatics and genomic data science pipeline for analyzing genome variation, phylogenetics, and spatio-temporal trends across 500 complete Porcine Circovirus 3 (PCV3) genome sequences using MAFFT, IQ-TREE 3, PCA, K-Means clustering, and Monte Carlo statistical testing.',
+        ['Streamlit', 'Python', 'Biopython', 'MAFFT', 'IQ-TREE 3', 'Scikit-learn', 'Plotly', 'Phylogenetics'],
+        'green',
+        'dna',
+        'https://pcv3-bioinformatics-dashboard.streamlit.app',
+        '/projects/pcv3-bioinformatics.png',
+        'https://github.com/vimal-kansotia/PCV3-Bioinformatics-Dashboard'
       ),
       createProject(
         'project-diabetic-readmission',
