@@ -1,5 +1,6 @@
 import '../src/index.css';
 import Script from 'next/script';
+import { Analytics } from '@vercel/analytics/next';
 
 export const viewport = {
   themeColor: '#06B6D4',
@@ -123,6 +124,7 @@ export default function RootLayout({ children }) {
         <div id="root">
           {children}
         </div>
+        <Analytics />
       </body>
     </html>
   );
