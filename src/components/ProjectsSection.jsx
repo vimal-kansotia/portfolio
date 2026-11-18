@@ -312,6 +312,7 @@ export default function ProjectsSection({ projects = [] }) {
   }, [wrapOffset]);
 
   const isMouseDownRef = useRef(false);
+  const startYRef = useRef(0);
 
   // Pointer / Mouse / Touch Dragging Handlers
   const handlePointerDown = (e) => {
@@ -321,7 +322,9 @@ export default function ProjectsSection({ projects = [] }) {
     isDraggingRef.current = false;
     dragDistanceRef.current = 0;
     const clientX = e.touches && e.touches.length > 0 ? e.touches[0].clientX : (e.clientX ?? 0);
+    const clientY = e.touches && e.touches.length > 0 ? e.touches[0].clientY : (e.clientY ?? 0);
     startXRef.current = clientX;
+    startYRef.current = clientY;
     startOffsetRef.current = offsetRef.current;
 
     if (trackRef.current) {
@@ -332,10 +335,21 @@ export default function ProjectsSection({ projects = [] }) {
   const handlePointerMove = useCallback((e) => {
     if (!isMouseDownRef.current) return;
     const clientX = e.touches && e.touches.length > 0 ? e.touches[0].clientX : (e.clientX ?? 0);
+    const clientY = e.touches && e.touches.length > 0 ? e.touches[0].clientY : (e.clientY ?? 0);
     const deltaX = clientX - startXRef.current;
+    const deltaY = clientY - startYRef.current;
+
+    // Check gesture direction: if vertical scroll gesture on touch device, release lock so page scrolls freely
+    if (!isDraggingRef.current && e.touches && e.touches.length > 0) {
+      if (Math.abs(deltaY) > Math.abs(deltaX) && Math.abs(deltaY) > 8) {
+        isMouseDownRef.current = false;
+        return;
+      }
+    }
+
     dragDistanceRef.current = Math.abs(deltaX);
 
-    if (Math.abs(deltaX) > 10) {
+    if (Math.abs(deltaX) > 10 && (!e.touches || Math.abs(deltaX) > Math.abs(deltaY))) {
       hasMovedRef.current = true;
       isDraggingRef.current = true;
       setIsDragging(true);
@@ -420,7 +434,7 @@ export default function ProjectsSection({ projects = [] }) {
     }
   };
 
-  // Close modal on ESC key
+  // Close modal on ESC key and lock body scroll when modal is open
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (e.key === 'Escape') setSelectedProject(null);
@@ -428,6 +442,16 @@ export default function ProjectsSection({ projects = [] }) {
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
+
+  useEffect(() => {
+    if (selectedProject) {
+      const origOverflow = document.body.style.overflow;
+      document.body.style.overflow = 'hidden';
+      return () => {
+        document.body.style.overflow = origOverflow;
+      };
+    }
+  }, [selectedProject]);
 
   return (
     <section id="projects" className="section projects-template">

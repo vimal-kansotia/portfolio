@@ -46,6 +46,17 @@ export default function Navbar({
     if (menuOpen) onCloseMenu();
   };
 
+  // Lock body scroll when mobile menu is open
+  useEffect(() => {
+    if (menuOpen) {
+      const origOverflow = document.body.style.overflow;
+      document.body.style.overflow = "hidden";
+      return () => {
+        document.body.style.overflow = origOverflow;
+      };
+    }
+  }, [menuOpen]);
+
   // Close palette dropdown on click outside or ESC key
   useEffect(() => {
     const handleClickOutside = (e) => {

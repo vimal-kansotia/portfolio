@@ -896,6 +896,16 @@ const TetrisGame = ({ onBack, onClose }) => {
 
 export default function AIChatbot({ ownerName = 'Vimal Kansotia', theme = 'dark', colorTheme = 'cyan' }) {
   const [isOpen, setIsOpen] = useState(false);
+
+  useEffect(() => {
+    if (isOpen) {
+      const origOverflow = document.body.style.overflow;
+      document.body.style.overflow = "hidden";
+      return () => {
+        document.body.style.overflow = origOverflow;
+      };
+    }
+  }, [isOpen]);
   const [messages, setMessages] = useState([
     {
       id: 1,

@@ -29,11 +29,14 @@ export default function CustomCursor({ theme = 'dark', colorTheme = 'cyan' }) {
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      const isMobileOrTouch =
-        window.innerWidth <= 768 ||
-        (window.matchMedia('(pointer: coarse)').matches && !window.matchMedia('(pointer: fine)').matches);
+      // True mobile phone/tablet check: narrow viewport or touch-only with coarse pointer and no fine pointer (mouse/trackpad)
+      const isMobileScreen = window.innerWidth <= 768;
+      const isTouchOnly = window.matchMedia('(hover: none) and (pointer: coarse)').matches;
+      const hasFinePointer = window.matchMedia('(pointer: fine)').matches;
+      
+      const isMobile = isMobileScreen || (isTouchOnly && !hasFinePointer);
 
-      setIsTouchDevice(isMobileOrTouch);
+      setIsTouchDevice(isMobile);
     }
   }, []);
 
